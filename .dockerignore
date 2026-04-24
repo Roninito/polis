@@ -1,0 +1,71 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Dependencies
+node_modules
+bun.lockb
+.bun
+
+# Development
+.env
+.env.local
+.env.*.local
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Build artifacts
+dist
+build
+.next
+out
+*.tsbuildinfo
+
+# Tests
+coverage
+.nyc_output
+jest-coverage
+
+# Documentation
+docs
+*.md
+!README.md
+
+# Demo/examples
+demo
+examples
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.circleci
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Project files
+*.iml
+*.iws
+*.ipr
+.fleet
+.metals
+
+# Misc
+.cache
+.parcel-cache
+dist

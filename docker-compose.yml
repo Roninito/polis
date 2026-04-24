@@ -1,37 +1,131 @@
-# POLIS Development Environment
-# Usage: docker compose up -d
+# POLIS Governance Platform — Docker Compose
+# Full local development and testing environment
+#
+# Services:
+#   - app: POLIS API and frontend (port 3143)
+#   - db: PostgreSQL database (port 5432)
+#   - redis: Redis cache/pub-sub (port 6379)
+#
+# Usage:
+#   docker compose up                    # Start all services
+#   docker compose up -d                 # Start in background
+#   docker compose logs -f app           # Watch API logs
+#   docker compose down                  # Stop all services
+#   docker compose down -v               # Stop and remove volumes
+
+version: '3.8'
 
 services:
+  # PostgreSQL Database
   db:
     image: postgres:16-alpine
+    container_name: polis-db
+    restart: unless-stopped
     ports:
       - "5432:5432"
     environment:
       POSTGRES_DB: polis
       POSTGRES_USER: polis
-      POSTGRES_PASSWORD: polis
+      POSTGRES_PASSWORD: polis_dev_password
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./deploy/db-init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U polis"]
+      test: ["CMD-SHELL", "pg_isready -U polis -d polis"]
       interval: 5s
-      timeout: 3s
+      timeout: 5s
       retries: 5
-    restart: unless-stopped
+      start_period: 10s
+    networks:
+      - polis-network
+    labels:
+      description: "PostgreSQL 16 database for POLIS"
 
+  # Redis Cache & Pub/Sub
   redis:
     image: redis:7-alpine
+    container_name: polis-redis
+    restart: unless-stopped
     ports:
       - "6379:6379"
+    command: redis-server --appendonly yes --requirepass redis_dev_password
     volumes:
       - redis_data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
       interval: 5s
-      timeout: 3s
+      timeout: 5s
       retries: 5
-    restart: unless-stopped
+      start_period: 10s
+    networks:
+      - polis-network
+    labels:
+      description: "Redis 7 for caching and real-time pub/sub"
 
+  # POLIS Application (API + Frontend)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: polis-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "3143:3143"
+    environment:
+      NODE_ENV: development
+      PORT: 3143
+      HOST: 0.0.0.0
+      LOG_LEVEL: debug
+      
+      # Database
+      DATABASE_URL: postgresql://polis:polis_dev_password@db:5432/polis
+      
+      # Redis
+      REDIS_URL: redis://:redis_dev_password@redis:6379
+      
+      # Auth (override in .env)
+      JWT_SECRET: dev_jwt_secret_change_in_production
+      JWT_EXPIRY: 1h
+      
+      # Email (console fallback in dev)
+      EMAIL_PROVIDER: console
+      
+      # AI/SAR (disabled in dev, enable with API key)
+      SAR_ENABLED: "false"
+      
+      # Rate limiting
+      RATE_LIMIT_ENABLED: "true"
+      
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/apps/api/node_modules
+      - /app/apps/web/node_modules
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3143/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - polis-network
+    labels:
+      description: "POLIS API and frontend"
+
+# Network
+networks:
+  polis-network:
+    driver: bridge
+
+# Volumes
 volumes:
   pgdata:
+    driver: local
   redis_data:
+    driver: local
