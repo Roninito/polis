@@ -3,10 +3,25 @@
  *
  * Heavy SAR operations (cycle monitoring, ledger audits) are enqueued
  * and processed here to avoid blocking API responses.
+ *
+ * Architecture: SAR Chain Behavior Tree
+ * Each job is executed as a behavior tree:
+ *
+ *   Sense → Analyze (parallel: constitutional + financial + risk) → Respond
+ *
+ * Follows the SAR Chain pattern from sar-engine and mngr projects.
  */
 
 import { Worker, Queue, type Job } from "bullmq";
-import { executeSAR, SARTask, type SARInput } from "../sar/engine";
+import { SARTask } from "../sar/engine";
+import {
+  GovernanceBTCompositor,
+  GovernanceAnalysisTree,
+  BTStatus,
+  type SARNodeContext,
+  type SARNodeMemory,
+  type BTEvent,
+} from "../sar/bt";
 import { createProvider } from "../ai/factory";
 import { loadConfig } from "../config/loader";
 import { emitSARCompleted } from "../ws/events";
@@ -44,59 +59,75 @@ export async function initSARWorker(): Promise<void> {
   worker = new Worker(
     QUEUE_NAME,
     async (job: Job<SARJobData>) => {
-      console.log(`[sar-worker] Processing job ${job.id}: ${job.data.task}`);
+      console.log(`[sar-worker] BT job ${job.id}: task=${job.data.task} refId=${job.data.refId}`);
 
-      const config = await loadConfig();
+      const config   = await loadConfig();
       const provider = createProvider(config.ai);
 
-      const input: SARInput = {
-        task: job.data.task as SARTask,
-        orgId: job.data.orgId,
-        refId: job.data.refId,
-        sense: job.data.sense,
-        context: {
-          orgId: job.data.orgId,
-          orgName: "",
+      // Build SAR BT context
+      const memory: SARNodeMemory = {};
+      const btContext: SARNodeContext = {
+        orgId:      job.data.orgId,
+        refId:      job.data.refId,
+        task:       job.data.task,
+        senseInput: job.data.sense,
+        sarContext: {
+          orgId:        job.data.orgId,
+          orgName:      "",
           constitution: job.data.constitutionText ?? "",
+        },
+        provider,
+        memory,
+        emit: (event: BTEvent) => {
+          if (event.type === "bt:tree_end" || event.type.startsWith("sar:")) {
+            console.log(`[sar-bt] ${event.type} source=${event.source}`);
+          }
         },
       };
 
-      const result = await executeSAR(provider, input);
+      // Execute the governance behavior tree (Sense → Analyze → Respond)
+      const compositor = new GovernanceBTCompositor();
+      const result     = await compositor.execute(GovernanceAnalysisTree, btContext);
 
-      // Update proposal with SAR analysis if this is a proposal-related task
-      if (job.data.refId && result.analysis) {
+      console.log(
+        `[sar-worker] BT complete status=${result.status} ` +
+        `duration=${result.durationMs}ms errors=${result.errors.length}`
+      );
+
+      // Persist analysis to DB if proposal-related and tree succeeded
+      if (job.data.refId && result.status === BTStatus.SUCCESS && result.analysis) {
         try {
-          const { db } = await import("../db/connection");
+          const { db }        = await import("../db/connection");
           const { proposals } = await import("../db/schema");
-          const { eq } = await import("drizzle-orm");
+          const { eq }        = await import("drizzle-orm");
 
           await db
             .update(proposals)
             .set({
               aiAnalysis: {
-                summary: result.analysis.summary,
-                riskLevel: result.analysis.riskLevel,
-                recommendation: result.analysis.recommendation,
-                reasoning: result.analysis.reasoning,
+                summary:                 result.analysis.summary,
+                riskLevel:               result.analysis.riskLevel,
+                recommendation:          result.analysis.recommendation,
+                reasoning:               result.analysis.reasoning,
                 constitutionalConflicts: result.analysis.constitutionalConflicts,
-                suggestedActions: result.analysis.suggestedActions,
-                completedAt: new Date().toISOString(),
+                suggestedActions:        result.analysis.suggestedActions,
+                completedAt:             new Date().toISOString(),
               },
               updatedAt: new Date().toISOString(),
             })
             .where(eq(proposals.id, job.data.refId));
 
-          console.log(`[sar-worker] Updated proposal ${job.data.refId} with SAR analysis`);
+          console.log(`[sar-worker] Persisted BT analysis to proposal ${job.data.refId}`);
         } catch (err) {
-          console.error(`[sar-worker] Failed to update proposal with analysis:`, err);
+          console.error(`[sar-worker] Failed to persist analysis:`, err);
         }
       }
 
-      // Emit real-time event
+      // Emit real-time completion event
       emitSARCompleted(job.data.orgId, {
-        id: result.id,
-        task: result.task,
-        status: result.status,
+        id:     job.id ?? "",
+        task:   job.data.task,
+        status: result.status === BTStatus.SUCCESS ? "completed" : "failed",
       });
 
       return result;
@@ -144,60 +175,68 @@ export async function enqueueSAR(data: SARJobData, opts?: { priority?: number; d
 }
 
 /**
- * Execute SAR task synchronously (fallback when queue is unavailable).
- * Runs in the same request/process, returns immediately after completion.
+ * Execute SAR task synchronously via BT (fallback when queue is unavailable).
+ * Uses the same GovernanceAnalysisTree as the async worker.
  */
 export async function executeSARSync(data: SARJobData): Promise<void> {
   try {
-    const config = await loadConfig();
+    const config   = await loadConfig();
     const provider = createProvider(config.ai);
 
-    const input: SARInput = {
-      task: data.task as SARTask,
-      orgId: data.orgId,
-      refId: data.refId,
-      sense: data.sense,
-      context: {
-        orgId: data.orgId,
-        orgName: "",
+    const memory: SARNodeMemory = {};
+    const btContext: SARNodeContext = {
+      orgId:      data.orgId,
+      refId:      data.refId,
+      task:       data.task,
+      senseInput: data.sense,
+      sarContext: {
+        orgId:        data.orgId,
+        orgName:      "",
         constitution: data.constitutionText ?? "",
+      },
+      provider,
+      memory,
+      emit: (event: BTEvent) => {
+        if (event.type.startsWith("sar:") || event.type === "bt:tree_end") {
+          console.log(`[sar-bt-sync] ${event.type} source=${event.source}`);
+        }
       },
     };
 
-    const result = await executeSAR(provider, input);
+    const compositor = new GovernanceBTCompositor();
+    const result     = await compositor.execute(GovernanceAnalysisTree, btContext);
 
-    // Update proposal with SAR analysis if this is a proposal-related task
-    if (data.refId && result.analysis) {
+    if (data.refId && result.status === BTStatus.SUCCESS && result.analysis) {
       try {
-        const { db } = await import("../db/connection");
+        const { db }        = await import("../db/connection");
         const { proposals } = await import("../db/schema");
-        const { eq } = await import("drizzle-orm");
+        const { eq }        = await import("drizzle-orm");
 
         await db
           .update(proposals)
           .set({
             aiAnalysis: {
-              summary: result.analysis.summary,
-              riskLevel: result.analysis.riskLevel,
-              recommendation: result.analysis.recommendation,
-              reasoning: result.analysis.reasoning,
+              summary:                 result.analysis.summary,
+              riskLevel:               result.analysis.riskLevel,
+              recommendation:          result.analysis.recommendation,
+              reasoning:               result.analysis.reasoning,
               constitutionalConflicts: result.analysis.constitutionalConflicts,
-              suggestedActions: result.analysis.suggestedActions,
-              completedAt: new Date().toISOString(),
+              suggestedActions:        result.analysis.suggestedActions,
+              completedAt:             new Date().toISOString(),
             },
             updatedAt: new Date().toISOString(),
           })
           .where(eq(proposals.id, data.refId));
 
-        console.log(`[sar-worker] Updated proposal ${data.refId} with SAR analysis (sync)`);
+        console.log(`[sar-worker] Sync BT analysis persisted for proposal ${data.refId}`);
       } catch (err) {
-        console.error(`[sar-worker] Failed to update proposal with analysis:`, err);
+        console.error(`[sar-worker] Failed to persist sync analysis:`, err);
       }
     }
 
-    console.log(`[sar-worker] Sync execution completed: ${data.task} for ${data.refId}`);
+    console.log(`[sar-worker] Sync BT complete: ${data.task} status=${result.status} duration=${result.durationMs}ms`);
   } catch (err) {
-    console.error("[sar-worker] Sync execution failed:", err);
+    console.error("[sar-worker] Sync BT execution failed:", err);
     // Don't rethrow — let the caller decide how to handle it
   }
 }
