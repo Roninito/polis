@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>POLIS — Participatory Governance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#f5f4f0;font-family:'Outfit',sans-serif;color:#1a1a1a;height:100vh;overflow:hidden}
+.app{display:flex;height:100vh;overflow:hidden}
+.sidebar{width:220px;min-width:220px;background:#1a1a1a;display:flex;flex-direction:column;overflow:hidden}
+.brand{display:flex;align-items:center;gap:12px;padding:24px 20px 20px;border-bottom:1px solid #2e2e2e}
+.brand-mark{width:36px;height:36px;background:#e8e4d9;color:#1a1a1a;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:22px;border-radius:6px;flex-shrink:0}
+.brand-name{font-family:'DM Serif Display',serif;font-size:18px;color:#e8e4d9;letter-spacing:.08em}
+.brand-sub{font-size:10px;color:#555;letter-spacing:.1em;text-transform:uppercase;margin-top:1px}
+.nav{flex:1;padding:12px 0;overflow-y:auto}
+.nav-item{width:100%;display:flex;align-items:center;gap:10px;padding:10px 20px;background:none;border:none;cursor:pointer;color:#888;font-size:13px;font-family:'Outfit',sans-serif;text-align:left;transition:all .15s;position:relative}
+.nav-item:hover{color:#ccc;background:#232323}
+.nav-item.active{color:#e8e4d9;background:#252525}
+.nav-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:#e8e4d9}
+.nav-icon{font-size:14px;width:16px;text-align:center}
+.badge{margin-left:auto;background:#3b82f6;color:white;font-size:10px;padding:1px 6px;border-radius:99px}
+.badge.warn{background:#f97316}
+.me-card{display:flex;align-items:center;gap:10px;padding:14px 16px;border-top:1px solid #2e2e2e;background:#161616}
+.me-name{font-size:13px;color:#ccc;font-weight:500}
+.me-role{font-size:10px;color:#555;margin-top:1px}
+.next-tag{margin-left:auto;font-size:9px;color:#22c55e;border:1px solid #22c55e40;padding:2px 6px;border-radius:4px;letter-spacing:.1em}
+.avatar{border-radius:50%;background:#e8e4d9;color:#1a1a1a;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-weight:500;flex-shrink:0}
+.avatar.sm{width:28px;height:28px;font-size:10px}
+.avatar.md{width:38px;height:38px;font-size:12px}
+.avatar.lg{width:48px;height:48px;font-size:14px}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#f5f4f0}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;border-bottom:1px solid #e5e3db;background:#faf9f6;flex-shrink:0}
+.page-title{font-family:'DM Serif Display',serif;font-size:22px;color:#1a1a1a}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.cycle-pill{font-size:11px;color:#888;border:1px solid #ddd;padding:5px 12px;border-radius:99px;font-family:'DM Mono',monospace;letter-spacing:.05em}
+.propose-btn{background:#1a1a1a;color:#e8e4d9;border:none;padding:8px 18px;border-radius:6px;font-size:13px;font-family:'Outfit',sans-serif;cursor:pointer;transition:opacity .15s}
+.propose-btn:hover{opacity:.85}
+.content{flex:1;overflow-y:auto;padding:28px 32px}
+.toast{position:fixed;top:20px;right:20px;z-index:1000;background:#1a1a1a;color:#e8e4d9;padding:12px 20px;border-radius:8px;font-size:13px;animation:fadeIn .2s ease;pointer-events:none}
+.toast.success{background:#166534}
+.toast.hidden{display:none}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+.members-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.stat-card{background:white;border:1px solid #e5e3db;padding:20px;border-radius:10px}
+.stat-card.highlight{border-color:#1a1a1a}
+.stat-label{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.stat-value{font-family:'DM Serif Display',serif;font-size:28px;color:#1a1a1a;margin-bottom:4px}
+.stat-sub{font-size:12px;color:#888}
+.progress-bar{height:3px;background:#f0ede6;border-radius:2px;margin-top:10px}
+.progress-fill{height:100%;background:#1a1a1a;border-radius:2px}
+.panel{background:white;border:1px solid #e5e3db;border-radius:10px;overflow:hidden;margin-bottom:24px}
+.panel-header{padding:14px 20px;font-size:12px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid #f0ede6}
+.proposal-row{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid #f5f4f0;cursor:pointer;transition:background .1s}
+.proposal-row:hover{background:#faf9f6}
+.proposal-meta{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.type-tag{font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:4px;background:#f0ede6;color:#888;font-weight:600;flex-shrink:0}
+.type-tag.constitutional{background:#1a1a1a10;color:#1a1a1a}
+.type-tag.lg{font-size:10px;padding:3px 9px}
+.proposal-title-sm{font-size:13px;color:#1a1a1a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vote-mini{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.vote-bar-wrap{width:60px;height:4px;background:#f0ede6;border-radius:2px}
+.vote-bar-fill{height:100%;background:#22c55e;border-radius:2px}
+.vote-pct{font-size:11px;color:#888;font-family:'DM Mono',monospace;width:32px}
+.sar-row{display:flex;align-items:flex-start;gap:12px;padding:12px 20px;border-bottom:1px solid #f5f4f0}
+.sar-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.sar-sense{font-size:13px;color:#1a1a1a}
+.sar-time{font-size:11px;color:#aaa;margin-top:2px;font-family:'DM Mono',monospace}
+.rotation-track{display:flex;flex-wrap:wrap;gap:16px;padding:20px}
+.rotation-member{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px;border-radius:8px;border:1px solid #e5e3db;min-width:72px;position:relative}
+.rotation-member.received{background:#f0fdf4;border-color:#22c55e40;opacity:.65}
+.rotation-member.isnext{background:#1a1a1a;border-color:#1a1a1a}
+.rotation-member.isnext .avatar{background:#e8e4d9}
+.rotation-member.isnext .rot-name{color:white}
+.rotation-member.isnext .rot-pos{color:#888}
+.rotation-member.late-mem{border-color:#f9731640}
+.rot-pos{font-size:10px;color:#bbb;font-family:'DM Mono',monospace}
+.rot-name{font-size:11px;color:#444;font-weight:500}
+.checkmark{font-size:11px;color:#22c55e;font-weight:700}
+.next-marker{font-size:9px;color:#22c55e;letter-spacing:.1em;font-weight:600}
+.cycle-stat{padding:16px 20px;border-right:1px solid #f0ede6}
+.cycle-stat:last-child{border-right:none}
+.cs-label{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.cs-val{font-family:'DM Serif Display',serif;font-size:24px;color:#1a1a1a}
+.cs-val.green{color:#16a34a}
+.big-progress-wrap{padding:0 20px 20px}
+.big-progress-bar{height:6px;background:#f0ede6;border-radius:3px}
+.big-progress-fill{height:100%;background:#1a1a1a;border-radius:3px}
+.big-progress-label{font-size:11px;color:#888;margin-top:8px;font-family:'DM Mono',monospace}
+.data-table{width:100%;border-collapse:collapse;font-size:13px}
+.data-table thead th{padding:10px 16px;text-align:left;font-size:10px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid #f0ede6}
+.data-table tbody tr{border-bottom:1px solid #faf9f6;transition:background .1s}
+.data-table tbody tr:hover{background:#faf9f6}
+.data-table td{padding:12px 16px;color:#333;vertical-align:middle}
+.tc{text-align:center}
+.mono{font-family:'DM Mono',monospace;font-size:11px;color:#888}
+.member-cell{display:flex;align-items:center;gap:10px}
+.member-name{font-size:13px;font-weight:500}
+.member-id-sm{font-size:10px;color:#aaa;font-family:'DM Mono',monospace}
+.status-dot{width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:6px}
+.tag{font-size:10px;padding:2px 8px;border-radius:4px;font-weight:600;letter-spacing:.05em}
+.tag.received{background:#f0fdf4;color:#16a34a}
+.tag.next-pay{background:#1a1a1a;color:#e8e4d9}
+.tag.pending{background:#f5f4f0;color:#aaa}
+.tx-type{font-size:10px;padding:2px 8px;border-radius:4px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;background:#f0ede6;color:#888}
+.tx-type.payout{background:#f0fdf4;color:#16a34a}
+.tx-type.penalty{background:#fff7ed;color:#c2410c}
+.tx-type.reserve{background:#eff6ff;color:#1d4ed8}
+.amt{font-family:'DM Mono',monospace;font-weight:500}
+.amt.pos{color:#16a34a}
+.amt.neg{color:#dc2626}
+.note-cell{font-size:12px;color:#888}
+.proposals-list{display:flex;flex-direction:column;gap:20px}
+.proposal-card{background:white;border:1px solid #e5e3db;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:16px}
+.pc-title-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.pc-title{font-family:'DM Serif Display',serif;font-size:18px;color:#1a1a1a;flex:1}
+.p-status{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em}
+.pc-meta{font-size:12px;color:#aaa}
+.pc-body{font-size:14px;color:#555;line-height:1.6}
+.ai-box{background:#faf9f6;border:1px solid #e5e3db;border-radius:8px;padding:16px}
+.ai-label{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;flex-wrap:wrap}
+.risk-badge{font-size:10px;padding:2px 8px;border-radius:4px;font-weight:600}
+.ai-sum{font-size:13px;color:#444;line-height:1.6;margin-bottom:8px}
+.ai-rec{font-size:12px;color:#666;line-height:1.5}
+.ai-rec strong{color:#1a1a1a}
+.vote-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.vote-counts{display:flex;gap:16px}
+.vc-for{font-size:13px;color:#16a34a;font-weight:600}
+.vc-against{font-size:13px;color:#dc2626;font-weight:600}
+.vc-abs{font-size:13px;color:#888;font-weight:600}
+.vote-btns{display:flex;gap:8px}
+.vbtn{padding:7px 16px;border-radius:6px;border:1px solid;font-size:12px;font-family:'Outfit',sans-serif;cursor:pointer;font-weight:500;transition:all .15s}
+.vbtn.for{border-color:#16a34a;color:#16a34a;background:white}
+.vbtn.for:hover{background:#16a34a;color:white}
+.vbtn.against{border-color:#dc2626;color:#dc2626;background:white}
+.vbtn.against:hover{background:#dc2626;color:white}
+.vbtn.abs{border-color:#ddd;color:#888;background:white}
+.vbtn.abs:hover{background:#f5f4f0}
+.const-header{margin-bottom:28px}
+.const-title{font-family:'DM Serif Display',serif;font-size:32px;color:#1a1a1a;margin-bottom:6px}
+.const-meta{font-size:12px;color:#aaa;font-family:'DM Mono',monospace}
+.article-card{display:flex;gap:20px;background:white;border:1px solid #e5e3db;border-radius:10px;padding:20px;margin-bottom:12px}
+.art-id{font-family:'DM Serif Display',serif;font-size:20px;color:#ddd;min-width:40px;flex-shrink:0;padding-top:2px}
+.art-title{font-size:15px;font-weight:600;color:#1a1a1a;margin-bottom:8px}
+.art-body{font-size:14px;color:#555;line-height:1.7}
+.law-row{display:flex;align-items:flex-start;gap:16px;padding:14px 20px;border-bottom:1px solid #f5f4f0}
+.law-id{font-family:'DM Mono',monospace;font-size:11px;color:#aaa;min-width:48px;padding-top:2px}
+.law-content{flex:1}
+.law-title{font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:3px}
+.law-body{font-size:12px;color:#666}
+.law-status{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;flex-shrink:0}
+.member-card{background:white;border:1px solid #e5e3db;border-radius:10px;padding:20px}
+.mc-top{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.mc-name{font-size:15px;font-weight:600;color:#1a1a1a}
+.mc-id{font-size:11px;color:#aaa;font-family:'DM Mono',monospace;margin-top:1px}
+.mc-status{font-size:11px;color:#888;margin-top:4px;display:flex;align-items:center}
+.mc-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mcs{background:#faf9f6;border-radius:6px;padding:10px 12px}
+.mcs-label{font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
+.mcs-val{font-size:14px;font-weight:600;color:#1a1a1a}
+.sar-explainer{background:#1a1a1a;color:#888;border-radius:8px;padding:14px 20px;font-size:13px;line-height:1.6;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.sar-e-label{font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:#22c55e;border:1px solid #22c55e40;padding:3px 8px;border-radius:4px;flex-shrink:0}
+.sar-card{background:white;border:1px solid #e5e3db;border-radius:10px;padding:20px;margin-bottom:12px}
+.sar-card-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.sar-id{font-family:'DM Mono',monospace;font-size:11px;color:#aaa}
+.sar-ts{font-family:'DM Mono',monospace;font-size:11px;color:#bbb;flex:1}
+.sar-sbadge{font-size:10px;padding:2px 8px;border-radius:4px;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.sar-phases{display:flex;flex-direction:column;gap:10px}
+.sar-phase{display:flex;gap:14px}
+.spl{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:3px 8px;border-radius:4px;min-width:68px;text-align:center;flex-shrink:0;margin-top:1px;height:fit-content}
+.spl.sense{background:#eff6ff;color:#1d4ed8}
+.spl.analyze{background:#fefce8;color:#854d0e}
+.spl.respond{background:#f0fdf4;color:#166534}
+.sp-body{font-size:13px;color:#444;line-height:1.6}
+.modal-backdrop{position:fixed;inset:0;background:#1a1a1a80;display:flex;align-items:center;justify-content:center;z-index:50}
+.modal-backdrop.hidden{display:none}
+.modal{background:white;border-radius:12px;width:560px;max-width:95vw;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.2)}
+.modal-hdr{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid #f0ede6}
+.modal-hdr h2{font-family:'DM Serif Display',serif;font-size:20px;color:#1a1a1a}
+.modal-close{background:none;border:none;cursor:pointer;font-size:16px;color:#888;padding:4px}
+.modal-close:hover{color:#1a1a1a}
+.modal-body{padding:24px;display:flex;flex-direction:column;gap:16px}
+.modal-body label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.08em}
+.modal-body input,.modal-body select,.modal-body textarea{border:1px solid #e5e3db;border-radius:6px;padding:10px 12px;font-size:14px;font-family:'Outfit',sans-serif;color:#1a1a1a;background:white;outline:none;transition:border-color .15s;resize:vertical}
+.modal-body input:focus,.modal-body select:focus,.modal-body textarea:focus{border-color:#1a1a1a}
+.modal-note{font-size:12px;color:#aaa;line-height:1.6;background:#faf9f6;padding:12px;border-radius:6px}
+.modal-ftr{display:flex;justify-content:flex-end;gap:10px;padding:16px 24px;border-top:1px solid #f0ede6}
+.btn-sec{background:white;border:1px solid #e5e3db;color:#888;padding:9px 18px;border-radius:6px;font-size:13px;cursor:pointer;font-family:'Outfit',sans-serif}
+.btn-sec:hover{background:#faf9f6}
+.btn-pri{background:#1a1a1a;color:#e8e4d9;border:none;padding:9px 20px;border-radius:6px;font-size:13px;cursor:pointer;font-family:'Outfit',sans-serif;transition:opacity .15s}
+.btn-pri:hover{opacity:.85}
+.view{display:none}
+.view.active{display:block}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">Π</div>
+      <div><div class="brand-name">POLIS</div><div class="brand-sub">Governance Engine</div></div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="me-card" id="me-card"></div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <div class="page-title" id="page-title">Overview</div>
+      <div class="topbar-right">
+        <div class="cycle-pill" id="cycle-pill"></div>
+        <button class="propose-btn" onclick="openModal()">+ Propose</button>
+      </div>
+    </header>
+    <div class="toast hidden" id="toast"></div>
+    <div class="content" id="content">
+      <div class="view active" id="view-dashboard"></div>
+      <div class="view" id="view-cycle"></div>
+      <div class="view" id="view-proposals"></div>
+      <div class="view" id="view-constitution"></div>
+      <div class="view" id="view-treasury"></div>
+      <div class="view" id="view-members"></div>
+      <div class="view" id="view-sar"></div>
+    </div>
+  </main>
+</div>
+<div class="modal-backdrop hidden" id="modal-backdrop" onclick="handleBackdropClick(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <h2>New Proposal</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <label>Proposal Type<select id="new-type"><option value="law">Operating Law (simple majority)</option><option value="constitutional">Constitutional Amendment (supermajority)</option></select></label>
+      <label>Title<input type="text" id="new-title" placeholder="Brief, clear title..."/></label>
+      <label>Full Proposal Text<textarea id="new-body" rows="6" placeholder="Describe the proposed change, rationale, and expected impact..."></textarea></label>
+      <div class="modal-note">The AI Governance Engine will analyze this proposal against the Constitution and Operating Laws before the vote opens.</div>
+    </div>
+    <div class="modal-ftr">
+      <button class="btn-sec" onclick="closeModal()">Cancel</button>
+      <button class="btn-pri" onclick="submitProposal()">Submit Proposal</button>
+    </div>
+  </div>
+</div>
+<script>
+const CONSTITUTION={name:"The Susu Circle Constitution",version:"1.0.2",adoptedDate:"2024-01-15",articles:[{id:"A1",title:"Purpose & Values",body:"This cooperative exists to enable members to save together and support one another through structured rotating payouts. We operate on the principles of mutual trust, radical transparency, and democratic self-governance."},{id:"A2",title:"Membership",body:"Any person of legal age may apply for membership. Admission requires a two-thirds approval vote of existing members. Members in good standing have one vote each on all standard proposals."},{id:"A3",title:"Contributions",body:"Each member contributes a fixed amount per cycle as defined in the Operating Laws. Contributions are due within the first 5 days of each cycle. Late contributions incur a penalty as defined in the Operating Laws."},{id:"A4",title:"Payout Rotation",body:"Each cycle, one member receives the full pool. Rotation order is determined by lottery at the start of each full round. A member may trade their position with mutual written consent. Hardship priority claims require a member vote."},{id:"A5",title:"Governance",body:"All legislative power resides in the membership. The AI Governance Engine serves as a neutral executor of this Constitution and the Operating Laws. It may not override member votes. It must surface all conflicts and ambiguities for member resolution."},{id:"A6",title:"Amendment",body:"This Constitution may be amended by a two-thirds supermajority of all active members. Proposals must be open for no less than 7 days before a vote is called."},{id:"A7",title:"Dissolution",body:"The cooperative may be dissolved by unanimous consent, or by a three-quarters vote if quorum fails for three consecutive cycles. All remaining funds shall be distributed proportionally to members in good standing."}]};
+const LAWS=[{id:"L001",title:"Cycle Duration",body:"Each cycle is 30 days.",status:"active"},{id:"L002",title:"Contribution Amount",body:"Each member contributes $200 per cycle.",status:"active"},{id:"L003",title:"Late Payment Penalty",body:"Late payments incur a 5% penalty added to the next contribution.",status:"active"},{id:"L004",title:"Quorum",body:"A quorum of 60% of active members is required for standard votes. Constitutional amendments require 80%.",status:"active"},{id:"L005",title:"Voting Period",body:"Standard proposals are open for voting for 5 days. Constitutional amendments are open for 14 days.",status:"active"},{id:"L006",title:"Member Limit",body:"The cooperative may not exceed 100 active members without a constitutional amendment.",status:"active"},{id:"L007",title:"Early Exit",body:"A member wishing to exit early must find a replacement approved by the membership, or forfeit contributions to date with no payout.",status:"active"},{id:"L008",title:"Emergency Reserve",body:"5% of each cycle payout is retained in a reserve fund for defaults, administrative costs, and cooperative needs.",status:"active"}];
+const MEMBERS=[{id:"M001",name:"Adaeze Okonkwo",avatar:"AO",joined:"2024-01-15",status:"active",contributions:6,balance:1200,rotationPos:1,hasReceived:true,payoutCycle:1},{id:"M002",name:"Hiroshi Tanaka",avatar:"HT",joined:"2024-01-15",status:"active",contributions:6,balance:1200,rotationPos:2,hasReceived:true,payoutCycle:2},{id:"M003",name:"Beatriz Ferreira",avatar:"BF",joined:"2024-01-15",status:"active",contributions:6,balance:1200,rotationPos:3,hasReceived:true,payoutCycle:3},{id:"M004",name:"Kofi Mensah",avatar:"KM",joined:"2024-01-15",status:"active",contributions:6,balance:1200,rotationPos:4,hasReceived:false,payoutCycle:4},{id:"M005",name:"Priya Nair",avatar:"PN",joined:"2024-01-15",status:"active",contributions:5,balance:1000,rotationPos:5,hasReceived:false,payoutCycle:5},{id:"M006",name:"Dmitri Volkov",avatar:"DV",joined:"2024-01-15",status:"active",contributions:6,balance:1200,rotationPos:6,hasReceived:false,payoutCycle:6},{id:"M007",name:"Amara Diallo",avatar:"AD",joined:"2024-01-15",status:"active",contributions:6,balance:1200,rotationPos:7,hasReceived:false,payoutCycle:7},{id:"M008",name:"Lena Hoffmann",avatar:"LH",joined:"2024-01-15",status:"active",contributions:4,balance:800,rotationPos:8,hasReceived:false,payoutCycle:8},{id:"M009",name:"Tariq Al-Rashid",avatar:"TR",joined:"2024-02-01",status:"active",contributions:5,balance:1000,rotationPos:9,hasReceived:false,payoutCycle:9},{id:"M010",name:"Chioma Eze",avatar:"CE",joined:"2024-02-01",status:"active",contributions:6,balance:1200,rotationPos:10,hasReceived:false,payoutCycle:10},{id:"M011",name:"Marcus Webb",avatar:"MW",joined:"2024-02-15",status:"active",contributions:5,balance:1000,rotationPos:11,hasReceived:false,payoutCycle:11},{id:"M012",name:"Yuki Watanabe",avatar:"YW",joined:"2024-02-15",status:"late",contributions:3,balance:600,rotationPos:12,hasReceived:false,payoutCycle:12}];
+const PROPOSALS=[{id:"P001",type:"law",title:"Increase contribution to $250/cycle",body:"As the cooperative grows, we propose increasing the contribution amount from $200 to $250 per cycle to build a larger emergency reserve.",proposedBy:"M006",proposedDate:"2024-07-08",status:"voting",votesFor:7,votesAgainst:2,abstain:1,votingEnds:"2024-07-13",aiAnalysis:{riskLevel:"low",constitutionalConflict:false,summary:"This proposal modifies Operating Law L002. It is within the scope of standard legislation and requires a simple majority vote. No constitutional conflicts detected. Note: members on fixed income may face hardship — recommend an opt-in grace period.",recommendation:"Eligible for vote. Suggest adding a 2-cycle notice period for implementation."}},{id:"P002",type:"constitutional",title:"Raise member limit to 250",body:"To allow the cooperative to scale, we propose amending Article 6 (Member Limit) from 100 to 250 active members.",proposedBy:"M001",proposedDate:"2024-07-05",status:"open",votesFor:4,votesAgainst:1,abstain:0,votingEnds:"2024-07-19",aiAnalysis:{riskLevel:"medium",constitutionalConflict:false,summary:"This proposal amends Article A5 of the Constitution. It requires a 14-day voting period and two-thirds supermajority. Treasury modeling shows current infrastructure can support up to 180 members at current contribution levels before requiring additional administrative resources.",recommendation:"Eligible for constitutional vote. Recommend concurrent proposal for admin staffing."}},{id:"P003",type:"law",title:"Hardship Position Swap — Priya Nair",body:"Member M005 (Priya Nair) has filed a hardship claim requesting to move from rotation position 5 to position 4, citing documented medical expenses. Member M004 (Kofi Mensah) has agreed to swap.",proposedBy:"M005",proposedDate:"2024-07-09",status:"open",votesFor:9,votesAgainst:0,abstain:2,votingEnds:"2024-07-14",aiAnalysis:{riskLevel:"low",constitutionalConflict:false,summary:"This is a consensual position swap as permitted under Article A4. Hardship documentation has been submitted and is on record. Both parties have confirmed consent. No treasury impact.",recommendation:"Strong approval momentum. Compliant with Constitution."}},{id:"P004",type:"law",title:"Add emergency reserve fund (5% of each payout)",body:"We propose retaining 5% of each cycle's payout pool in a reserve fund to cover defaults, administrative costs, and future cooperative needs.",proposedBy:"M010",proposedDate:"2024-06-28",status:"passed",votesFor:10,votesAgainst:2,abstain:0,votingEnds:"2024-07-03",aiAnalysis:{riskLevel:"low",constitutionalConflict:false,summary:"Passed with strong majority. Reserve fund now active.",recommendation:"Enacted as L008."}}];
+const LEDGER=[{id:"TX001",date:"2024-07-01",type:"contribution",member:"M001",amount:200,note:"Cycle 6 contribution"},{id:"TX002",date:"2024-07-01",type:"contribution",member:"M002",amount:200,note:"Cycle 6 contribution"},{id:"TX003",date:"2024-07-01",type:"contribution",member:"M003",amount:200,note:"Cycle 6 contribution"},{id:"TX004",date:"2024-07-01",type:"contribution",member:"M004",amount:200,note:"Cycle 6 contribution"},{id:"TX005",date:"2024-07-01",type:"contribution",member:"M006",amount:200,note:"Cycle 6 contribution"},{id:"TX006",date:"2024-07-01",type:"contribution",member:"M007",amount:200,note:"Cycle 6 contribution"},{id:"TX007",date:"2024-07-01",type:"contribution",member:"M009",amount:200,note:"Cycle 6 contribution"},{id:"TX008",date:"2024-07-01",type:"contribution",member:"M010",amount:200,note:"Cycle 6 contribution"},{id:"TX009",date:"2024-07-01",type:"contribution",member:"M011",amount:200,note:"Cycle 6 contribution"},{id:"TX010",date:"2024-07-04",type:"contribution",member:"M005",amount:200,note:"Cycle 6 contribution (4-day grace)"},{id:"TX011",date:"2024-07-10",type:"payout",member:"M003",amount:2200,note:"Cycle 3 payout — Beatriz Ferreira"},{id:"TX012",date:"2024-07-10",type:"reserve",member:null,amount:-110,note:"5% reserve deduction"},{id:"TX013",date:"2024-07-06",type:"penalty",member:"M008",amount:10,note:"Late payment penalty — Lena Hoffmann"},{id:"TX014",date:"2024-06-30",type:"payout",member:"M002",amount:2200,note:"Cycle 2 payout — Hiroshi Tanaka"}];
+const SAR_LOG=[{id:"SAR001",timestamp:"2024-07-09T14:23:00",sense:"New proposal P003 submitted by M005",analyze:"Checked against Art. A4 — consensual position swap. Verified hardship docs on file. Confirmed M004 consent.",respond:"Marked eligible for vote. Opened 5-day voting window. Notified all members.",status:"completed"},{id:"SAR002",timestamp:"2024-07-09T09:00:00",sense:"Cycle 6 contribution deadline passed. M008 and M012 unpaid.",analyze:"M008 paid on day 6 of grace period — penalty applies per L003. M012 has not paid — late status applied.",respond:"Applied $10 penalty to M008 account. Flagged M012 as 'late'. Sent reminder notifications.",status:"completed"},{id:"SAR003",timestamp:"2024-07-08T16:45:00",sense:"Proposal P001 entered voting phase.",analyze:"Validated proposal against L002. Checked quorum requirements. Verified proposer standing.",respond:"Opened 5-day vote window. Distributed plain-language summary to all members. Logged analysis.",status:"completed"},{id:"SAR004",timestamp:"2024-07-07T11:00:00",sense:"Payout TX011 scheduled for M003 (Beatriz Ferreira).",analyze:"Confirmed M003 rotation position 3. Verified full pool collected. Applied 5% reserve per L008. Calculated net payout $2,200.",respond:"Executed payout TX011. Logged TX012 reserve deduction. Sent confirmation to M003 and all members.",status:"completed"},{id:"SAR005",timestamp:"2024-07-05T08:30:00",sense:"Constitutional proposal P002 submitted by M001.",analyze:"Proposal modifies member cap — constitutional amendment required. Checked supermajority threshold. Requires 14-day window, 67% of all members.",respond:"Opened 14-day constitutional voting window. Flagged for enhanced review. Notified all members.",status:"completed"},{id:"SAR006",timestamp:"2024-07-01T00:00:01",sense:"Cycle 6 began. Contributions window opened.",analyze:"12 members active. Expected contributions: $2,400. Quorum check scheduled for day 5.",respond:"Opened contribution window. Notified all members. Scheduled auto-check for day 6.",status:"completed"}];
+const TREASURY={cycleContributionTarget:2400,cycleContributionsCollected:2200,reserveFund:330,currentPool:2200,currentCycle:6,totalCycles:12,nextPayoutMember:"M004",nextPayoutDate:"2024-08-10",nextPayoutAmount:2090};
+const ACTIVE_MEMBER="M004";
+
+// mutable state
+const proposals=[...PROPOSALS.map(p=>({...p}))];
+const sarLog=[...SAR_LOG.map(s=>({...s}))];
+
+const NAV=[{id:'dashboard',label:'Overview',icon:'◈'},{id:'cycle',label:'Susu Cycle',icon:'◎'},{id:'proposals',label:'Proposals',icon:'◇'},{id:'constitution',label:'Constitution',icon:'⊕'},{id:'treasury',label:'Treasury',icon:'◉'},{id:'members',label:'Members',icon:'◫'},{id:'sar',label:'SAR Log',icon:'⊞'}];
+let activeView='dashboard';
+
+const gm=id=>MEMBERS.find(m=>m.id===id);
+const fd=d=>d?new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
+const ft=d=>new Date(d).toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+const vt=p=>p.votesFor+p.votesAgainst+p.abstain;
+const vp=p=>vt(p)===0?0:Math.round((p.votesFor/vt(p))*100);
+const sc=s=>({active:'#22c55e',late:'#f97316',inactive:'#94a3b8',voting:'#3b82f6',open:'#8b5cf6',passed:'#22c55e',failed:'#ef4444',pending:'#f59e0b',completed:'#22c55e'}[s]||'#94a3b8');
+const rc=r=>({low:'#22c55e',medium:'#f59e0b',high:'#ef4444'}[r]||'#94a3b8');
+
+let toastTimer;
+function toast(msg,type='info'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast'+(type==='success'?' success':'');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.className='toast hidden',3500);}
+
+function setView(v){
+  activeView=v;
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.toggle('active',el.dataset.view===v));
+  document.getElementById('page-title').textContent=NAV.find(n=>n.id===v)?.label||'';
+  document.getElementById('content').scrollTop=0;
+}
+
+function buildNav(){
+  const ap=proposals.filter(p=>p.status==='voting'||p.status==='open');
+  const lm=MEMBERS.filter(m=>m.status==='late');
+  document.getElementById('nav').innerHTML=NAV.map(n=>{
+    let b='';
+    if(n.id==='proposals'&&ap.length>0)b=`<span class="badge">${ap.length}</span>`;
+    if(n.id==='members'&&lm.length>0)b=`<span class="badge warn">${lm.length}</span>`;
+    return`<button class="nav-item${n.id===activeView?' active':''}" data-view="${n.id}" onclick="setView('${n.id}')">\
+<span class="nav-icon">${n.icon}</span><span>${n.label}</span>${b}</button>`;
+  }).join('');
+  document.getElementById('cycle-pill').textContent=`Cycle ${TREASURY.currentCycle} of ${TREASURY.totalCycles}`;
+  const me=gm(ACTIVE_MEMBER);
+  document.getElementById('me-card').innerHTML=`<div class="avatar sm">${me.avatar}</div><div><div class="me-name">${me.name.split(' ')[0]}</div><div class="me-role">Member · ${me.id}</div></div><div class="next-tag">NEXT</div>`;
+}
+
+function buildDashboard(){
+  const ap=proposals.filter(p=>p.status==='voting'||p.status==='open');
+  const np=gm(TREASURY.nextPayoutMember);
+  const pct=Math.round((TREASURY.cycleContributionsCollected/TREASURY.cycleContributionTarget)*100);
+  const late=MEMBERS.filter(m=>m.status==='late').length;
+  document.getElementById('view-dashboard').innerHTML=`
+<div class="grid-4">
+  <div class="stat-card"><div class="stat-label">Pool This Cycle</div><div class="stat-value">$${TREASURY.currentPool.toLocaleString()}</div><div class="stat-sub">${pct}% contributed</div><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div></div>
+  <div class="stat-card"><div class="stat-label">Reserve Fund</div><div class="stat-value">$${TREASURY.reserveFund.toLocaleString()}</div><div class="stat-sub">Grows each cycle</div></div>
+  <div class="stat-card"><div class="stat-label">Active Members</div><div class="stat-value">${MEMBERS.filter(m=>m.status==='active').length}</div><div class="stat-sub">${late>0?late+' late':'All current'}</div></div>
+  <div class="stat-card highlight"><div class="stat-label">Next Payout</div><div class="stat-value">${np.name.split(' ')[0]}</div><div class="stat-sub">$${TREASURY.nextPayoutAmount.toLocaleString()} · ${fd(TREASURY.nextPayoutDate)}</div></div>
+</div>
+<div class="two-col">
+  <div class="panel"><div class="panel-header">Active Proposals</div>${ap.length===0?'<div style="padding:20px;text-align:center;color:#bbb;font-size:13px">No active proposals</div>':ap.map(p=>`<div class="proposal-row" onclick="setView('proposals')"><div class="proposal-meta"><span class="type-tag${p.type==='constitutional'?' constitutional':''}">${p.type}</span><span class="proposal-title-sm">${p.title}</span></div><div class="vote-mini"><div class="vote-bar-wrap"><div class="vote-bar-fill" style="width:${vp(p)}%"></div></div><span class="vote-pct">${vp(p)}%</span></div></div>`).join('')}</div>
+  <div class="panel"><div class="panel-header">Recent SAR Activity</div>${sarLog.slice(0,4).map(l=>`<div class="sar-row"><div class="sar-dot" style="background:${sc(l.status)}"></div><div><div class="sar-sense">${l.sense}</div><div class="sar-time">${ft(l.timestamp)}</div></div></div>`).join('')}</div>
+</div>
+<div class="panel"><div class="panel-header">Rotation Wheel — Current Round</div><div class="rotation-track">${MEMBERS.map(m=>`<div class="rotation-member${m.hasReceived?' received':''}${m.id===TREASURY.nextPayoutMember?' isnext':''}${m.status==='late'?' late-mem':''}"><div class="avatar md">${m.avatar}</div><div class="rot-pos">#${m.rotationPos}</div><div class="rot-name">${m.name.split(' ')[0]}</div>${m.hasReceived?'<div class="checkmark">✓</div>':m.id===TREASURY.nextPayoutMember?'<div class="next-marker">NEXT</div>':''}</div>`).join('')}</div></div>`;
+}
+
+function buildCycle(){
+  const pct=Math.round((TREASURY.cycleContributionsCollected/TREASURY.cycleContributionTarget)*100);
+  document.getElementById('view-cycle').innerHTML=`
+<div class="panel"><div class="panel-header">Cycle ${TREASURY.currentCycle} Status</div>
+<div class="grid-3"><div class="cycle-stat"><div class="cs-label">Target</div><div class="cs-val">$${TREASURY.cycleContributionTarget.toLocaleString()}</div></div><div class="cycle-stat"><div class="cs-label">Collected</div><div class="cs-val green">$${TREASURY.cycleContributionsCollected.toLocaleString()}</div></div><div class="cycle-stat"><div class="cs-label">Payout Date</div><div class="cs-val">${fd(TREASURY.nextPayoutDate)}</div></div></div>
+<div class="big-progress-wrap"><div class="big-progress-bar"><div class="big-progress-fill" style="width:${pct}%"></div></div><div class="big-progress-label">${pct}% of contributions collected</div></div></div>
+<div class="panel"><div class="panel-header">Member Contribution Status — Cycle ${TREASURY.currentCycle}</div>
+<table class="data-table"><thead><tr><th>Member</th><th>Rotation</th><th>Status</th><th>Contributions</th><th>Balance</th><th>Payout</th></tr></thead>
+<tbody>${MEMBERS.map(m=>`<tr><td><div class="member-cell"><div class="avatar sm">${m.avatar}</div><div><div class="member-name">${m.name}</div><div class="member-id-sm">${m.id}</div></div></div></td><td class="tc">#${m.rotationPos}</td><td><span class="status-dot" style="background:${sc(m.status)}"></span>${m.status}</td><td class="tc">${m.contributions}</td><td>$${m.balance.toLocaleString()}</td><td>${m.hasReceived?'<span class="tag received">Received</span>':m.id===TREASURY.nextPayoutMember?'<span class="tag next-pay">Next</span>':'<span class="tag pending">Pending</span>'}</td></tr>`).join('')}</tbody></table></div>`;
+}
+
+function buildProposals(){
+  document.getElementById('view-proposals').innerHTML=`<div class="proposals-list">${proposals.map(p=>`
+<div class="proposal-card">
+  <div><div class="pc-title-row"><span class="type-tag lg${p.type==='constitutional'?' constitutional':''}">${p.type}</span><h3 class="pc-title">${p.title}</h3><span class="p-status" style="color:${sc(p.status)}">${p.status}</span></div><div class="pc-meta">Proposed by ${gm(p.proposedBy)?.name||p.proposedBy} · ${fd(p.proposedDate)} · Voting ends ${fd(p.votingEnds)}</div></div>
+  <p class="pc-body">${p.body}</p>
+  <div class="ai-box"><div class="ai-label"><span style="font-size:14px;color:#1a1a1a">⊕</span> AI Governance Analysis <span class="risk-badge" style="background:${rc(p.aiAnalysis.riskLevel)}20;color:${rc(p.aiAnalysis.riskLevel)}">${p.aiAnalysis.riskLevel} risk</span>${p.aiAnalysis.constitutionalConflict?'<span style="font-size:10px;padding:2px 8px;border-radius:4px;background:#fef2f2;color:#dc2626;font-weight:600">⚠ Constitutional Conflict</span>':''}</div><div class="ai-sum">${p.aiAnalysis.summary}</div><div class="ai-rec"><strong>Recommendation:</strong> ${p.aiAnalysis.recommendation}</div></div>
+  <div class="vote-row"><div class="vote-counts"><span class="vc-for">${p.votesFor} For</span><span class="vc-against">${p.votesAgainst} Against</span><span class="vc-abs">${p.abstain} Abstain</span></div>${p.status==='voting'||p.status==='open'?`<div class="vote-btns"><button class="vbtn for" onclick="castVote('${p.id}','for')">Vote For</button><button class="vbtn against" onclick="castVote('${p.id}','against')">Vote Against</button><button class="vbtn abs" onclick="castVote('${p.id}','abstain')">Abstain</button></div>`:''}</div>
+</div>`).join('')}</div>`;
+}
+
+function buildConstitution(){
+  document.getElementById('view-constitution').innerHTML=`
+<div class="const-header"><div class="const-title">${CONSTITUTION.name}</div><div class="const-meta">Version ${CONSTITUTION.version} · Adopted ${fd(CONSTITUTION.adoptedDate)}</div></div>
+${CONSTITUTION.articles.map(a=>`<div class="article-card"><div class="art-id">${a.id}</div><div><div class="art-title">${a.title}</div><div class="art-body">${a.body}</div></div></div>`).join('')}
+<div class="panel" style="margin-top:24px"><div class="panel-header">Operating Laws</div>${LAWS.map(l=>`<div class="law-row"><div class="law-id">${l.id}</div><div class="law-content"><div class="law-title">${l.title}</div><div class="law-body">${l.body}</div></div><div class="law-status" style="color:${sc(l.status)}">${l.status}</div></div>`).join('')}</div>`;
+}
+
+function buildTreasury(){
+  document.getElementById('view-treasury').innerHTML=`
+<div class="grid-4"><div class="stat-card"><div class="stat-label">Current Pool</div><div class="stat-value">$${TREASURY.currentPool.toLocaleString()}</div></div><div class="stat-card"><div class="stat-label">Reserve Fund</div><div class="stat-value">$${TREASURY.reserveFund.toLocaleString()}</div></div><div class="stat-card"><div class="stat-label">Next Payout</div><div class="stat-value">$${TREASURY.nextPayoutAmount.toLocaleString()}</div></div><div class="stat-card"><div class="stat-label">Target / Cycle</div><div class="stat-value">$${TREASURY.cycleContributionTarget.toLocaleString()}</div></div></div>
+<div class="panel"><div class="panel-header">Immutable Ledger</div>
+<table class="data-table"><thead><tr><th>TX ID</th><th>Date</th><th>Type</th><th>Member</th><th>Amount</th><th>Note</th></tr></thead>
+<tbody>${LEDGER.map(tx=>`<tr><td class="mono">${tx.id}</td><td>${fd(tx.date)}</td><td><span class="tx-type${tx.type==='payout'?' payout':tx.type==='penalty'?' penalty':tx.type==='reserve'?' reserve':''}">${tx.type}</span></td><td>${tx.member?gm(tx.member)?.name||tx.member:'—'}</td><td class="amt ${tx.amount>0?'pos':'neg'}">${tx.amount>0?'+':''}$${Math.abs(tx.amount).toLocaleString()}</td><td class="note-cell">${tx.note}</td></tr>`).join('')}</tbody></table></div>`;
+}
+
+function buildMembers(){
+  document.getElementById('view-members').innerHTML=`<div class="members-grid">${MEMBERS.map(m=>`<div class="member-card"><div class="mc-top"><div class="avatar lg">${m.avatar}</div><div><div class="mc-name">${m.name}</div><div class="mc-id">${m.id} · Joined ${fd(m.joined)}</div><div class="mc-status"><span class="status-dot" style="background:${sc(m.status)}"></span>${m.status}</div></div></div><div class="mc-stats"><div class="mcs"><div class="mcs-label">Rotation</div><div class="mcs-val">#${m.rotationPos}</div></div><div class="mcs"><div class="mcs-label">Contributions</div><div class="mcs-val">${m.contributions}</div></div><div class="mcs"><div class="mcs-label">Balance In</div><div class="mcs-val">$${m.balance.toLocaleString()}</div></div><div class="mcs"><div class="mcs-label">Payout</div><div class="mcs-val">${m.hasReceived?'✓ Done':m.id===TREASURY.nextPayoutMember?'Next':'Cycle '+m.payoutCycle}</div></div></div></div>`).join('')}</div>`;
+}
+
+function buildSAR(){
+  document.getElementById('view-sar').innerHTML=`
+<div class="sar-explainer"><span class="sar-e-label">SAR Engine Active</span>Every action taken by the AI Governance Engine is logged here in full. The AI cannot act outside these logs.</div>
+${sarLog.map(l=>`<div class="sar-card"><div class="sar-card-hdr"><span class="sar-id">${l.id}</span><span class="sar-ts">${ft(l.timestamp)}</span><span class="sar-sbadge" style="background:${sc(l.status)}20;color:${sc(l.status)}">${l.status}</span></div><div class="sar-phases"><div class="sar-phase"><div class="spl sense">SENSE</div><div class="sp-body">${l.sense}</div></div><div class="sar-phase"><div class="spl analyze">ANALYZE</div><div class="sp-body">${l.analyze}</div></div><div class="sar-phase"><div class="spl respond">RESPOND</div><div class="sp-body">${l.respond}</div></div></div></div>`).join('')}`;
+}
+
+function castVote(pid,vote){
+  const p=proposals.find(x=>x.id===pid);if(!p)return;
+  if(vote==='for')p.votesFor++;else if(vote==='against')p.votesAgainst++;else p.abstain++;
+  const total=vt(p),active=MEMBERS.filter(m=>m.status==='active').length;
+  sarLog.unshift({id:`SAR${Date.now()}`,timestamp:new Date().toISOString(),sense:`Vote cast on proposal ${pid} by member ${ACTIVE_MEMBER}`,analyze:`Verified member voting eligibility. ${total} / ${active} members voted.`,respond:`Vote recorded. ${Math.round((total/active)*100)}% quorum reached.`,status:'completed'});
+  buildProposals();buildSAR();buildDashboard();buildNav();
+  toast(`Vote recorded on "${p.title}"','success`);
+}
+
+function openModal(){document.getElementById('modal-backdrop').classList.remove('hidden');document.getElementById('new-title').value='';document.getElementById('new-body').value='';document.getElementById('new-type').value='law';}
+function closeModal(){document.getElementById('modal-backdrop').classList.add('hidden');}
+function handleBackdropClick(e){if(e.target===document.getElementById('modal-backdrop'))closeModal();}
+
+function submitProposal(){
+  const title=document.getElementById('new-title').value.trim();
+  const body=document.getElementById('new-body').value.trim();
+  const type=document.getElementById('new-type').value;
+  if(!title||!body){toast('Please fill in all fields');return;}
+  const id=`P${String(proposals.length+1).padStart(3,'0')}`;
+  const today=new Date().toISOString().split('T')[0];
+  const ends=new Date(Date.now()+5*86400000).toISOString().split('T')[0];
+  proposals.unshift({id,type,title,body,proposedBy:ACTIVE_MEMBER,proposedDate:today,status:'open',votesFor:0,votesAgainst:0,abstain:0,votingEnds:ends,aiAnalysis:{riskLevel:'pending',constitutionalConflict:false,summary:'AI analysis in progress. This proposal has been logged and is being reviewed against the Constitution and Operating Laws.',recommendation:'Under review — check back shortly.'}});
+  sarLog.unshift({id:`SAR${Date.now()}`,timestamp:new Date().toISOString(),sense:`New ${type} proposal "${title}" submitted by ${ACTIVE_MEMBER}`,analyze:`Proposal intake logged. Checking against Constitution and Operating Laws.`,respond:`Proposal ${id} created. Analysis queued.`,status:'pending'});
+  buildProposals();buildSAR();buildNav();
+  closeModal();setView('proposals');
+  toast(`Proposal submitted — ID ${id}`,'success');
+}
+
+// init
+buildNav();buildDashboard();buildCycle();buildProposals();buildConstitution();buildTreasury();buildMembers();buildSAR();
+</script>
+</body>
+</html>

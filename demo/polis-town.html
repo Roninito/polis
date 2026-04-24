@@ -1,0 +1,1178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>POLIS — Town of Maplewood, Ohio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --slate:#1e3a5f;--slate2:#2a4f7c;--slate3:#3d6699;
+  --stone:#f7f5f0;--stone2:#eeebe3;--stone3:#e0dbd0;
+  --ink:#1a1a1e;--ink2:#3d3d45;--ink3:#7a7a85;
+  --red:#b91c1c;--red2:#dc2626;
+  --green:#15803d;--green2:#16a34a;
+  --amber:#b45309;--amber2:#d97706;
+  --gold:#c9a84c;
+  --white:#ffffff;
+  --border:#dddad2;--border2:#ccc9c0;
+  --shadow:0 1px 8px rgba(30,58,95,.07);
+  --shadow-md:0 4px 20px rgba(30,58,95,.10);
+  --shadow-lg:0 8px 40px rgba(30,58,95,.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{background:var(--stone);font-family:'Outfit',sans-serif;color:var(--ink);font-size:14px}
+
+/* ── APP SHELL ── */
+.app{display:flex;height:100vh;overflow:hidden}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:230px;min-width:230px;
+  background:var(--slate);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  box-shadow:2px 0 12px rgba(0,0,0,.15);
+  z-index:10;
+}
+.gov-seal{
+  padding:20px 20px 16px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;gap:13px;
+}
+.seal-mark{
+  width:44px;height:44px;flex-shrink:0;
+  background:var(--gold);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:20px;color:var(--slate);font-weight:600;
+  box-shadow:0 0 0 3px rgba(201,168,76,.2);
+}
+.gov-name{font-family:'Playfair Display',serif;font-size:15px;color:#e8edf5;font-weight:500;line-height:1.2}
+.gov-sub{font-size:10px;color:#6b85a8;letter-spacing:.12em;text-transform:uppercase;margin-top:2px}
+
+.nav-section{padding:10px 0 0}
+.nav-section-label{
+  font-size:9px;color:#4a6480;letter-spacing:.16em;text-transform:uppercase;
+  padding:8px 18px 5px;font-weight:700;
+}
+.nav-item{
+  display:flex;align-items:center;gap:11px;
+  padding:9px 18px;cursor:pointer;
+  color:#8ba3bc;font-size:13px;font-weight:400;
+  border:none;background:none;width:100%;text-align:left;
+  transition:all .15s;position:relative;
+  font-family:'Outfit',sans-serif;
+}
+.nav-item:hover{color:#c8d8e8;background:rgba(255,255,255,.04)}
+.nav-item.active{color:#e8edf5;background:rgba(255,255,255,.08)}
+.nav-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold)}
+.nav-icon{font-size:15px;width:18px;text-align:center;flex-shrink:0}
+.nav-badge{
+  margin-left:auto;font-size:10px;padding:1px 7px;border-radius:99px;
+  font-weight:600;letter-spacing:.04em;
+}
+.nav-badge.alert{background:#b91c1c;color:white}
+.nav-badge.info{background:rgba(255,255,255,.12);color:#8ba3bc}
+
+.sidebar-footer{
+  margin-top:auto;padding:14px 16px;
+  border-top:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:center;gap:10px;
+}
+.sf-av{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--gold);color:var(--slate);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;font-family:'DM Mono',monospace;flex-shrink:0;
+}
+.sf-name{font-size:12px;color:#c8d8e8;font-weight:500}
+.sf-role{font-size:10px;color:#4a6480;margin-top:1px}
+.sar-live{
+  margin-left:auto;display:flex;align-items:center;gap:5px;
+  font-size:9px;color:#4ade80;letter-spacing:.1em;text-transform:uppercase;
+}
+.sar-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── TOPBAR ── */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;height:58px;
+  background:var(--white);border-bottom:1px solid var(--border);
+  flex-shrink:0;box-shadow:var(--shadow);
+  z-index:5;
+}
+.topbar-left{display:flex;align-items:center;gap:16px}
+.topbar-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--ink);font-weight:500}
+.session-tag{
+  font-size:10px;color:var(--ink3);
+  border:1px solid var(--border);padding:4px 10px;border-radius:99px;
+  font-family:'DM Mono',monospace;letter-spacing:.05em;
+}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.tb-btn{
+  background:none;border:1px solid var(--border);
+  padding:6px 14px;border-radius:6px;font-size:12px;
+  color:var(--ink2);cursor:pointer;font-family:'Outfit',sans-serif;
+  transition:all .15s;display:flex;align-items:center;gap:6px;
+}
+.tb-btn:hover{background:var(--stone);border-color:var(--border2)}
+.tb-btn.primary{background:var(--slate);color:#e8edf5;border-color:var(--slate)}
+.tb-btn.primary:hover{background:var(--slate2)}
+.tb-btn.alert{background:#fef2f2;border-color:#fca5a5;color:var(--red)}
+.alert-dot{width:7px;height:7px;border-radius:50%;background:var(--red2);flex-shrink:0}
+
+/* ── CONTENT ── */
+.content{flex:1;overflow-y:auto;padding:28px 32px;background:var(--stone)}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
+
+/* ── VIEWS ── */
+.view{display:none}
+.view.active{display:block}
+
+/* ── STAT CARDS ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.stat-card{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:10px;padding:18px 20px;
+  box-shadow:var(--shadow);
+}
+.stat-card.accent{border-top:3px solid var(--slate)}
+.stat-card.red-accent{border-top:3px solid var(--red)}
+.stat-card.green-accent{border-top:3px solid var(--green)}
+.stat-card.gold-accent{border-top:3px solid var(--gold)}
+.sc-label{font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:.12em;font-weight:700;margin-bottom:8px}
+.sc-val{font-family:'Playfair Display',serif;font-size:28px;color:var(--ink);margin-bottom:3px}
+.sc-sub{font-size:11px;color:var(--ink3)}
+.sc-change{font-size:11px;font-weight:600}
+.sc-change.up{color:var(--green)}
+.sc-change.down{color:var(--red)}
+.mini-bar{height:3px;background:var(--stone2);border-radius:2px;margin-top:10px}
+.mini-bar-fill{height:100%;border-radius:2px;background:var(--slate)}
+
+/* ── PANELS ── */
+.panel{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px;box-shadow:var(--shadow)}
+.panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;border-bottom:1px solid var(--stone2);
+}
+.ph-title{font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.12em}
+.ph-action{font-size:11px;color:var(--slate);cursor:pointer;font-weight:500}
+.ph-action:hover{color:var(--slate2)}
+
+/* ── TWO-COL ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px}
+
+/* ── TABLE ── */
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{
+  padding:9px 16px;text-align:left;
+  font-size:10px;font-weight:700;color:var(--ink3);
+  text-transform:uppercase;letter-spacing:.1em;
+  background:var(--stone);border-bottom:1px solid var(--border);
+}
+.data-table td{padding:11px 16px;border-bottom:1px solid var(--stone2);vertical-align:middle}
+.data-table tbody tr:last-child td{border-bottom:none}
+.data-table tbody tr:hover td{background:var(--stone)}
+
+/* ── TAGS ── */
+.tag{font-size:10px;padding:2px 9px;border-radius:4px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+.tag.active,.tag.passed,.tag.adopted{background:#f0fdf4;color:var(--green)}
+.tag.pending,.tag.open{background:#eff6ff;color:#1d4ed8}
+.tag.voting{background:#f0f9ff;color:#0369a1}
+.tag.alert,.tag.failed,.tag.overdue{background:#fef2f2;color:var(--red)}
+.tag.warning,.tag.review{background:#fffbeb;color:var(--amber)}
+.tag.gray{background:var(--stone2);color:var(--ink3)}
+
+/* ── AVATAR ── */
+.av{
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:'DM Mono',monospace;font-weight:600;flex-shrink:0;font-size:11px;
+}
+.av.sm{width:30px;height:30px;font-size:10px}
+.av.md{width:38px;height:38px;font-size:12px}
+.av.lg{width:46px;height:46px;font-size:14px}
+
+/* ── PROPOSAL CARD ── */
+.proposal-card{
+  border:1px solid var(--border);border-radius:10px;
+  padding:20px;margin-bottom:14px;background:var(--white);
+  box-shadow:var(--shadow);
+}
+.pc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.pc-title{font-family:'Playfair Display',serif;font-size:17px;color:var(--ink);flex:1;line-height:1.3}
+.pc-meta{font-size:11px;color:var(--ink3);margin-bottom:10px}
+.pc-body{font-size:13px;color:var(--ink2);line-height:1.7;margin-bottom:14px}
+.ai-analysis{
+  background:var(--stone);border:1px solid var(--border);
+  border-radius:8px;padding:14px;margin-bottom:14px;
+}
+.ai-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.ai-head-label{font-size:10px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.12em}
+.ai-text{font-size:12px;color:var(--ink2);line-height:1.65}
+.ai-rec{font-size:12px;color:var(--ink3);margin-top:6px}
+.ai-rec strong{color:var(--ink2)}
+.vote-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.vote-tally{display:flex;gap:14px}
+.vt-for{font-size:13px;color:var(--green);font-weight:700}
+.vt-against{font-size:13px;color:var(--red);font-weight:700}
+.vt-abs{font-size:13px;color:var(--ink3);font-weight:700}
+.vote-btns{display:flex;gap:8px}
+.vbtn{padding:6px 16px;border-radius:6px;border:1.5px solid;font-size:12px;font-family:'Outfit',sans-serif;cursor:pointer;font-weight:600;transition:all .15s}
+.vbtn.for{border-color:var(--green);color:var(--green);background:white}
+.vbtn.for:hover{background:var(--green);color:white}
+.vbtn.against{border-color:var(--red);color:var(--red);background:white}
+.vbtn.against:hover{background:var(--red);color:white}
+.vbtn.abs{border-color:var(--border2);color:var(--ink3);background:white}
+.vbtn.abs:hover{background:var(--stone2)}
+
+/* ── VOTE BAR ── */
+.vote-bar{height:6px;background:var(--stone2);border-radius:3px;margin:8px 0;display:flex;overflow:hidden}
+.vb-for{background:var(--green);transition:width .5s}
+.vb-against{background:var(--red2);transition:width .5s}
+
+/* ── COUNCIL CARD ── */
+.council-card{
+  background:var(--white);border:1px solid var(--border);border-radius:10px;
+  padding:18px;text-align:center;box-shadow:var(--shadow);
+}
+.cc-badge{
+  display:inline-block;font-size:9px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.1em;
+  padding:2px 9px;border-radius:99px;margin-bottom:10px;
+}
+.cc-name{font-family:'Playfair Display',serif;font-size:15px;color:var(--ink);margin-bottom:2px}
+.cc-title{font-size:11px;color:var(--ink3);margin-bottom:8px}
+.cc-stats{display:flex;justify-content:center;gap:16px;margin-top:10px}
+.cc-stat-val{font-size:16px;font-weight:700;color:var(--ink)}
+.cc-stat-label{font-size:10px;color:var(--ink3)}
+
+/* ── DEPT ROW ── */
+.dept-row{display:flex;align-items:center;gap:14px;padding:13px 20px;border-bottom:1px solid var(--stone2)}
+.dept-row:last-child{border-bottom:none}
+.dept-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.dept-name{font-size:13px;font-weight:600;color:var(--ink)}
+.dept-head{font-size:11px;color:var(--ink3)}
+.dept-budget-bar{flex:1;max-width:120px}
+.dept-budget-track{height:4px;background:var(--stone2);border-radius:2px}
+.dept-budget-fill{height:100%;border-radius:2px;background:var(--slate3)}
+
+/* ── ORDINANCE ── */
+.ordinance-row{display:flex;align-items:flex-start;gap:14px;padding:13px 20px;border-bottom:1px solid var(--stone2)}
+.ordinance-row:last-child{border-bottom:none}
+.ord-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--ink3);min-width:64px;padding-top:1px}
+.ord-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.ord-body{font-size:12px;color:var(--ink3);line-height:1.5}
+
+/* ── SAR ── */
+.sar-explainer{
+  background:var(--slate);color:#6b85a8;
+  border-radius:8px;padding:13px 18px;font-size:13px;line-height:1.6;
+  margin-bottom:18px;display:flex;align-items:center;gap:12px;
+}
+.sar-live-badge{
+  font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:#4ade80;
+  border:1px solid rgba(74,222,128,.3);padding:3px 8px;border-radius:4px;flex-shrink:0;
+  display:flex;align-items:center;gap:5px;
+}
+.sar-card{
+  background:var(--white);border:1px solid var(--border);border-radius:10px;
+  padding:18px;margin-bottom:12px;box-shadow:var(--shadow);
+}
+.sar-card-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.sar-id{font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3)}
+.sar-ts{font-family:'DM Mono',monospace;font-size:10px;color:var(--border2);flex:1}
+.sar-phase{display:flex;gap:12px;margin-bottom:7px;font-size:12px}
+.sar-pl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;padding:3px 7px;border-radius:3px;min-width:60px;text-align:center;flex-shrink:0;margin-top:1px}
+.sar-pl.s{background:#eff6ff;color:#1d4ed8}
+.sar-pl.a{background:#fefce8;color:#854d0e}
+.sar-pl.r{background:#f0fdf4;color:var(--green)}
+.sar-pb{color:var(--ink2);line-height:1.6}
+
+/* ── BUDGET ── */
+.budget-chart{padding:18px 20px}
+.bline{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.bline-label{font-size:12px;color:var(--ink2);min-width:140px}
+.bline-track{flex:1;height:8px;background:var(--stone2);border-radius:4px;overflow:hidden}
+.bline-fill{height:100%;border-radius:4px;transition:width .6s}
+.bline-val{font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;min-width:58px;text-align:right}
+
+/* ── LEDGER ── */
+.ledger-amount{font-family:'DM Mono',monospace;font-weight:600}
+.ledger-amount.credit{color:var(--green)}
+.ledger-amount.debit{color:var(--red)}
+
+/* ── CONSTITUTION ── */
+.charter-header{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.charter-name{font-family:'Playfair Display',serif;font-size:32px;color:var(--ink);margin-bottom:6px}
+.charter-seal{display:flex;align-items:center;gap:16px;margin-bottom:12px}
+.charter-seal-mark{width:64px;height:64px;border-radius:50%;background:var(--slate);border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:28px;color:var(--gold)}
+.charter-meta{font-size:12px;color:var(--ink3);font-family:'DM Mono',monospace}
+.charter-meta div{margin-bottom:2px}
+.article-card{display:flex;gap:18px;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:10px;box-shadow:var(--shadow)}
+.art-id{font-family:'Playfair Display',serif;font-size:18px;color:var(--border2);min-width:40px;flex-shrink:0;padding-top:2px}
+.art-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+.art-body{font-size:13px;color:var(--ink2);line-height:1.7}
+
+/* ── MEMBERS / RESIDENTS ── */
+.members-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.member-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:18px;box-shadow:var(--shadow)}
+.mc-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.mc-name{font-size:14px;font-weight:600;color:var(--ink)}
+.mc-title{font-size:11px;color:var(--ink3)}
+.mc-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mcs{background:var(--stone);border-radius:6px;padding:9px 11px}
+.mcs-label{font-size:9px;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px}
+.mcs-val{font-size:13px;font-weight:700;color:var(--ink)}
+
+/* ── ALERTS PANEL ── */
+.alert-item{display:flex;align-items:flex-start;gap:12px;padding:12px 18px;border-bottom:1px solid var(--stone2)}
+.alert-item:last-child{border-bottom:none}
+.alert-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.alert-icon.red{background:#fef2f2}
+.alert-icon.amber{background:#fffbeb}
+.alert-icon.blue{background:#eff6ff}
+.alert-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.alert-sub{font-size:11px;color:var(--ink3)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;z-index:200;background:var(--slate);color:#e8edf5;padding:12px 20px;border-radius:8px;font-size:13px;box-shadow:var(--shadow-lg);animation:fadeUp .2s ease;pointer-events:none}
+.toast.success{background:#14532d}
+.toast.hidden{display:none}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn .35s ease}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="gov-seal">
+    <div class="seal-mark">M</div>
+    <div>
+      <div class="gov-name">Town of Maplewood</div>
+      <div class="gov-sub">Ohio · POLIS Gov</div>
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Government</div>
+    <button class="nav-item active" data-view="overview" onclick="setView('overview',this)">
+      <span class="nav-icon">⊞</span>Overview
+    </button>
+    <button class="nav-item" data-view="council" onclick="setView('council',this)">
+      <span class="nav-icon">◫</span>Town Council
+    </button>
+    <button class="nav-item" data-view="proposals" onclick="setView('proposals',this)">
+      <span class="nav-icon">◇</span>Ordinances & Proposals
+      <span class="nav-badge alert">4</span>
+    </button>
+    <button class="nav-item" data-view="constitution" onclick="setView('constitution',this)">
+      <span class="nav-icon">⊕</span>Town Charter
+    </button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Administration</div>
+    <button class="nav-item" data-view="departments" onclick="setView('departments',this)">
+      <span class="nav-icon">◈</span>Departments
+    </button>
+    <button class="nav-item" data-view="budget" onclick="setView('budget',this)">
+      <span class="nav-icon">◉</span>Budget & Finance
+      <span class="nav-badge info">FY25</span>
+    </button>
+    <button class="nav-item" data-view="residents" onclick="setView('residents',this)">
+      <span class="nav-icon">◎</span>Registered Voters
+    </button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Governance Engine</div>
+    <button class="nav-item" data-view="sar" onclick="setView('sar',this)">
+      <span class="nav-icon">⊗</span>SAR Activity Log
+      <span class="nav-badge info">12</span>
+    </button>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="sf-av">MR</div>
+    <div>
+      <div class="sf-name">Mayor R. Caldwell</div>
+      <div class="sf-role">Signed in · Admin</div>
+    </div>
+    <div class="sar-live"><div class="sar-dot"></div>LIVE</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-title" id="topbar-title">Town Overview</div>
+      <div class="session-tag">Session #2025-07 · Open</div>
+    </div>
+    <div class="topbar-right">
+      <button class="tb-btn alert" onclick="showToast('3 items require your attention','')">
+        <div class="alert-dot"></div> 3 Alerts
+      </button>
+      <button class="tb-btn" onclick="showToast('Public meeting scheduled: Jul 22, 7 PM')">📅 Schedule Meeting</button>
+      <button class="tb-btn primary" onclick="showProposalModal()">+ New Ordinance</button>
+    </div>
+  </header>
+
+  <div class="content" id="content">
+
+    <!-- OVERVIEW -->
+    <div class="view active fade-in" id="view-overview">
+      <div class="stats-row">
+        <div class="stat-card accent">
+          <div class="sc-label">Registered Voters</div>
+          <div class="sc-val">3,847</div>
+          <div class="sc-sub">+42 this quarter <span class="sc-change up">↑</span></div>
+        </div>
+        <div class="stat-card gold-accent">
+          <div class="sc-label">Annual Budget</div>
+          <div class="sc-val">$4.2M</div>
+          <div class="sc-sub">FY2025 · 68% allocated</div>
+          <div class="mini-bar"><div class="mini-bar-fill" style="width:68%;background:var(--gold)"></div></div>
+        </div>
+        <div class="stat-card green-accent">
+          <div class="sc-label">Active Ordinances</div>
+          <div class="sc-val">127</div>
+          <div class="sc-sub">4 open for vote</div>
+        </div>
+        <div class="stat-card red-accent">
+          <div class="sc-label">Pending Actions</div>
+          <div class="sc-val">7</div>
+          <div class="sc-sub">Require council response</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <!-- Alerts -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="ph-title">Active Alerts</span>
+            <span class="ph-action" onclick="setView('proposals',document.querySelector('[data-view=proposals]'))">View all →</span>
+          </div>
+          <div class="alert-item">
+            <div class="alert-icon red">⚠</div>
+            <div>
+              <div class="alert-title">Water Main Repair — Emergency Funding</div>
+              <div class="alert-sub">Ordinance ORD-2025-041 requires emergency vote · Due Jul 15</div>
+            </div>
+          </div>
+          <div class="alert-item">
+            <div class="alert-icon amber">📋</div>
+            <div>
+              <div class="alert-title">FY2025 Budget Amendment Vote Open</div>
+              <div class="alert-sub">Parks Dept overage $42,000 · Quorum not yet reached</div>
+            </div>
+          </div>
+          <div class="alert-item">
+            <div class="alert-icon amber">🗳</div>
+            <div>
+              <div class="alert-title">Zoning Variance — 4 Elm Street</div>
+              <div class="alert-sub">Public comment period ends Jul 18 · 12 comments filed</div>
+            </div>
+          </div>
+          <div class="alert-item">
+            <div class="alert-icon blue">ℹ</div>
+            <div>
+              <div class="alert-title">Annual Charter Review Due</div>
+              <div class="alert-sub">Per Article A8 · Scheduled for August session</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent SAR -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="ph-title">SAR Engine — Recent Activity</span>
+            <span class="ph-action" onclick="setView('sar',document.querySelector('[data-view=sar]'))">Full log →</span>
+          </div>
+          <div id="overview-sar"></div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <!-- Proposals quick view -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="ph-title">Open Votes</span>
+            <span class="ph-action" onclick="setView('proposals',document.querySelector('[data-view=proposals]'))">All ordinances →</span>
+          </div>
+          <div id="overview-proposals"></div>
+        </div>
+
+        <!-- Departments budget -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="ph-title">Department Budget Status</span>
+            <span class="ph-action" onclick="setView('budget',document.querySelector('[data-view=budget]'))">Full budget →</span>
+          </div>
+          <div class="budget-chart">
+            <div class="bline"><span class="bline-label">Public Works</span><div class="bline-track"><div class="bline-fill" style="width:82%;background:var(--amber2)"></div></div><span class="bline-val">$820K</span></div>
+            <div class="bline"><span class="bline-label">Police Dept</span><div class="bline-track"><div class="bline-fill" style="width:71%;background:var(--slate3)"></div></div><span class="bline-val">$710K</span></div>
+            <div class="bline"><span class="bline-label">Fire & EMS</span><div class="bline-track"><div class="bline-fill" style="width:68%;background:var(--slate3)"></div></div><span class="bline-val">$680K</span></div>
+            <div class="bline"><span class="bline-label">Parks & Rec</span><div class="bline-track"><div class="bline-fill" style="width:114%;background:var(--red2)"></div></div><span class="bline-val" style="color:var(--red)">$342K !</span></div>
+            <div class="bline"><span class="bline-label">Administration</span><div class="bline-track"><div class="bline-fill" style="width:55%;background:var(--slate3)"></div></div><span class="bline-val">$275K</span></div>
+            <div class="bline"><span class="bline-label">Library</span><div class="bline-track"><div class="bline-fill" style="width:44%;background:var(--green2)"></div></div><span class="bline-val">$132K</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COUNCIL -->
+    <div class="view fade-in" id="view-council">
+      <div style="margin-bottom:20px">
+        <div style="font-family:'Playfair Display',serif;font-size:26px;color:var(--ink);margin-bottom:4px">Maplewood Town Council</div>
+        <div style="font-size:13px;color:var(--ink3)">7-member elected council · 4-year terms · Session 2023–2027</div>
+      </div>
+      <!-- Mayor featured -->
+      <div style="background:var(--slate);border-radius:12px;padding:24px;margin-bottom:20px;display:flex;align-items:center;gap:20px;box-shadow:var(--shadow-md)">
+        <div class="av lg" style="background:var(--gold);color:var(--slate);width:56px;height:56px;font-size:16px">RC</div>
+        <div style="flex:1">
+          <div style="font-family:'Playfair Display',serif;font-size:20px;color:#e8edf5;margin-bottom:3px">Mayor Ruth Caldwell</div>
+          <div style="font-size:12px;color:#8ba3bc;margin-bottom:10px">Chief Executive · Ward At-Large · Term ends 2027</div>
+          <div style="display:flex;gap:20px">
+            <div><div style="font-size:20px;font-weight:700;color:#e8edf5">94%</div><div style="font-size:10px;color:#6b85a8;text-transform:uppercase;letter-spacing:.1em">Approval</div></div>
+            <div><div style="font-size:20px;font-weight:700;color:#e8edf5">312</div><div style="font-size:10px;color:#6b85a8;text-transform:uppercase;letter-spacing:.1em">Votes Cast</div></div>
+            <div><div style="font-size:20px;font-weight:700;color:#e8edf5">18</div><div style="font-size:10px;color:#6b85a8;text-transform:uppercase;letter-spacing:.1em">Ordinances Signed</div></div>
+          </div>
+        </div>
+        <div><span class="tag active">In Office</span></div>
+      </div>
+
+      <div class="three-col" id="council-grid"></div>
+
+      <div class="panel">
+        <div class="panel-header"><span class="ph-title">Voting Record — Current Session</span></div>
+        <table class="data-table">
+          <thead><tr><th>Ordinance</th><th>Subject</th><th>Caldwell</th><th>Torres</th><th>Kim</th><th>Okafor</th><th>Petrov</th><th>Singh</th><th>Walsh</th><th>Result</th></tr></thead>
+          <tbody id="voting-record"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PROPOSALS / ORDINANCES -->
+    <div class="view fade-in" id="view-proposals">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <div>
+          <div style="font-family:'Playfair Display',serif;font-size:26px;color:var(--ink);margin-bottom:3px">Ordinances & Proposals</div>
+          <div style="font-size:13px;color:var(--ink3)">All legislative actions requiring council vote</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <select id="filter-status" onchange="filterProposals()" style="border:1px solid var(--border);padding:7px 12px;border-radius:6px;font-family:'Outfit',sans-serif;font-size:13px;color:var(--ink2);background:white;cursor:pointer">
+            <option value="all">All Status</option>
+            <option value="voting">Open for Vote</option>
+            <option value="open">Public Comment</option>
+            <option value="passed">Passed</option>
+            <option value="failed">Failed</option>
+          </select>
+        </div>
+      </div>
+      <div id="proposals-list"></div>
+    </div>
+
+    <!-- TOWN CHARTER -->
+    <div class="view fade-in" id="view-constitution">
+      <div class="charter-header">
+        <div class="charter-seal">
+          <div class="charter-seal-mark">M</div>
+          <div>
+            <div class="charter-name">Town Charter of Maplewood, Ohio</div>
+            <div class="charter-meta">
+              <div>Version 4.2.1 · Originally adopted March 14, 1887</div>
+              <div>Last amended November 8, 2022 · Governed by POLIS Engine v1.0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="charter-articles"></div>
+      <div class="panel" style="margin-top:22px">
+        <div class="panel-header"><span class="ph-title">Standing Ordinances</span></div>
+        <div id="charter-ordinances"></div>
+      </div>
+    </div>
+
+    <!-- DEPARTMENTS -->
+    <div class="view fade-in" id="view-departments">
+      <div style="font-family:'Playfair Display',serif;font-size:26px;color:var(--ink);margin-bottom:18px">Town Departments</div>
+      <div class="panel" id="dept-list"></div>
+    </div>
+
+    <!-- BUDGET -->
+    <div class="view fade-in" id="view-budget">
+      <div style="font-family:'Playfair Display',serif;font-size:26px;color:var(--ink);margin-bottom:18px">Budget & Finance — FY2025</div>
+      <div class="stats-row">
+        <div class="stat-card accent"><div class="sc-label">Total Budget</div><div class="sc-val">$4.2M</div><div class="sc-sub">Approved by council</div></div>
+        <div class="stat-card green-accent"><div class="sc-label">Collected (Tax)</div><div class="sc-val">$2.87M</div><div class="sc-sub">68.3% of projection</div></div>
+        <div class="stat-card gold-accent"><div class="sc-label">Expended YTD</div><div class="sc-val">$2.11M</div><div class="sc-sub">50.2% of budget</div></div>
+        <div class="stat-card red-accent"><div class="sc-label">Reserve Fund</div><div class="sc-val">$380K</div><div class="sc-sub">9% of budget · Below target</div></div>
+      </div>
+      <div class="two-col">
+        <div class="panel">
+          <div class="panel-header"><span class="ph-title">Budget Allocation by Department</span></div>
+          <div class="budget-chart" id="budget-chart"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><span class="ph-title">Revenue Sources</span></div>
+          <div class="budget-chart">
+            <div class="bline"><span class="bline-label">Property Tax</span><div class="bline-track"><div class="bline-fill" style="width:68%;background:var(--slate)"></div></div><span class="bline-val">$1.96M</span></div>
+            <div class="bline"><span class="bline-label">Sales Tax</span><div class="bline-track"><div class="bline-fill" style="width:24%;background:var(--slate3)"></div></div><span class="bline-val">$680K</span></div>
+            <div class="bline"><span class="bline-label">State Grants</span><div class="bline-track"><div class="bline-fill" style="width:13%;background:var(--gold)"></div></div><span class="bline-val">$380K</span></div>
+            <div class="bline"><span class="bline-label">Fees & Permits</span><div class="bline-track"><div class="bline-fill" style="width:9%;background:var(--green2)"></div></div><span class="bline-val">$240K</span></div>
+            <div class="bline"><span class="bline-label">Federal Aid</span><div class="bline-track"><div class="bline-fill" style="width:5%;background:var(--amber2)"></div></div><span class="bline-val">$120K</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><span class="ph-title">Treasury Ledger — Recent Transactions</span></div>
+        <table class="data-table">
+          <thead><tr><th>TX ID</th><th>Date</th><th>Department</th><th>Description</th><th>Amount</th><th>Balance</th></tr></thead>
+          <tbody id="ledger-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- RESIDENTS / VOTERS -->
+    <div class="view fade-in" id="view-residents">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <div>
+          <div style="font-family:'Playfair Display',serif;font-size:26px;color:var(--ink);margin-bottom:3px">Registered Voters</div>
+          <div style="font-size:13px;color:var(--ink3)">3,847 registered · 2,103 voted in last election</div>
+        </div>
+      </div>
+      <div class="members-grid" id="residents-grid"></div>
+    </div>
+
+    <!-- SAR LOG -->
+    <div class="view fade-in" id="view-sar">
+      <div class="sar-explainer">
+        <div class="sar-live-badge"><div class="sar-dot"></div>SAR ENGINE LIVE</div>
+        Every automated action taken by the POLIS Governance Engine on behalf of Maplewood is logged here with full transparency. The engine enforces the Town Charter and cannot act outside these logs. All entries are immutable public record.
+      </div>
+      <div id="sar-full-log"></div>
+    </div>
+
+  </div><!-- /content -->
+</main>
+</div>
+
+<!-- Proposal Modal -->
+<div id="proposal-modal" style="display:none;position:fixed;inset:0;background:rgba(30,58,95,.5);z-index:100;display:none;align-items:center;justify-content:center">
+  <div style="background:white;border-radius:12px;width:560px;max-width:95vw;box-shadow:var(--shadow-lg);overflow:hidden">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border)">
+      <div style="font-family:'Playfair Display',serif;font-size:20px;color:var(--ink)">New Ordinance or Proposal</div>
+      <button onclick="closeProposalModal()" style="background:none;border:none;cursor:pointer;font-size:18px;color:var(--ink3)">✕</button>
+    </div>
+    <div style="padding:24px;display:flex;flex-direction:column;gap:16px">
+      <label style="display:flex;flex-direction:column;gap:5px;font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em">
+        Type
+        <select id="new-type" style="border:1px solid var(--border);border-radius:6px;padding:9px 12px;font-size:14px;font-family:'Outfit',sans-serif;color:var(--ink);background:white;outline:none">
+          <option value="ordinance">Ordinance (Majority vote)</option>
+          <option value="charter">Charter Amendment (Supermajority)</option>
+          <option value="resolution">Resolution (Administrative)</option>
+          <option value="emergency">Emergency Motion</option>
+        </select>
+      </label>
+      <label style="display:flex;flex-direction:column;gap:5px;font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em">
+        Title
+        <input type="text" id="new-title" placeholder="Brief, clear title..." style="border:1px solid var(--border);border-radius:6px;padding:9px 12px;font-size:14px;font-family:'Outfit',sans-serif;color:var(--ink);outline:none"/>
+      </label>
+      <label style="display:flex;flex-direction:column;gap:5px;font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em">
+        Full Text
+        <textarea id="new-body" rows="5" placeholder="Describe the proposed ordinance, its purpose, and expected impact on the community..." style="border:1px solid var(--border);border-radius:6px;padding:9px 12px;font-size:14px;font-family:'Outfit',sans-serif;color:var(--ink);outline:none;resize:vertical"></textarea>
+      </label>
+      <div style="font-size:12px;color:var(--ink3);background:var(--stone);padding:11px;border-radius:6px;line-height:1.6">
+        The POLIS Governance Engine will analyze this proposal against the Town Charter and standing ordinances before the vote is opened to council.
+      </div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:10px;padding:16px 24px;border-top:1px solid var(--border)">
+      <button onclick="closeProposalModal()" style="background:white;border:1px solid var(--border);color:var(--ink3);padding:9px 20px;border-radius:6px;font-size:13px;cursor:pointer;font-family:'Outfit',sans-serif">Cancel</button>
+      <button onclick="submitOrdinance()" style="background:var(--slate);color:#e8edf5;border:none;padding:9px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif">Submit to Council</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast hidden" id="toast"></div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────────
+const COUNCIL = [
+  {id:'C001',name:'Maria Torres',initials:'MT',ward:'Ward 1',role:'Council President',term:'2023–2027',votes:289,approval:87,ordinances:14,status:'active'},
+  {id:'C002',name:'James Kim',initials:'JK',ward:'Ward 2',role:'Council Member',term:'2021–2025',votes:301,approval:82,ordinances:11,status:'active'},
+  {id:'C003',name:'Adaeze Okafor',initials:'AO',ward:'Ward 3',role:'Council Member',term:'2023–2027',votes:276,approval:91,ordinances:9,status:'active'},
+  {id:'C004',name:'Viktor Petrov',initials:'VP',ward:'Ward 4',role:'Finance Chair',term:'2021–2025',votes:312,approval:78,ordinances:16,status:'active'},
+  {id:'C005',name:'Priya Singh',initials:'PS',ward:'Ward 5',role:'Public Works Chair',term:'2023–2027',votes:265,approval:89,ordinances:12,status:'active'},
+  {id:'C006',name:'Thomas Walsh',initials:'TW',ward:'Ward 6',role:'Council Member',term:'2021–2025',votes:298,approval:74,ordinances:8,status:'active'},
+];
+
+const AV_COLORS = ['#1e3a5f','#15803d','#7c2d12','#4c1d95','#9b1c1c','#0c4a6e','#713f12','#064e3b'];
+
+const PROPOSALS = [
+  {
+    id:'ORD-2025-041',type:'ordinance',category:'emergency',
+    title:'Emergency Water Main Replacement — Elm Street District',
+    body:'The aging water main serving the Elm Street district (12 blocks, ~840 residents) has experienced three failures in 60 days. Emergency replacement estimated at $280,000. Funding to be drawn from capital reserve with replenishment over 24 months via a dedicated utility assessment.',
+    proposedBy:'C005',proposedDate:'2025-07-08',status:'voting',
+    votesFor:5,votesAgainst:1,abstain:0,votingEnds:'2025-07-15',
+    aiAnalysis:{riskLevel:'low',conflict:false,
+      summary:'Emergency motion under Charter Article A5 — Council may fast-track with 60% majority. Capital reserve drawdown is authorized per Ordinance L009 for infrastructure emergencies. No charter conflicts detected. Public notice satisfied via 72-hour emergency posting.',
+      recommendation:'Eligible for immediate vote. Fast-track motion is constitutionally sound.'
+    }
+  },
+  {
+    id:'ORD-2025-038',type:'ordinance',category:'budget',
+    title:'FY2025 Budget Amendment — Parks & Recreation Overage',
+    body:'The Parks & Recreation Department has exceeded its FY2025 allocation by $42,000 due to unexpected trail repair costs and equipment replacement following the March flooding. This amendment transfers $42,000 from the General Contingency Fund to Parks & Recreation.',
+    proposedBy:'C004',proposedDate:'2025-07-01',status:'voting',
+    votesFor:4,votesAgainst:2,abstain:1,votingEnds:'2025-07-18',
+    aiAnalysis:{riskLevel:'low',conflict:false,
+      summary:'Budget amendment within authority of Council per Article A4. Contingency Fund transfer is permitted under Ordinance L011 for departmental overages. Quorum of 7 members required; 7/7 present. Simple majority (4 votes) needed.',
+      recommendation:'Vote eligible. Transfer is procedurally sound.'
+    }
+  },
+  {
+    id:'ORD-2025-035',type:'ordinance',category:'zoning',
+    title:'Zoning Variance — 4 Elm Street Commercial Conversion',
+    body:'Property owner Harold Finch requests a zoning variance to convert the residential property at 4 Elm Street to a mixed-use commercial/residential unit. The property borders the central business district. Planning Commission has reviewed and issued a conditional approval.',
+    proposedBy:'C001',proposedDate:'2025-06-20',status:'open',
+    votesFor:3,votesAgainst:2,abstain:0,votingEnds:'2025-07-25',
+    aiAnalysis:{riskLevel:'medium',conflict:false,
+      summary:'Zoning variance requires public comment period of 30 days per Ordinance L018. Comment period ends July 18 — 12 public comments filed, 8 in favor. Planning Commission conditional approval on file. This does not require charter amendment.',
+      recommendation:'Public comment period active. Vote eligible after July 18.'
+    }
+  },
+  {
+    id:'ORD-2025-031',type:'charter',category:'governance',
+    title:'Charter Amendment — Digital Voting for Residents',
+    body:'Proposes amending Article A6 to permit registered residents to cast binding votes on non-emergency ordinances via authenticated digital ballot. Physical council vote remains required for charter amendments. Implementation timeline: 6 months post-ratification.',
+    proposedBy:'C003',proposedDate:'2025-06-10',status:'open',
+    votesFor:4,votesAgainst:2,abstain:1,votingEnds:'2025-07-30',
+    aiAnalysis:{riskLevel:'medium',conflict:false,
+      summary:'Constitutional amendment requires two-thirds supermajority (5 of 7 council votes) per Article A9. 30-day public comment period required. Digital voting would significantly expand democratic participation — estimated 340% increase in voter engagement based on comparable municipalities.',
+      recommendation:'Constitutional vote requires supermajority. Recommend public forum before vote closes.'
+    }
+  },
+  {
+    id:'ORD-2025-028',type:'resolution',category:'infrastructure',
+    title:'Resolution — Acceptance of State Highway Grant',
+    body:'The Ohio Department of Transportation has awarded Maplewood a $180,000 grant for Main Street resurfacing. This resolution formally accepts the grant and authorizes the Town Manager to execute the agreement and oversee the project.',
+    proposedBy:'Mayor',proposedDate:'2025-06-01',status:'passed',
+    votesFor:7,votesAgainst:0,abstain:0,votingEnds:'2025-06-08',
+    aiAnalysis:{riskLevel:'low',conflict:false,
+      summary:'Grant acceptance resolution. Passed unanimously. No conflicts with charter or standing ordinances.',
+      recommendation:'Enacted. Town Manager authorized to proceed.'
+    }
+  },
+  {
+    id:'ORD-2025-022',type:'ordinance',category:'public-safety',
+    title:'Updated Speed Limit — School Zones (15 mph)',
+    body:'Reduces speed limits in all 4 designated school zones from 20 mph to 15 mph during school hours (7:30–9:00 AM and 2:30–4:00 PM on school days). Signage costs estimated at $8,400 from Traffic Safety fund.',
+    proposedBy:'C006',proposedDate:'2025-05-12',status:'passed',
+    votesFor:6,votesAgainst:1,abstain:0,votingEnds:'2025-05-19',
+    aiAnalysis:{riskLevel:'low',conflict:false,
+      summary:'Traffic ordinance within council authority. Passed with strong majority. Signage budget within Traffic Safety Fund allocation.',
+      recommendation:'Enacted. Public Works notified for signage installation.'
+    }
+  },
+];
+
+const CHARTER = {
+  version:'4.2.1',adoptedDate:'1887-03-14',lastAmended:'2022-11-08',
+  articles:[
+    {id:'A1',title:'Incorporation & Territory',body:'The Town of Maplewood, Ohio, is hereby incorporated as a municipal corporation. Its territory shall encompass all lands within the boundaries established by the Maplewood Township Survey of 1886 and any lawfully annexed areas thereafter.'},
+    {id:'A2',title:'Powers of the Town',body:'The Town shall have all powers granted to municipal corporations by the Ohio Revised Code, together with such implied powers as are necessary for the full exercise of these powers, for the benefit, good order, governance, finance, and management of the Town and its affairs.'},
+    {id:'A3',title:'The Mayor',body:'The Mayor is the chief executive of the Town. The Mayor shall enforce all laws and ordinances, appoint department heads subject to Council confirmation, present an annual state of the town address, and sign or veto all Council ordinances within 10 days.'},
+    {id:'A4',title:'Town Council',body:'Legislative authority is vested in a seven-member Town Council. Members are elected by ward for four-year terms. The Council shall convene at least twice monthly. A quorum of four members is required for any vote. The Council President is elected annually by the Council.'},
+    {id:'A5',title:'Emergency Powers',body:'In the event of a declared emergency, the Mayor may issue executive orders with the force of law for up to 72 hours. Extensions beyond 72 hours require Council ratification by simple majority. Emergency ordinances may be fast-tracked with 24-hour public notice.'},
+    {id:'A6',title:'Citizen Participation',body:'All registered residents have the right to address the Council during public comment periods. Residents may petition for a public referendum on any passed ordinance within 30 days of enactment by presenting signatures of 5% of registered voters.'},
+    {id:'A7',title:'Finance & Budget',body:'The Town shall operate on an annual fiscal budget adopted by the Council before October 1 of each year. No expenditure shall be made without Council appropriation. The Town Treasurer shall publish monthly financial statements as public record.'},
+    {id:'A8',title:'Annual Charter Review',body:'The Town Charter shall be reviewed by the full Council annually. Proposed amendments shall be published for 30-day public comment before a vote. Ratification requires two-thirds of the Council and confirmation by public referendum.'},
+    {id:'A9',title:'Amendments',body:'This Charter may be amended by a two-thirds supermajority of the full Council after a 30-day public comment period. Amendments affecting fundamental rights require a public referendum. The POLIS Governance Engine shall enforce all provisions of this Charter impartially.'},
+  ],
+  ordinances:[
+    {id:'L001',title:'Council Procedures',body:'Council meetings shall be conducted per Robert\'s Rules of Order with modifications as approved by the Council President. All votes shall be recorded by roll call.',status:'active'},
+    {id:'L002',title:'Public Records',body:'All council minutes, budget reports, and ordinance texts are public record and must be posted to the town website within 72 hours of adoption.',status:'active'},
+    {id:'L003',title:'Conflict of Interest',body:'Any council member with a financial interest in a matter before the council must recuse themselves from the vote and publicly disclose the conflict.',status:'active'},
+    {id:'L004',title:'Zoning Authority',body:'The Planning Commission shall review all zoning variance requests. Variances require council approval after 30-day public comment.',status:'active'},
+    {id:'L005',title:'Tax Assessment',body:'Property tax assessments shall be conducted annually by the County Auditor. The Town millage rate is set by council vote in the annual budget ordinance.',status:'active'},
+    {id:'L006',title:'Municipal Contracts',body:'Contracts over $25,000 require competitive bidding. Contracts over $100,000 require council approval. Emergency contracts under A5 are exempt.',status:'active'},
+    {id:'L007',title:'Personnel Policy',body:'All Town employees serve at the pleasure of their department head. The Mayor appoints all department heads. Terminations above department head level require council confirmation.',status:'active'},
+    {id:'L008',title:'Public Safety Standards',body:'The Police Chief and Fire Chief report to the Mayor. Response time standards shall be published annually. A civilian review board shall meet quarterly.',status:'active'},
+    {id:'L009',title:'Capital Reserve',body:'The Town shall maintain a capital reserve fund of not less than 10% of the annual budget. Reserve drawdowns require council approval except in emergencies under A5.',status:'active'},
+  ]
+};
+
+const DEPARTMENTS = [
+  {name:'Public Works',head:'Director Sandra Kowalski',budget:820000,allocated:820000,spent:671000,icon:'🔧',color:'#b45309'},
+  {name:'Police Department',head:'Chief Robert Hayes',budget:710000,allocated:710000,spent:502000,icon:'🚔',color:'#1e3a5f'},
+  {name:'Fire & EMS',head:'Chief Angela Moore',budget:680000,allocated:680000,spent:459000,icon:'🚒',color:'#b91c1c'},
+  {name:'Parks & Recreation',head:'Director Tom Nguyen',budget:300000,allocated:300000,spent:342000,icon:'🌳',color:'#15803d',overbudget:true},
+  {name:'Administration',head:'Town Manager David Park',budget:500000,allocated:500000,spent:275000,icon:'🏛',color:'#4c1d95'},
+  {name:'Library',head:'Director Carol White',budget:300000,allocated:300000,spent:132000,icon:'📚',color:'#065f46'},
+  {name:'Building & Permits',head:'Director Lisa Grant',budget:280000,allocated:280000,spent:148000,icon:'🏗',color:'#7c2d12'},
+  {name:'Finance & Treasury',head:'Treasurer Alan Beck',budget:190000,allocated:190000,spent:97000,icon:'💰',color:'#0c4a6e'},
+];
+
+const RESIDENTS = [
+  {id:'R001',name:'Dorothy Chen',initials:'DC',ward:'Ward 2',registered:'2018-03-12',lastVoted:'2024-11-05',status:'active',taxStatus:'current'},
+  {id:'R002',name:'Marcus Webb',initials:'MW',ward:'Ward 1',registered:'2019-07-22',lastVoted:'2024-11-05',status:'active',taxStatus:'current'},
+  {id:'R003',name:'Fatima Hassan',initials:'FH',ward:'Ward 3',registered:'2021-01-08',lastVoted:'2023-11-07',status:'active',taxStatus:'current'},
+  {id:'R004',name:'George Papadopoulos',initials:'GP',ward:'Ward 4',registered:'2015-06-14',lastVoted:'2024-11-05',status:'active',taxStatus:'delinquent'},
+  {id:'R005',name:'Ingrid Larsson',initials:'IL',ward:'Ward 5',registered:'2022-09-30',lastVoted:'2024-11-05',status:'active',taxStatus:'current'},
+  {id:'R006',name:'Bernard Kowalski',initials:'BK',ward:'Ward 6',registered:'2017-04-19',lastVoted:'2024-11-05',status:'active',taxStatus:'current'},
+  {id:'R007',name:'Nadia Okonkwo',initials:'NO',ward:'Ward 2',registered:'2020-11-03',lastVoted:'2024-11-05',status:'active',taxStatus:'current'},
+  {id:'R008',name:'Harold Finch',initials:'HF',ward:'Ward 1',registered:'2012-08-27',lastVoted:'2023-11-07',status:'active',taxStatus:'current'},
+];
+
+const SAR_LOG = [
+  {id:'SAR-2025-089',timestamp:'2025-07-11T09:14:22',sense:'Emergency ordinance ORD-2025-041 submitted by Council Member Singh (C005).',analyze:'Classified as emergency motion per Charter A5. Verified 72-hour public notice posted. Checked capital reserve balance ($380K) — sufficient for $280K drawdown. No charter conflicts.',respond:'Opened emergency vote window (7-day fast-track). Notified all 7 council members. Posted public notice. Logged in permanent record.',status:'completed'},
+  {id:'SAR-2025-088',timestamp:'2025-07-10T16:42:08',sense:'Budget report filed by Treasurer Beck — Parks & Recreation overage $42,000 detected.',analyze:'Compared to approved FY2025 appropriation ($300K). Overage of 14% exceeds 10% threshold per L011. Identified contingency fund balance ($187K) — sufficient. Council notification required.',respond:'Flagged ORD-2025-038 for priority review. Notified Finance Chair Petrov and Mayor Caldwell. Added to next agenda.',status:'completed'},
+  {id:'SAR-2025-087',timestamp:'2025-07-09T11:30:00',sense:'Public comment period monitoring — ORD-2025-035 (4 Elm Street zoning variance).',analyze:'Comment period day 19 of 30. 12 comments filed: 8 support, 4 oppose. Threshold for planning commission review not triggered. Normal progression.',respond:'Updated public record with comment count. Scheduled vote window to open July 19. No action required.',status:'completed'},
+  {id:'SAR-2025-086',timestamp:'2025-07-08T08:00:00',sense:'Weekly SAR audit — all active ordinances, quorum status, and upcoming deadlines.',analyze:'4 ordinances active: 2 voting (ORD-041, ORD-038), 2 in comment (ORD-035, ORD-031). Council quorum status: all 7 members available. 3 deadlines in next 7 days.',respond:'Digest report sent to Mayor and Council President. Calendar reminders set for all vote deadlines. No anomalies detected.',status:'completed'},
+  {id:'SAR-2025-085',timestamp:'2025-07-05T14:18:55',sense:'Council Member Kim (C002) cast vote on ORD-2025-038 (budget amendment).',analyze:'Vote verified: Kim voted FOR. Updated tally: 4 For, 2 Against, 1 Abstain. Quorum satisfied (7/7 voting). Simple majority threshold is 4 — currently met.',respond:'Vote recorded in immutable ledger. Tally updated. Ordinance remains in voting window until July 18.',status:'completed'},
+  {id:'SAR-2025-084',timestamp:'2025-07-03T09:00:01',sense:'Monthly financial reconciliation — FY2025 budget vs actuals.',analyze:'Budget 50.2% expended at 52% of fiscal year — on track. Parks overage flagged. Reserve fund at $380K (9% of budget) — below 10% target per L009. Revenue collections at 68.3% of projection — slightly behind.',respond:'Monthly report published to public record. Reserve fund alert issued to Treasurer and Finance Chair. Parks overage escalated to Council.',status:'completed'},
+  {id:'SAR-2025-083',timestamp:'2025-07-01T00:00:01',sense:'New fiscal month began (July 2025). Recurring budget monitoring cycle reset.',analyze:'All department allocations reviewed. YTD expenditure rates checked against fiscal calendar. Upcoming ordinance expirations scanned — 2 ordinances expire Aug 31.',respond:'Monthly budget snapshot archived. Council notified of August expiration items. Tax collection cycle updated.',status:'completed'},
+  {id:'SAR-2025-082',timestamp:'2025-06-08T16:20:00',sense:'ORD-2025-028 passed unanimously (7-0). Grant acceptance resolution.',analyze:'All votes counted. Unanimous passage. Town Manager authorization clause activated per ordinance text. Grant agreement execution window: 30 days.',respond:'Ordinance enacted. Town Manager Park notified and authorized. Grant acceptance posted to public record. ODOT notified.',status:'completed'},
+];
+
+const LEDGER = [
+  {id:'TX-2025-0891',date:'2025-07-10',dept:'Parks & Recreation',desc:'Trail Repair Materials — Riverside Path (overage)',amount:-18400,balance:382100,type:'debit'},
+  {id:'TX-2025-0890',date:'2025-07-09',dept:'Revenue',desc:'Property Tax Collection — Q3 Installment',amount:124000,balance:400500,type:'credit'},
+  {id:'TX-2025-0889',date:'2025-07-08',dept:'Public Works',desc:'Elm Street Water Main Emergency Assessment',amount:-12000,balance:276500,type:'debit'},
+  {id:'TX-2025-0888',date:'2025-07-05',dept:'Police',desc:'Bi-weekly Payroll Disbursement',amount:-38400,balance:288500,type:'debit'},
+  {id:'TX-2025-0887',date:'2025-07-01',dept:'Revenue',desc:'Business License Renewals — July',amount:8200,balance:326900,type:'credit'},
+  {id:'TX-2025-0886',date:'2025-06-28',dept:'Fire & EMS',desc:'Equipment Maintenance Contract — Annual',amount:-24000,balance:318700,type:'debit'},
+  {id:'TX-2025-0885',date:'2025-06-25',dept:'Revenue',desc:'ODOT Grant Disbursement — Main Street',amount:180000,balance:342700,type:'credit'},
+  {id:'TX-2025-0884',date:'2025-06-20',dept:'Administration',desc:'Software Licenses — POLIS Engine Annual Fee',amount:-9600,balance:162700,type:'debit'},
+];
+
+const VOTING_RECORD = [
+  {ord:'ORD-2025-028',subject:'ODOT Grant Acceptance',votes:['Y','Y','Y','Y','Y','Y','Y'],result:'passed'},
+  {ord:'ORD-2025-022',subject:'School Zone Speed Limit',votes:['Y','Y','Y','Y','Y','N','Y'],result:'passed'},
+  {ord:'ORD-2025-019',subject:'Public WiFi Expansion',votes:['Y','N','Y','Y','N','Y','Y'],result:'passed'},
+  {ord:'ORD-2025-015',subject:'Police Body Camera Policy',votes:['Y','Y','Y','N','Y','Y','Y'],result:'passed'},
+  {ord:'ORD-2025-009',subject:'Minimum Wage Ordinance',votes:['Y','N','Y','Y','N','N','Y'],result:'passed'},
+];
+
+// ── UTILS ──────────────────────────────────────────────────────────────────
+const fd = d => {try{return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}catch{return d}};
+const ft = d => {try{return new Date(d).toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}catch{return d}};
+const vt = p => p.votesFor+p.votesAgainst+p.abstain;
+const vpct = p => vt(p)===0?0:Math.round((p.votesFor/vt(p))*100);
+const sc = s => ({active:'var(--green)',late:'var(--amber2)',inactive:'var(--ink3)',voting:'#0369a1',open:'#6d28d9',passed:'var(--green)',failed:'var(--red)',completed:'var(--green)',pending:'var(--ink3)',overdue:'var(--red)',current:'var(--green)',delinquent:'var(--red)'}[s]||'var(--ink3)');
+const rc = r => ({low:'var(--green)',medium:'var(--amber)',high:'var(--red)'}[r]||'var(--ink3)');
+
+let toastTimer;
+function showToast(msg,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast'+(type==='success'?' success':'');
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.className='toast hidden',3500);
+}
+
+// ── VIEW SWITCHING ────────────────────────────────────────────────────────
+const VIEW_TITLES = {overview:'Town Overview',council:'Town Council',proposals:'Ordinances & Proposals',constitution:'Town Charter',departments:'Departments',budget:'Budget & Finance',residents:'Registered Voters',sar:'SAR Activity Log'};
+
+function setView(name, btn) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  const el = document.getElementById('view-'+name);
+  el.classList.add('active');
+  el.classList.remove('fade-in');void el.offsetWidth;el.classList.add('fade-in');
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  else {const b=document.querySelector(`[data-view="${name}"]`);if(b)b.classList.add('active');}
+  document.getElementById('topbar-title').textContent=VIEW_TITLES[name]||name;
+  document.getElementById('content').scrollTop=0;
+}
+
+// ── BUILD COMPONENTS ──────────────────────────────────────────────────────
+function buildAll(){
+  buildOverviewSAR();
+  buildOverviewProposals();
+  buildCouncil();
+  buildProposals();
+  buildCharter();
+  buildDepartments();
+  buildBudget();
+  buildResidents();
+  buildSARLog();
+}
+
+function buildOverviewSAR(){
+  document.getElementById('overview-sar').innerHTML=SAR_LOG.slice(0,4).map(l=>`
+    <div style="display:flex;align-items:flex-start;gap:10px;padding:11px 18px;border-bottom:1px solid var(--stone2)">
+      <div style="width:7px;height:7px;border-radius:50%;background:${sc(l.status)};flex-shrink:0;margin-top:5px"></div>
+      <div>
+        <div style="font-size:13px;color:var(--ink)">${l.sense}</div>
+        <div style="font-size:11px;color:var(--ink3);margin-top:2px;font-family:'DM Mono',monospace">${ft(l.timestamp)}</div>
+      </div>
+    </div>`).join('');
+}
+
+function buildOverviewProposals(){
+  const active=PROPOSALS.filter(p=>p.status==='voting'||p.status==='open');
+  document.getElementById('overview-proposals').innerHTML=active.map(p=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 18px;border-bottom:1px solid var(--stone2);cursor:pointer;transition:background .1s" onmouseover="this.style.background='var(--stone)'" onmouseout="this.style.background=''" onclick="setView('proposals',document.querySelector('[data-view=proposals]'))">
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px">
+          <span class="tag ${p.status}">${p.status}</span>
+          <span style="font-size:10px;color:var(--ink3);font-family:'DM Mono',monospace">${p.id}</span>
+        </div>
+        <div style="font-size:13px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:260px">${p.title}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:12px">
+        <div style="width:50px;height:4px;background:var(--stone2);border-radius:2px;overflow:hidden">
+          <div style="width:${vpct(p)}%;height:100%;background:var(--green2)"></div>
+        </div>
+        <span style="font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;width:28px">${vpct(p)}%</span>
+      </div>
+    </div>`).join('');
+}
+
+function buildCouncil(){
+  document.getElementById('council-grid').innerHTML=COUNCIL.map((c,i)=>`
+    <div class="council-card">
+      <span class="cc-badge" style="background:${AV_COLORS[i%AV_COLORS.length]}18;color:${AV_COLORS[i%AV_COLORS.length]}">${c.ward}</span>
+      <div style="width:44px;height:44px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:#e8edf5;background:${AV_COLORS[i%AV_COLORS.length]}">${c.initials}</div>
+      <div class="cc-name">${c.name}</div>
+      <div class="cc-title">${c.role} · ${c.term}</div>
+      <div class="cc-stats">
+        <div><div class="cc-stat-val">${c.approval}%</div><div class="cc-stat-label">Approval</div></div>
+        <div><div class="cc-stat-val">${c.votes}</div><div class="cc-stat-label">Votes</div></div>
+        <div><div class="cc-stat-val">${c.ordinances}</div><div class="cc-stat-label">Ordinances</div></div>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('voting-record').innerHTML=VOTING_RECORD.map(r=>{
+    const allMembers=['RC',...COUNCIL.map(c=>c.initials.slice(0,1))];
+    const voteColor=v=>v==='Y'?'color:var(--green)':`color:var(--red)`;
+    return`<tr>
+      <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink3)">${r.ord}</td>
+      <td style="font-size:13px;color:var(--ink)">${r.subject}</td>
+      ${r.votes.map(v=>`<td style="text-align:center;font-weight:700;font-size:12px;${voteColor(v)}">${v}</td>`).join('')}
+      <td><span class="tag ${r.result}">${r.result}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function buildProposals(filter='all'){
+  const filtered=filter==='all'?PROPOSALS:PROPOSALS.filter(p=>p.status===filter);
+  document.getElementById('proposals-list').innerHTML=filtered.map(p=>{
+    const tot=vt(p);const forPct=tot?Math.round(p.votesFor/tot*100):0;const agPct=tot?Math.round(p.votesAgainst/tot*100):0;
+    const canVote=p.status==='voting'||p.status==='open';
+    return`<div class="proposal-card">
+      <div class="pc-top">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
+            <span class="tag ${p.status}">${p.status}</span>
+            <span class="tag ${p.type==='charter'?'const':'gray'}">${p.type}</span>
+            <span style="font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace">${p.id}</span>
+          </div>
+          <h3 class="pc-title">${p.title}</h3>
+        </div>
+      </div>
+      <div class="pc-meta">Proposed by ${p.proposedBy==='Mayor'?'Mayor Caldwell':COUNCIL.find(c=>c.id===p.proposedBy)?.name||p.proposedBy} · ${fd(p.proposedDate)} · Vote closes ${fd(p.votingEnds)}</div>
+      <p class="pc-body">${p.body}</p>
+      <div class="ai-analysis">
+        <div class="ai-head">
+          <span style="font-size:13px;color:var(--slate)">⊕</span>
+          <span class="ai-head-label">AI Governance Analysis</span>
+          <span style="font-size:10px;padding:2px 8px;border-radius:4px;font-weight:700;background:${rc(p.aiAnalysis.riskLevel)}18;color:${rc(p.aiAnalysis.riskLevel)}">${p.aiAnalysis.riskLevel} risk</span>
+          ${p.aiAnalysis.conflict?'<span style="font-size:10px;padding:2px 8px;border-radius:4px;background:#fef2f2;color:var(--red);font-weight:700">⚠ Charter Conflict</span>':''}
+        </div>
+        <div class="ai-text">${p.aiAnalysis.summary}</div>
+        <div class="ai-rec"><strong>Recommendation:</strong> ${p.aiAnalysis.recommendation}</div>
+      </div>
+      ${tot>0?`<div class="vote-bar"><div class="vb-for" style="width:${forPct}%"></div><div class="vb-against" style="width:${agPct}%"></div></div>`:''}
+      <div class="vote-row">
+        <div class="vote-tally">
+          <span class="vt-for">${p.votesFor} Yea</span>
+          <span class="vt-against">${p.votesAgainst} Nay</span>
+          <span class="vt-abs">${p.abstain} Abstain</span>
+        </div>
+        ${canVote?`<div class="vote-btns">
+          <button class="vbtn for" onclick="castVote('${p.id}','for')">Vote Yea</button>
+          <button class="vbtn against" onclick="castVote('${p.id}','against')">Vote Nay</button>
+          <button class="vbtn abs" onclick="castVote('${p.id}','abstain')">Abstain</button>
+        </div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterProposals(){
+  buildProposals(document.getElementById('filter-status').value);
+}
+
+function buildCharter(){
+  document.getElementById('charter-articles').innerHTML=CHARTER.articles.map(a=>`
+    <div class="article-card">
+      <div class="art-id">${a.id}</div>
+      <div><div class="art-title">${a.title}</div><div class="art-body">${a.body}</div></div>
+    </div>`).join('');
+
+  document.getElementById('charter-ordinances').innerHTML=CHARTER.ordinances.map(o=>`
+    <div class="ordinance-row">
+      <div class="ord-num">${o.id}</div>
+      <div class="law-content" style="flex:1">
+        <div class="ord-title">${o.title}</div>
+        <div class="ord-body">${o.body}</div>
+      </div>
+      <span class="tag ${o.status}" style="flex-shrink:0">${o.status}</span>
+    </div>`).join('');
+}
+
+function buildDepartments(){
+  document.getElementById('dept-list').innerHTML=DEPARTMENTS.map(d=>{
+    const pct=Math.min(Math.round(d.spent/d.budget*100),120);
+    return`<div class="dept-row">
+      <div class="dept-icon" style="background:${d.color}18">${d.icon}</div>
+      <div style="flex:1;min-width:0">
+        <div class="dept-name">${d.name}</div>
+        <div class="dept-head">${d.head}</div>
+      </div>
+      <div style="text-align:right;min-width:100px">
+        <div style="font-size:13px;font-weight:600;color:${d.overbudget?'var(--red)':'var(--ink)'}">$${(d.spent/1000).toFixed(0)}K <span style="font-size:10px;color:var(--ink3)">/ $${(d.budget/1000).toFixed(0)}K</span></div>
+        <div style="width:100px;height:4px;background:var(--stone2);border-radius:2px;margin-top:4px;overflow:hidden">
+          <div style="width:${Math.min(pct,100)}%;height:100%;background:${d.overbudget?'var(--red2)':d.color};border-radius:2px"></div>
+        </div>
+      </div>
+      ${d.overbudget?'<span class="tag alert" style="margin-left:10px">Over</span>':'<span class="tag active" style="margin-left:10px">On Track</span>'}
+    </div>`;
+  }).join('');
+}
+
+function buildBudget(){
+  document.getElementById('budget-chart').innerHTML=DEPARTMENTS.map(d=>{
+    const pct=Math.round(d.budget/4200000*100*3.2);
+    return`<div class="bline">
+      <span class="bline-label">${d.name}</span>
+      <div class="bline-track"><div class="bline-fill" style="width:${pct}%;background:${d.overbudget?'var(--red2)':d.color}"></div></div>
+      <span class="bline-val" style="${d.overbudget?'color:var(--red)':''}">$${(d.budget/1000).toFixed(0)}K</span>
+    </div>`;
+  }).join('');
+
+  document.getElementById('ledger-body').innerHTML=LEDGER.map(tx=>`
+    <tr>
+      <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink3)">${tx.id}</td>
+      <td>${fd(tx.date)}</td>
+      <td>${tx.dept}</td>
+      <td style="color:var(--ink2)">${tx.desc}</td>
+      <td class="ledger-amount ${tx.type==='credit'?'credit':'debit'}">${tx.type==='credit'?'+':'-'}$${Math.abs(tx.amount).toLocaleString()}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--ink2)">$${tx.balance.toLocaleString()}</td>
+    </tr>`).join('');
+}
+
+function buildResidents(){
+  document.getElementById('residents-grid').innerHTML=RESIDENTS.map((r,i)=>`
+    <div class="member-card">
+      <div class="mc-top">
+        <div class="av lg" style="background:${AV_COLORS[i%AV_COLORS.length]};color:#e8edf5">${r.initials}</div>
+        <div>
+          <div class="mc-name">${r.name}</div>
+          <div class="mc-title">${r.ward} · Reg. ${fd(r.registered)}</div>
+          <div style="font-size:11px;margin-top:3px;display:flex;align-items:center;gap:4px">
+            <span style="width:6px;height:6px;border-radius:50%;background:${sc(r.status)};display:inline-block"></span>${r.status}
+          </div>
+        </div>
+      </div>
+      <div class="mc-stats">
+        <div class="mcs"><div class="mcs-label">Last Voted</div><div class="mcs-val" style="font-size:12px">${fd(r.lastVoted)}</div></div>
+        <div class="mcs"><div class="mcs-label">Tax Status</div><div class="mcs-val" style="font-size:12px;color:${sc(r.taxStatus)}">${r.taxStatus}</div></div>
+      </div>
+    </div>`).join('');
+}
+
+function buildSARLog(){
+  document.getElementById('sar-full-log').innerHTML=SAR_LOG.map(l=>`
+    <div class="sar-card">
+      <div class="sar-card-hdr">
+        <span class="sar-id">${l.id}</span>
+        <span class="sar-ts">${ft(l.timestamp)}</span>
+        <span class="tag active" style="font-size:9px;padding:2px 7px">${l.status}</span>
+      </div>
+      <div>
+        <div class="sar-phase"><div class="sar-pl s">SENSE</div><div class="sar-pb">${l.sense}</div></div>
+        <div class="sar-phase"><div class="sar-pl a">ANALYZE</div><div class="sar-pb">${l.analyze}</div></div>
+        <div class="sar-phase"><div class="sar-pl r">RESPOND</div><div class="sar-pb">${l.respond}</div></div>
+      </div>
+    </div>`).join('');
+}
+
+// ── ACTIONS ───────────────────────────────────────────────────────────────
+function castVote(id,vote){
+  const p=PROPOSALS.find(x=>x.id===id);if(!p)return;
+  if(vote==='for')p.votesFor++;else if(vote==='against')p.votesAgainst++;else p.abstain++;
+  const ts=new Date().toISOString();
+  const tot=vt(p);
+  SAR_LOG.unshift({
+    id:`SAR-${Date.now()}`,timestamp:ts,
+    sense:`Council vote cast on ${id} by Mayor Caldwell — ${vote.toUpperCase()}`,
+    analyze:`Vote verified. Current tally: ${p.votesFor} Yea / ${p.votesAgainst} Nay / ${p.abstain} Abstain. ${tot} of 7 council members voted.`,
+    respond:`Vote recorded in immutable ledger. Tally updated. ${tot<7?`${7-tot} members have not yet voted.`:'All votes cast.'}`,
+    status:'completed'
+  });
+  buildProposals(document.getElementById('filter-status').value);
+  buildOverviewProposals();
+  buildSARLog();
+  buildOverviewSAR();
+  showToast(`Vote recorded on ${id}`,'success');
+}
+
+function showProposalModal(){
+  const m=document.getElementById('proposal-modal');
+  m.style.display='flex';
+  document.getElementById('new-title').value='';
+  document.getElementById('new-body').value='';
+}
+function closeProposalModal(){
+  document.getElementById('proposal-modal').style.display='none';
+}
+function submitOrdinance(){
+  const title=document.getElementById('new-title').value.trim();
+  const body=document.getElementById('new-body').value.trim();
+  const type=document.getElementById('new-type').value;
+  if(!title||!body){showToast('Please fill in all fields');return;}
+  const num=String(PROPOSALS.length+42).padStart(3,'0');
+  const id=`ORD-2025-0${num}`;
+  const today=new Date().toISOString().split('T')[0];
+  PROPOSALS.unshift({
+    id,type,category:'general',title,body,
+    proposedBy:'Mayor',proposedDate:today,status:'open',
+    votesFor:0,votesAgainst:0,abstain:0,
+    votingEnds:new Date(Date.now()+14*86400000).toISOString().split('T')[0],
+    aiAnalysis:{riskLevel:'pending',conflict:false,
+      summary:'AI analysis in progress. This ordinance is being reviewed against the Town Charter and all standing ordinances.',
+      recommendation:'Under review — council will be notified when analysis is complete.'
+    }
+  });
+  SAR_LOG.unshift({
+    id:`SAR-${Date.now()}`,timestamp:new Date().toISOString(),
+    sense:`New ${type} "${title}" submitted by Mayor Caldwell.`,
+    analyze:`Ordinance intake logged. Type: ${type}. Checking against Town Charter and ${CHARTER.ordinances.length} standing ordinances.`,
+    respond:`${id} created and entered into public record. AI analysis queued. Council notification sent.`,
+    status:'pending'
+  });
+  closeProposalModal();
+  buildProposals();buildSARLog();buildOverviewSAR();
+  setView('proposals',document.querySelector('[data-view=proposals]'));
+  showToast(`${id} submitted to council`,'success');
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+buildAll();
+</script>
+</body>
+</html>

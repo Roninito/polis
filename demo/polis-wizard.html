@@ -1,0 +1,1191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>POLIS — Found Your Organization</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1c1917;--ink2:#44403c;--ink3:#78716c;
+  --paper:#faf7f2;--paper2:#f5f0e8;--paper3:#ede8dc;
+  --gold:#b8963e;--gold2:#d4a843;--gold3:#f0c84a;
+  --navy:#1e2d4a;--navy2:#2d3f5e;
+  --green:#2d6a4f;--red:#9b2226;
+  --border:#ddd8cc;--border2:#ccc6ba;
+  --shadow:0 2px 16px rgba(28,25,23,.08);
+  --shadow-lg:0 8px 40px rgba(28,25,23,.14);
+}
+html,body{height:100%;overflow:hidden}
+body{background:var(--paper);font-family:'Outfit',sans-serif;color:var(--ink)}
+
+/* ── WRAPPER ── */
+.app{height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── HEADER ── */
+.header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 40px;background:var(--navy);flex-shrink:0;
+}
+.header-brand{display:flex;align-items:center;gap:14px}
+.header-mark{
+  width:38px;height:38px;background:var(--gold);
+  color:var(--navy);display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;
+  border-radius:6px;
+}
+.header-name{font-family:'Cormorant Garamond',serif;font-size:22px;color:#e8e4d9;letter-spacing:.06em;font-weight:300}
+.header-tag{font-size:11px;color:#6b7a8d;letter-spacing:.12em;text-transform:uppercase}
+.header-step{font-size:12px;color:#6b7a8d;font-family:'DM Mono',monospace}
+
+/* ── PROGRESS BAR ── */
+.progress-track{height:3px;background:#2d3f5e;flex-shrink:0}
+.progress-fill{height:100%;background:var(--gold);transition:width .6s cubic-bezier(.4,0,.2,1)}
+
+/* ── MAIN AREA ── */
+.main{flex:1;overflow:hidden;display:flex}
+
+/* ── WIZARD ── */
+.wizard{
+  flex:1;display:flex;flex-direction:column;
+  overflow:hidden;position:relative;
+}
+
+/* ── STEP PANELS ── */
+.step{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:40px;overflow-y:auto;
+  opacity:0;pointer-events:none;transform:translateX(40px);
+  transition:all .4s cubic-bezier(.4,0,.2,1);
+}
+.step.active{opacity:1;pointer-events:all;transform:translateX(0)}
+.step.exit{opacity:0;transform:translateX(-40px)}
+
+/* ── LANDING STEP ── */
+.landing-inner{max-width:600px;width:100%;text-align:center}
+.landing-seal{
+  width:88px;height:88px;border-radius:50%;
+  background:var(--navy);border:3px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:42px;color:var(--gold);
+  margin:0 auto 28px;font-weight:300;
+  box-shadow:0 0 0 8px var(--paper3);
+}
+.landing-title{
+  font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;
+  color:var(--ink);line-height:1.1;margin-bottom:14px;
+}
+.landing-title em{font-style:italic;color:var(--gold)}
+.landing-sub{font-size:15px;color:var(--ink3);line-height:1.7;max-width:480px;margin:0 auto 36px}
+.org-type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:36px}
+.org-type-btn{
+  background:white;border:1.5px solid var(--border);border-radius:10px;
+  padding:16px 12px;cursor:pointer;transition:all .2s;text-align:center;
+  font-family:'Outfit',sans-serif;
+}
+.org-type-btn:hover{border-color:var(--gold);background:var(--paper2)}
+.org-type-btn.selected{border-color:var(--gold);background:var(--paper2);box-shadow:0 0 0 3px var(--gold)20}
+.org-type-icon{font-size:24px;margin-bottom:6px}
+.org-type-label{font-size:12px;font-weight:600;color:var(--ink);letter-spacing:.04em}
+.org-type-desc{font-size:11px;color:var(--ink3);margin-top:3px;line-height:1.4}
+.btn-start{
+  background:var(--navy);color:#e8e4d9;border:none;
+  padding:14px 40px;border-radius:8px;font-size:15px;
+  font-family:'Outfit',sans-serif;font-weight:500;
+  cursor:pointer;transition:all .2s;letter-spacing:.03em;
+}
+.btn-start:hover{background:var(--navy2);transform:translateY(-1px);box-shadow:var(--shadow)}
+.btn-start:disabled{opacity:.4;cursor:not-allowed;transform:none}
+
+/* ── CHAT STEP ── */
+.chat-wrap{display:flex;width:100%;max-width:860px;gap:28px;height:100%;max-height:620px;margin:0 auto}
+.chat-sidebar{
+  width:240px;flex-shrink:0;
+  background:white;border:1px solid var(--border);border-radius:14px;
+  padding:20px;display:flex;flex-direction:column;gap:0;
+  box-shadow:var(--shadow);
+}
+.sidebar-title{font-size:10px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.14em;margin-bottom:14px}
+.topic-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 10px;border-radius:7px;margin-bottom:2px;
+  font-size:13px;color:var(--ink3);transition:all .15s;
+}
+.topic-item.done{color:var(--green);font-weight:500}
+.topic-item.active{background:var(--paper2);color:var(--ink);font-weight:600}
+.topic-item .ti-dot{
+  width:18px;height:18px;border-radius:50%;
+  border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;flex-shrink:0;
+}
+.topic-item.done .ti-dot{background:var(--green);border-color:var(--green);color:white}
+.topic-item.active .ti-dot{background:var(--navy);border-color:var(--navy);color:#e8e4d9}
+.sidebar-divider{height:1px;background:var(--border);margin:14px 0}
+.ai-badge{
+  display:flex;align-items:center;gap:8px;
+  padding:10px;background:var(--paper2);border-radius:8px;
+  margin-top:auto;
+}
+.ai-pulse{
+  width:8px;height:8px;border-radius:50%;background:var(--gold);
+  flex-shrink:0;
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+.ai-badge-text{font-size:11px;color:var(--ink3);line-height:1.4}
+.ai-badge-text strong{color:var(--ink);display:block;font-size:12px}
+
+.chat-main{flex:1;display:flex;flex-direction:column;min-width:0}
+.chat-messages{
+  flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px;
+  padding:4px 2px 14px;
+  scrollbar-width:thin;scrollbar-color:var(--border) transparent;
+}
+.msg{display:flex;gap:10px;align-items:flex-start;animation:msgIn .3s ease}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg.user{flex-direction:row-reverse}
+.msg-avatar{
+  width:30px;height:30px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:600;
+}
+.msg.ai .msg-avatar{background:var(--navy);color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:14px}
+.msg.user .msg-avatar{background:var(--gold);color:var(--navy);font-size:11px}
+.msg-bubble{
+  max-width:82%;padding:12px 16px;border-radius:12px;
+  font-size:14px;line-height:1.65;
+}
+.msg.ai .msg-bubble{
+  background:white;border:1px solid var(--border);
+  border-radius:4px 12px 12px 12px;box-shadow:var(--shadow);
+  color:var(--ink);
+}
+.msg.user .msg-bubble{
+  background:var(--navy);color:#e8e4d9;
+  border-radius:12px 4px 12px 12px;
+}
+.msg-bubble strong{color:var(--gold)}
+.typing-dots{display:flex;gap:4px;padding:4px 0;align-items:center}
+.typing-dots span{width:7px;height:7px;border-radius:50%;background:var(--ink3);animation:dot .9s ease-in-out infinite}
+.typing-dots span:nth-child(2){animation-delay:.2s}
+.typing-dots span:nth-child(3){animation-delay:.4s}
+@keyframes dot{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+
+.chat-input-row{
+  display:flex;gap:10px;margin-top:12px;align-items:flex-end;
+}
+.chat-input{
+  flex:1;border:1.5px solid var(--border);border-radius:10px;
+  padding:12px 16px;font-size:14px;font-family:'Outfit',sans-serif;
+  color:var(--ink);background:white;outline:none;
+  resize:none;line-height:1.5;max-height:120px;
+  transition:border-color .15s;
+}
+.chat-input:focus{border-color:var(--navy)}
+.chat-send{
+  background:var(--navy);color:#e8e4d9;border:none;
+  width:44px;height:44px;border-radius:10px;cursor:pointer;
+  font-size:18px;display:flex;align-items:center;justify-content:center;
+  transition:all .15s;flex-shrink:0;
+}
+.chat-send:hover{background:var(--navy2)}
+.chat-send:disabled{opacity:.4;cursor:not-allowed}
+
+/* ── REVIEW STEP ── */
+.review-wrap{width:100%;max-width:760px;margin:0 auto}
+.review-header{text-align:center;margin-bottom:32px}
+.review-title{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:400;color:var(--ink);margin-bottom:8px}
+.review-sub{font-size:14px;color:var(--ink3)}
+.review-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.review-card{
+  background:white;border:1px solid var(--border);border-radius:12px;
+  padding:20px;
+}
+.review-card.full{grid-column:1/-1}
+.rc-label{font-size:10px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px}
+.rc-val{font-size:15px;color:var(--ink);line-height:1.6}
+.rc-val.large{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--navy)}
+.member-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px}
+.chip{
+  display:flex;align-items:center;gap:7px;
+  background:var(--paper2);border:1px solid var(--border);
+  border-radius:99px;padding:4px 12px 4px 6px;font-size:12px;
+}
+.chip-av{
+  width:22px;height:22px;border-radius:50%;
+  background:var(--navy);color:#e8e4d9;
+  font-size:9px;font-weight:600;font-family:'DM Mono',monospace;
+  display:flex;align-items:center;justify-content:center;
+}
+.law-pills{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.law-pill{
+  font-size:12px;color:var(--ink2);line-height:1.5;
+  padding:7px 10px;background:var(--paper2);border-radius:6px;
+  border-left:3px solid var(--gold);
+}
+.review-actions{display:flex;justify-content:center;gap:14px;margin-top:8px}
+.btn-back{
+  background:white;border:1.5px solid var(--border);color:var(--ink2);
+  padding:12px 28px;border-radius:8px;font-size:14px;
+  font-family:'Outfit',sans-serif;cursor:pointer;transition:all .15s;
+}
+.btn-back:hover{border-color:var(--ink3)}
+.btn-launch{
+  background:var(--navy);color:#e8e4d9;border:none;
+  padding:12px 36px;border-radius:8px;font-size:14px;font-weight:600;
+  font-family:'Outfit',sans-serif;cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;gap:10px;
+}
+.btn-launch:hover{background:var(--navy2);transform:translateY(-1px);box-shadow:var(--shadow)}
+.btn-launch .launch-icon{font-size:16px}
+
+/* ── GENERATING STEP ── */
+.gen-wrap{text-align:center;max-width:480px}
+.gen-seal{
+  width:80px;height:80px;border-radius:50%;
+  background:var(--navy);border:3px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:36px;color:var(--gold);
+  margin:0 auto 24px;
+  animation:spin .1s ease-in-out;
+}
+.gen-title{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:300;color:var(--ink);margin-bottom:12px}
+.gen-status{font-size:13px;color:var(--ink3);font-family:'DM Mono',monospace;margin-bottom:28px;min-height:20px}
+.gen-log{
+  text-align:left;background:var(--navy);border-radius:10px;
+  padding:16px;font-family:'DM Mono',monospace;font-size:11px;
+  max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;
+}
+.gen-log-line{color:#8b9ab3;animation:msgIn .3s ease}
+.gen-log-line.done{color:#4ade80}
+.gen-log-line.active{color:var(--gold3)}
+
+/* ── DASHBOARD (final) ── */
+.dashboard-wrap{
+  width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;
+  animation:msgIn .5s ease;
+}
+.dash-topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 32px;background:white;border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.dash-org-name{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--ink);font-weight:400}
+.dash-tabs{display:flex;gap:4px}
+.dash-tab{
+  padding:7px 16px;border-radius:6px;border:none;background:none;
+  font-size:13px;font-family:'Outfit',sans-serif;color:var(--ink3);
+  cursor:pointer;transition:all .15s;
+}
+.dash-tab:hover{background:var(--paper2);color:var(--ink)}
+.dash-tab.active{background:var(--navy);color:#e8e4d9}
+.dash-content{flex:1;overflow-y:auto;padding:28px 32px}
+.dash-views .dv{display:none}
+.dash-views .dv.active{display:block}
+
+/* dashboard internals */
+.d-grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.d-grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:22px}
+.d-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
+.d-stat{background:white;border:1px solid var(--border);border-radius:10px;padding:18px}
+.d-stat.gold-border{border-color:var(--gold)}
+.d-stat-label{font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.d-stat-val{font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--ink);margin-bottom:3px}
+.d-stat-sub{font-size:11px;color:var(--ink3)}
+.d-pbar{height:3px;background:var(--paper3);border-radius:2px;margin-top:8px}
+.d-pbar-fill{height:100%;background:var(--navy);border-radius:2px}
+.d-panel{background:white;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px}
+.d-panel-hdr{padding:13px 18px;font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid var(--paper3)}
+.d-row{display:flex;align-items:center;justify-content:space-between;padding:11px 18px;border-bottom:1px solid var(--paper2);font-size:13px}
+.d-row:last-child{border-bottom:none}
+.d-av{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#e8e4d9;display:flex;align-items:center;justify-content:center;font-size:10px;font-family:'DM Mono',monospace;font-weight:500;flex-shrink:0}
+.d-name{font-size:13px;font-weight:500;color:var(--ink)}
+.d-sub{font-size:11px;color:var(--ink3)}
+.d-tag{font-size:10px;padding:2px 8px;border-radius:4px;font-weight:600;letter-spacing:.04em}
+.d-tag.active{background:#f0fdf4;color:#16a34a}
+.d-tag.pending{background:var(--paper3);color:var(--ink3)}
+.d-tag.next{background:var(--navy);color:#e8e4d9}
+.d-tag.law{background:var(--paper2);color:var(--ink2)}
+.d-tag.const{background:var(--navy)15;color:var(--navy)}
+.article-block{padding:18px;border-bottom:1px solid var(--paper2)}
+.article-block:last-child{border-bottom:none}
+.ab-id{font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;margin-bottom:4px}
+.ab-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:5px}
+.ab-body{font-size:13px;color:var(--ink2);line-height:1.65}
+.sar-entry{padding:14px 18px;border-bottom:1px solid var(--paper2)}
+.sar-entry:last-child{border-bottom:none}
+.sar-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.sar-id{font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3)}
+.sar-ts{font-family:'DM Mono',monospace;font-size:10px;color:var(--border2);flex:1}
+.sar-sbadge{font-size:9px;padding:2px 7px;border-radius:4px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;background:#f0fdf4;color:#16a34a}
+.sar-phase{display:flex;gap:10px;margin-bottom:6px;font-size:12px}
+.sar-pl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:2px 6px;border-radius:3px;min-width:58px;text-align:center;flex-shrink:0;margin-top:1px}
+.sar-pl.s{background:#eff6ff;color:#1d4ed8}
+.sar-pl.a{background:#fefce8;color:#854d0e}
+.sar-pl.r{background:#f0fdf4;color:#166534}
+.sar-pb{color:var(--ink2);line-height:1.5}
+.toast{position:fixed;bottom:28px;right:28px;z-index:200;background:var(--navy);color:#e8e4d9;padding:12px 20px;border-radius:8px;font-size:13px;box-shadow:var(--shadow-lg);animation:msgIn .2s ease;pointer-events:none}
+.toast.hidden{display:none}
+
+/* scroll styling */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <header class="header">
+    <div class="header-brand">
+      <div class="header-mark">Π</div>
+      <div>
+        <div class="header-name">POLIS</div>
+        <div class="header-tag">Governance Engine</div>
+      </div>
+    </div>
+    <div class="header-step" id="header-step">Organization Founder</div>
+  </header>
+  <div class="progress-track"><div class="progress-fill" id="progress" style="width:0%"></div></div>
+
+  <main class="main">
+    <div class="wizard" id="wizard">
+
+      <!-- STEP 0: LANDING -->
+      <div class="step active" id="step-0">
+        <div class="landing-inner">
+          <div class="landing-seal">Π</div>
+          <h1 class="landing-title">Found something<br><em>worth building.</em></h1>
+          <p class="landing-sub">POLIS helps you establish any kind of governed organization — a family trust, fraternal circle, savings cooperative, business, church, or community. Answer a few questions and AI will generate your full constitution, bylaws, and member structure.</p>
+          <div class="org-type-grid" id="org-type-grid">
+            <button class="org-type-btn selected" data-type="fraternal" onclick="selectType(this)">
+              <div class="org-type-icon">🤝</div>
+              <div class="org-type-label">Fraternal Circle</div>
+              <div class="org-type-desc">Family, friends & trusted networks</div>
+            </button>
+            <button class="org-type-btn" data-type="savings" onclick="selectType(this)">
+              <div class="org-type-icon">💰</div>
+              <div class="org-type-label">Savings Cooperative</div>
+              <div class="org-type-desc">Rotating pool & shared investment</div>
+            </button>
+            <button class="org-type-btn" data-type="trust" onclick="selectType(this)">
+              <div class="org-type-icon">⚖️</div>
+              <div class="org-type-label">Family Trust</div>
+              <div class="org-type-desc">Shared assets & generational wealth</div>
+            </button>
+            <button class="org-type-btn" data-type="church" onclick="selectType(this)">
+              <div class="org-type-icon">⛪</div>
+              <div class="org-type-label">Church / Ministry</div>
+              <div class="org-type-desc">Faith-based governance & tithing</div>
+            </button>
+            <button class="org-type-btn" data-type="business" onclick="selectType(this)">
+              <div class="org-type-icon">🏢</div>
+              <div class="org-type-label">Business / DAO</div>
+              <div class="org-type-desc">Shared equity & decision rights</div>
+            </button>
+            <button class="org-type-btn" data-type="community" onclick="selectType(this)">
+              <div class="org-type-icon">🌐</div>
+              <div class="org-type-label">Community / Civic</div>
+              <div class="org-type-desc">Neighborhood, school or public body</div>
+            </button>
+          </div>
+          <button class="btn-start" id="btn-start" onclick="startWizard()">Begin Founding Interview →</button>
+        </div>
+      </div>
+
+      <!-- STEP 1: AI CHAT -->
+      <div class="step" id="step-1">
+        <div class="chat-wrap">
+          <div class="chat-sidebar">
+            <div class="sidebar-title">Interview Topics</div>
+            <div class="topic-item active" id="topic-0">
+              <div class="ti-dot">1</div><span>Organization Identity</span>
+            </div>
+            <div class="topic-item" id="topic-1">
+              <div class="ti-dot">2</div><span>Membership & Roles</span>
+            </div>
+            <div class="topic-item" id="topic-2">
+              <div class="ti-dot">3</div><span>Financial Structure</span>
+            </div>
+            <div class="topic-item" id="topic-3">
+              <div class="ti-dot">4</div><span>Governance Rules</span>
+            </div>
+            <div class="topic-item" id="topic-4">
+              <div class="ti-dot">5</div><span>Values & Purpose</span>
+            </div>
+            <div class="sidebar-divider"></div>
+            <div class="ai-badge">
+              <div class="ai-pulse"></div>
+              <div class="ai-badge-text"><strong>AI Advisor Active</strong>Building your charter in real time</div>
+            </div>
+          </div>
+          <div class="chat-main">
+            <div class="chat-messages" id="chat-messages"></div>
+            <div class="chat-input-row">
+              <textarea class="chat-input" id="chat-input" rows="1" placeholder="Describe your organization..." onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+              <button class="chat-send" id="chat-send" onclick="sendMessage()">↑</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: REVIEW -->
+      <div class="step" id="step-2">
+        <div class="review-wrap">
+          <div class="review-header">
+            <h2 class="review-title">Your Organization Charter</h2>
+            <p class="review-sub">AI has drafted your founding documents. Review and launch when ready.</p>
+          </div>
+          <div class="review-grid" id="review-grid"></div>
+          <div class="review-actions">
+            <button class="btn-back" onclick="goBack()">← Edit Answers</button>
+            <button class="btn-launch" onclick="launchOrg()">
+              <span class="launch-icon">⚡</span> Launch Organization
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: GENERATING -->
+      <div class="step" id="step-3">
+        <div class="gen-wrap">
+          <div class="gen-seal" id="gen-seal">Π</div>
+          <h2 class="gen-title">Founding your organization…</h2>
+          <div class="gen-status" id="gen-status">Preparing documents</div>
+          <div class="gen-log" id="gen-log"></div>
+        </div>
+      </div>
+
+      <!-- STEP 4: DASHBOARD -->
+      <div class="step" id="step-4">
+        <div class="dashboard-wrap">
+          <div class="dash-topbar">
+            <div class="dash-org-name" id="dash-org-name">Organization</div>
+            <div class="dash-tabs">
+              <button class="dash-tab active" onclick="showTab('overview',this)">Overview</button>
+              <button class="dash-tab" onclick="showTab('members',this)">Members</button>
+              <button class="dash-tab" onclick="showTab('treasury',this)">Treasury</button>
+              <button class="dash-tab" onclick="showTab('constitution',this)">Constitution</button>
+              <button class="dash-tab" onclick="showTab('sar',this)">SAR Log</button>
+            </div>
+          </div>
+          <div class="dash-content">
+            <div class="dash-views">
+              <div class="dv active" id="dv-overview"></div>
+              <div class="dv" id="dv-members"></div>
+              <div class="dv" id="dv-treasury"></div>
+              <div class="dv" id="dv-constitution"></div>
+              <div class="dv" id="dv-sar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /wizard -->
+  </main>
+</div>
+
+<div class="toast hidden" id="toast"></div>
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────────────────────
+const API_URL = 'https://api.anthropic.com/v1/messages';
+const MODEL = 'claude-sonnet-4-20250514';
+
+// ── STATE ─────────────────────────────────────────────────────────────────
+let currentStep = 0;
+let selectedType = 'fraternal';
+let chatHistory = [];
+let topicIndex = 0;
+let generatedOrg = null;
+let aiThinking = false;
+
+const TOPICS = [
+  'Organization Identity',
+  'Membership & Roles',
+  'Financial Structure',
+  'Governance Rules',
+  'Values & Purpose'
+];
+
+const TOPIC_PROMPTS = [
+  `What's the name of your organization, and in a sentence or two, what is it? Who are the founding members? (Even first names or relationships are fine — like "me, my brother, and three cousins".)`,
+  `Who will be members, and are there different tiers or roles? For instance, founding members vs regular members, or a council of elders? How many people do you expect to start with?`,
+  `Tell me about the money side. Will members contribute dues or savings? How much, and how often? What happens with the pooled funds — savings rotation, shared investments, emergency fund, or something else?`,
+  `How should decisions be made? Simple majority vote? Do founders have more say? How long should votes stay open, and what percentage is needed to pass something important?`,
+  `What values or principles should be written into your founding charter? What's the deeper purpose — wealth building, legacy, mutual support, community? Any rules about how members should treat each other?`
+];
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────
+function goToStep(n) {
+  const prev = document.getElementById(`step-${currentStep}`);
+  prev.classList.remove('active');
+  prev.classList.add('exit');
+  setTimeout(() => prev.classList.remove('exit'), 400);
+
+  currentStep = n;
+  const next = document.getElementById(`step-${n}`);
+  next.classList.add('active');
+
+  const pct = [0, 25, 60, 80, 100][n] || 0;
+  document.getElementById('progress').style.width = pct + '%';
+
+  const labels = ['Organization Founder', 'Founding Interview', 'Review Charter', 'Founding…', ''];
+  document.getElementById('header-step').textContent = labels[n] || '';
+}
+
+function selectType(btn) {
+  document.querySelectorAll('.org-type-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedType = btn.dataset.type;
+}
+
+function startWizard() {
+  goToStep(1);
+  setTimeout(() => startChat(), 300);
+}
+
+function goBack() {
+  goToStep(1);
+}
+
+// ── CHAT ──────────────────────────────────────────────────────────────────
+function startChat() {
+  chatHistory = [];
+  topicIndex = 0;
+  document.getElementById('chat-messages').innerHTML = '';
+  updateTopics(0);
+
+  const typeLabels = {
+    fraternal: 'fraternal circle / family trust network',
+    savings: 'savings cooperative',
+    trust: 'family trust',
+    church: 'church or ministry',
+    business: 'business or DAO',
+    community: 'community organization'
+  };
+
+  const opener = `Welcome! I'm here to help you found your **${typeLabels[selectedType]}** using POLIS governance.\n\nI'll ask you five sets of questions to understand your vision, then generate your complete founding charter — constitution, bylaws, member roster, and treasury structure.\n\nLet's start with the basics.\n\n${TOPIC_PROMPTS[0]}`;
+
+  appendMessage('ai', opener);
+}
+
+function appendMessage(role, text) {
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+
+  const av = document.createElement('div');
+  av.className = 'msg-avatar';
+  av.textContent = role === 'ai' ? 'Π' : 'You';
+
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  bubble.innerHTML = formatMsgText(text);
+
+  div.appendChild(av);
+  div.appendChild(bubble);
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function formatMsgText(t) {
+  return t
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+}
+
+function showTyping() {
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'msg ai';
+  div.id = 'typing-indicator';
+  div.innerHTML = `<div class="msg-avatar">Π</div><div class="msg-bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typing-indicator');
+  if (t) t.remove();
+}
+
+function updateTopics(active) {
+  TOPICS.forEach((_, i) => {
+    const el = document.getElementById(`topic-${i}`);
+    if (!el) return;
+    el.className = 'topic-item' + (i < active ? ' done' : i === active ? ' active' : '');
+    const dot = el.querySelector('.ti-dot');
+    dot.textContent = i < active ? '✓' : String(i + 1);
+  });
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+async function sendMessage() {
+  if (aiThinking) return;
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+  appendMessage('user', text);
+
+  chatHistory.push({ role: 'user', content: text });
+  aiThinking = true;
+  document.getElementById('chat-send').disabled = true;
+  showTyping();
+
+  const nextTopic = topicIndex + 1;
+  const isLast = nextTopic >= TOPICS.length;
+
+  const systemPrompt = `You are a warm, knowledgeable governance advisor helping someone found a ${selectedType} organization using the POLIS governance framework.
+
+The POLIS framework creates organizations with:
+- A Constitution (foundational articles)
+- Operating Laws (practical rules)
+- Member Registry (roles and rotation)
+- Treasury (contributions, payouts, reserves)
+- SAR Governance Engine (AI that enforces the rules transparently)
+
+You are conducting a structured founding interview. You've covered: ${TOPICS.slice(0, topicIndex).join(', ')}.
+Current topic: ${TOPICS[topicIndex]}.
+${isLast ? 'This is the FINAL topic.' : `Next topic will be: ${TOPICS[nextTopic]}.`}
+
+Keep responses warm, concise (2-4 sentences), and helpful. Acknowledge what they said, draw out important details if needed, then either:
+- Ask a brief follow-up if something crucial is missing
+- Or transition naturally to the next topic: "${isLast ? 'READY_TO_REVIEW' : TOPIC_PROMPTS[nextTopic]}"
+
+If you are ready to move to the next topic, end your response with exactly: [ADVANCE]
+If this is the last topic and you have enough to generate a full charter, end with: [READY]
+Otherwise just respond normally.
+
+Be conversational. This person is founding something meaningful — treat it that way.`;
+
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: MODEL,
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: chatHistory
+      })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'Let me think about that…';
+
+    removeTyping();
+
+    const advance = reply.includes('[ADVANCE]');
+    const ready = reply.includes('[READY]');
+    const clean = reply.replace('[ADVANCE]', '').replace('[READY]', '').trim();
+
+    chatHistory.push({ role: 'assistant', content: clean });
+    appendMessage('ai', clean);
+
+    if (advance && topicIndex < TOPICS.length - 1) {
+      topicIndex++;
+      updateTopics(topicIndex);
+    }
+
+    if (ready) {
+      topicIndex = TOPICS.length;
+      updateTopics(TOPICS.length);
+      setTimeout(() => {
+        appendMessage('ai', "I have everything I need. Let me now generate your complete founding charter. One moment…");
+        setTimeout(() => generateCharter(), 1200);
+      }, 800);
+    }
+
+  } catch(e) {
+    removeTyping();
+    appendMessage('ai', 'There was a connection issue. Please check your API access and try again.');
+  }
+
+  aiThinking = false;
+  document.getElementById('chat-send').disabled = false;
+}
+
+// ── CHARTER GENERATION ────────────────────────────────────────────────────
+async function generateCharter() {
+  showTyping();
+
+  const systemPrompt = `You are generating a complete POLIS governance charter for a new organization based on this founding interview. 
+
+Return ONLY valid JSON with this exact structure (no markdown, no explanation):
+{
+  "org": {
+    "name": "string",
+    "type": "string",
+    "tagline": "string",
+    "foundedDate": "YYYY-MM-DD",
+    "description": "2-3 sentence description"
+  },
+  "constitution": {
+    "version": "1.0.0",
+    "articles": [
+      {"id": "A1", "title": "string", "body": "string"},
+      {"id": "A2", "title": "string", "body": "string"},
+      {"id": "A3", "title": "string", "body": "string"},
+      {"id": "A4", "title": "string", "body": "string"},
+      {"id": "A5", "title": "string", "body": "string"},
+      {"id": "A6", "title": "string", "body": "string"},
+      {"id": "A7", "title": "string", "body": "string"}
+    ]
+  },
+  "laws": [
+    {"id": "L001", "title": "string", "body": "string", "status": "active"},
+    {"id": "L002", "title": "string", "body": "string", "status": "active"},
+    {"id": "L003", "title": "string", "body": "string", "status": "active"},
+    {"id": "L004", "title": "string", "body": "string", "status": "active"},
+    {"id": "L005", "title": "string", "body": "string", "status": "active"},
+    {"id": "L006", "title": "string", "body": "string", "status": "active"}
+  ],
+  "members": [
+    {"id": "M001", "name": "string", "avatar": "XX", "role": "Founder", "status": "active", "joined": "YYYY-MM-DD", "contributions": 0, "balance": 0, "rotationPos": 1},
+    ... (generate all members mentioned, minimum 4)
+  ],
+  "treasury": {
+    "cycleAmount": number,
+    "cyclePeriod": "string",
+    "reservePct": number,
+    "currentBalance": number,
+    "reserveFund": number,
+    "nextPayoutMember": "M001",
+    "nextPayoutDate": "YYYY-MM-DD"
+  },
+  "sarLog": [
+    {
+      "id": "SAR001",
+      "timestamp": "ISO string",
+      "sense": "string",
+      "analyze": "string",
+      "respond": "string",
+      "status": "completed"
+    },
+    {
+      "id": "SAR002",
+      "timestamp": "ISO string",
+      "sense": "string",
+      "analyze": "string",
+      "respond": "string",
+      "status": "completed"
+    },
+    {
+      "id": "SAR003",
+      "timestamp": "ISO string",
+      "sense": "string",
+      "analyze": "string",
+      "respond": "string",
+      "status": "completed"
+    }
+  ]
+}
+
+Make the constitution articles, laws, member names, and SAR log entries specific to this organization's actual stated purpose, values, and structure. Use the real names or relationships mentioned. If no specific names were given, use plausible full names fitting the cultural context described. Make the SAR log entries describe realistic founding actions (charter ratification, first member registration, initial treasury setup, etc).`;
+
+  const userMsg = `Here is the complete founding interview transcript. Generate the full charter JSON:\n\n${chatHistory.map(m => `${m.role.toUpperCase()}: ${m.content}`).join('\n\n')}`;
+
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: MODEL,
+        max_tokens: 4000,
+        messages: [{ role: 'user', content: systemPrompt + '\n\n' + userMsg }]
+      })
+    });
+    const data = await res.json();
+    removeTyping();
+
+    let raw = data.content?.[0]?.text || '{}';
+    raw = raw.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    generatedOrg = JSON.parse(raw);
+    buildReviewScreen();
+    goToStep(2);
+
+  } catch(e) {
+    removeTyping();
+    // fallback demo data for fraternal family trust
+    generatedOrg = getFallbackOrg();
+    buildReviewScreen();
+    goToStep(2);
+  }
+}
+
+// ── REVIEW SCREEN ─────────────────────────────────────────────────────────
+function buildReviewScreen() {
+  const g = generatedOrg;
+  const grid = document.getElementById('review-grid');
+
+  const avatarColors = ['#1e2d4a','#2d6a4f','#7c3d00','#5b21b6','#9b2226','#1d4ed8'];
+
+  grid.innerHTML = `
+    <div class="review-card">
+      <div class="rc-label">Organization</div>
+      <div class="rc-val large">${g.org.name}</div>
+      <div class="rc-val" style="font-size:12px;color:var(--ink3);margin-top:4px">${g.org.tagline}</div>
+    </div>
+    <div class="review-card">
+      <div class="rc-label">Structure</div>
+      <div class="rc-val large">${g.org.type}</div>
+      <div class="rc-val" style="font-size:12px;color:var(--ink3);margin-top:4px">Founded ${g.org.foundedDate}</div>
+    </div>
+    <div class="review-card full">
+      <div class="rc-label">Purpose</div>
+      <div class="rc-val">${g.org.description}</div>
+    </div>
+    <div class="review-card full">
+      <div class="rc-label">Founding Members (${g.members.length})</div>
+      <div class="member-chips">
+        ${g.members.map((m,i) => `
+          <div class="chip">
+            <div class="chip-av" style="background:${avatarColors[i%avatarColors.length]}">${m.avatar}</div>
+            <span>${m.name}</span>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="rc-label">Financial Structure</div>
+      <div class="rc-val">$${g.treasury.cycleAmount} per ${g.treasury.cyclePeriod}<br>
+      <span style="font-size:12px;color:var(--ink3)">${g.treasury.reservePct}% reserve fund · Rotation payout</span></div>
+    </div>
+    <div class="review-card">
+      <div class="rc-label">Charter Articles</div>
+      <div class="rc-val">${g.constitution.articles.length} constitutional articles<br>
+      <span style="font-size:12px;color:var(--ink3)">${g.laws.length} operating laws</span></div>
+    </div>
+    <div class="review-card full">
+      <div class="rc-label">Key Operating Laws</div>
+      <div class="law-pills">
+        ${g.laws.slice(0,4).map(l => `<div class="law-pill"><strong>${l.title}:</strong> ${l.body}</div>`).join('')}
+      </div>
+    </div>`;
+}
+
+// ── LAUNCH ────────────────────────────────────────────────────────────────
+function launchOrg() {
+  goToStep(3);
+  runGenerationSequence();
+}
+
+const GEN_STEPS = [
+  'Ratifying constitution…',
+  'Enrolling founding members…',
+  'Establishing treasury structure…',
+  'Encoding operating laws…',
+  'Initializing SAR governance engine…',
+  'Writing genesis SAR entries…',
+  'Sealing founding charter…',
+  'Organization is live.'
+];
+
+async function runGenerationSequence() {
+  const log = document.getElementById('gen-log');
+  const status = document.getElementById('gen-status');
+  log.innerHTML = '';
+
+  for (let i = 0; i < GEN_STEPS.length; i++) {
+    status.textContent = GEN_STEPS[i];
+    const line = document.createElement('div');
+    line.className = 'gen-log-line active';
+    line.textContent = `> ${GEN_STEPS[i]}`;
+    log.appendChild(line);
+    log.scrollTop = log.scrollHeight;
+    await sleep(i === GEN_STEPS.length - 1 ? 400 : 320 + Math.random() * 180);
+    line.className = 'gen-log-line done';
+  }
+
+  await sleep(500);
+  buildDashboard();
+  goToStep(4);
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ── DASHBOARD ─────────────────────────────────────────────────────────────
+function buildDashboard() {
+  const g = generatedOrg;
+  document.getElementById('dash-org-name').textContent = g.org.name;
+
+  buildOverview();
+  buildMembersView();
+  buildTreasuryView();
+  buildConstitutionView();
+  buildSARView();
+}
+
+const AV_COLORS = ['#1e2d4a','#2d6a4f','#7c3d00','#5b21b6','#9b2226','#1d4ed8','#065f46','#92400e'];
+
+function avEl(m, i, size='sm') {
+  const s = size === 'lg' ? 'width:40px;height:40px;font-size:13px' : 'width:28px;height:28px;font-size:10px';
+  return `<div class="d-av" style="${s};background:${AV_COLORS[i%AV_COLORS.length]}">${m.avatar}</div>`;
+}
+
+function buildOverview() {
+  const g = generatedOrg;
+  const next = g.members.find(m => m.id === g.treasury.nextPayoutMember) || g.members[0];
+  const total = g.members.length * g.treasury.cycleAmount;
+  const pct = Math.round((g.treasury.currentBalance / total) * 100) || 0;
+
+  document.getElementById('dv-overview').innerHTML = `
+    <div class="d-grid4">
+      <div class="d-stat">
+        <div class="d-stat-label">Members</div>
+        <div class="d-stat-val">${g.members.length}</div>
+        <div class="d-stat-sub">All founding</div>
+      </div>
+      <div class="d-stat">
+        <div class="d-stat-label">Cycle Pool</div>
+        <div class="d-stat-val">$${total.toLocaleString()}</div>
+        <div class="d-stat-sub">$${g.treasury.cycleAmount}/member</div>
+      </div>
+      <div class="d-stat">
+        <div class="d-stat-label">Reserve Fund</div>
+        <div class="d-stat-val">$${g.treasury.reserveFund.toLocaleString()}</div>
+        <div class="d-stat-sub">${g.treasury.reservePct}% per payout</div>
+      </div>
+      <div class="d-stat gold-border">
+        <div class="d-stat-label">Next Payout</div>
+        <div class="d-stat-val">${next.name.split(' ')[0]}</div>
+        <div class="d-stat-sub">${formatDate(g.treasury.nextPayoutDate)}</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px">
+      <div class="d-panel">
+        <div class="d-panel-hdr">Founding Members</div>
+        ${g.members.slice(0,5).map((m,i) => `
+          <div class="d-row">
+            <div style="display:flex;align-items:center;gap:10px">
+              ${avEl(m,i)}
+              <div><div class="d-name">${m.name}</div><div class="d-sub">${m.role} · #${m.rotationPos}</div></div>
+            </div>
+            <span class="d-tag ${m.id === g.treasury.nextPayoutMember ? 'next' : 'active'}">${m.id === g.treasury.nextPayoutMember ? 'Next' : 'Active'}</span>
+          </div>`).join('')}
+      </div>
+      <div class="d-panel">
+        <div class="d-panel-hdr">Operating Laws</div>
+        ${g.laws.slice(0,5).map(l => `
+          <div class="d-row">
+            <div><div class="d-name" style="font-size:13px">${l.title}</div><div class="d-sub">${l.body.substring(0,60)}${l.body.length>60?'…':''}</div></div>
+            <span class="d-tag law">active</span>
+          </div>`).join('')}
+      </div>
+    </div>
+
+    <div class="d-panel">
+      <div class="d-panel-hdr">Rotation Order</div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;padding:16px">
+        ${g.members.map((m,i) => `
+          <div style="display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 10px;border-radius:8px;border:1px solid ${m.id===g.treasury.nextPayoutMember?'var(--navy)':'var(--border)'};background:${m.id===g.treasury.nextPayoutMember?'var(--navy)':'white'};min-width:68px">
+            <div class="d-av" style="width:34px;height:34px;font-size:11px;background:${m.id===g.treasury.nextPayoutMember?'var(--gold)':AV_COLORS[i%AV_COLORS.length]};color:${m.id===g.treasury.nextPayoutMember?'var(--navy)':'#e8e4d9'}">${m.avatar}</div>
+            <div style="font-size:10px;color:${m.id===g.treasury.nextPayoutMember?'#8b9ab3':'var(--ink3)'};font-family:'DM Mono',monospace">#${m.rotationPos}</div>
+            <div style="font-size:11px;color:${m.id===g.treasury.nextPayoutMember?'white':'var(--ink2)'};font-weight:500">${m.name.split(' ')[0]}</div>
+            ${m.id===g.treasury.nextPayoutMember?'<div style="font-size:9px;color:var(--gold);letter-spacing:.1em;font-weight:700">NEXT</div>':''}
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+
+function buildMembersView() {
+  const g = generatedOrg;
+  document.getElementById('dv-members').innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">
+      ${g.members.map((m,i) => `
+        <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:18px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+            <div class="d-av" style="width:44px;height:44px;font-size:14px;background:${AV_COLORS[i%AV_COLORS.length]}">${m.avatar}</div>
+            <div>
+              <div style="font-size:15px;font-weight:600;color:var(--ink)">${m.name}</div>
+              <div style="font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;margin-top:1px">${m.id} · ${m.role}</div>
+              <div style="font-size:11px;color:var(--ink3);margin-top:2px;display:flex;align-items:center;gap:4px"><span style="width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block"></span>${m.status}</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div style="background:var(--paper2);border-radius:6px;padding:9px 11px">
+              <div style="font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px">Rotation</div>
+              <div style="font-size:14px;font-weight:600;color:var(--ink)">#${m.rotationPos}</div>
+            </div>
+            <div style="background:var(--paper2);border-radius:6px;padding:9px 11px">
+              <div style="font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px">Balance In</div>
+              <div style="font-size:14px;font-weight:600;color:var(--ink)">$${m.balance.toLocaleString()}</div>
+            </div>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+function buildTreasuryView() {
+  const g = generatedOrg;
+  const total = g.members.length * g.treasury.cycleAmount;
+  document.getElementById('dv-treasury').innerHTML = `
+    <div class="d-grid3">
+      <div class="d-stat"><div class="d-stat-label">Contribution / ${g.treasury.cyclePeriod}</div><div class="d-stat-val">$${g.treasury.cycleAmount}</div><div class="d-stat-sub">Per member</div></div>
+      <div class="d-stat"><div class="d-stat-label">Full Pool</div><div class="d-stat-val">$${total.toLocaleString()}</div><div class="d-stat-sub">${g.members.length} members</div></div>
+      <div class="d-stat"><div class="d-stat-label">Reserve Fund</div><div class="d-stat-val">$${g.treasury.reserveFund.toLocaleString()}</div><div class="d-stat-sub">${g.treasury.reservePct}% per cycle</div></div>
+    </div>
+    <div class="d-panel">
+      <div class="d-panel-hdr">Payout Schedule</div>
+      ${g.members.map((m,i) => `
+        <div class="d-row">
+          <div style="display:flex;align-items:center;gap:10px">
+            ${avEl(m,i)}
+            <div><div class="d-name">${m.name}</div><div class="d-sub">Position #${m.rotationPos}</div></div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:13px;font-weight:600;color:var(--ink)">$${(total * (1 - g.treasury.reservePct/100)).toFixed(0)}</div>
+            <div class="d-sub">Cycle ${m.rotationPos}</div>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+function buildConstitutionView() {
+  const g = generatedOrg;
+  document.getElementById('dv-constitution').innerHTML = `
+    <div style="margin-bottom:24px">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--ink);margin-bottom:4px">${g.constitution.name || g.org.name + ' Constitution'}</div>
+      <div style="font-size:12px;color:var(--ink3);font-family:'DM Mono',monospace">Version ${g.constitution.version} · Founded ${g.org.foundedDate}</div>
+    </div>
+    ${g.constitution.articles.map(a => `
+      <div style="display:flex;gap:18px;background:white;border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:10px">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--border2);min-width:36px;padding-top:2px">${a.id}</div>
+        <div>
+          <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:6px">${a.title}</div>
+          <div style="font-size:13px;color:var(--ink2);line-height:1.7">${a.body}</div>
+        </div>
+      </div>`).join('')}
+    <div class="d-panel" style="margin-top:20px">
+      <div class="d-panel-hdr">Operating Laws</div>
+      ${g.laws.map(l => `
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:13px 18px;border-bottom:1px solid var(--paper2)">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3);min-width:44px;padding-top:2px">${l.id}</div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px">${l.title}</div><div style="font-size:12px;color:var(--ink3)">${l.body}</div></div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--green);flex-shrink:0">${l.status}</div>
+        </div>`).join('')}
+    </div>`;
+}
+
+function buildSARView() {
+  const g = generatedOrg;
+  document.getElementById('dv-sar').innerHTML = `
+    <div style="background:var(--navy);color:#6b7a8d;border-radius:8px;padding:13px 18px;font-size:13px;line-height:1.6;margin-bottom:18px;display:flex;align-items:center;gap:12px">
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:#4ade80;border:1px solid #4ade8040;padding:3px 8px;border-radius:4px;flex-shrink:0">SAR Engine Active</div>
+      Every action taken by the AI Governance Engine is logged here. The AI cannot act outside these logs. Your organization's governance is fully transparent.
+    </div>
+    ${g.sarLog.map(l => `
+      <div class="d-panel" style="margin-bottom:12px">
+        <div class="sar-hdr" style="padding:14px 18px 0">
+          <span class="sar-id">${l.id}</span>
+          <span class="sar-ts">${formatTime(l.timestamp)}</span>
+          <span class="sar-sbadge">${l.status}</span>
+        </div>
+        <div style="padding:10px 18px 16px;display:flex;flex-direction:column;gap:8px">
+          <div class="sar-phase"><div class="sar-pl s">SENSE</div><div class="sar-pb">${l.sense}</div></div>
+          <div class="sar-phase"><div class="sar-pl a">ANALYZE</div><div class="sar-pb">${l.analyze}</div></div>
+          <div class="sar-phase"><div class="sar-pl r">RESPOND</div><div class="sar-pb">${l.respond}</div></div>
+        </div>
+      </div>`).join('')}`;
+}
+
+// ── TAB SWITCHING ─────────────────────────────────────────────────────────
+function showTab(tab, btn) {
+  document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.dv').forEach(d => d.classList.remove('active'));
+  document.getElementById('dv-' + tab).classList.add('active');
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────
+function formatDate(d) {
+  if (!d) return '';
+  try { return new Date(d).toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}); }
+  catch { return d; }
+}
+function formatTime(d) {
+  try { return new Date(d).toLocaleString('en-US', {month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}); }
+  catch { return d; }
+}
+
+let toastTimer;
+function showToast(msg, type='info') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (type==='success'?' success':'');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.className = 'toast hidden', 3500);
+}
+
+// ── FALLBACK ORG (if API unavailable) ─────────────────────────────────────
+function getFallbackOrg() {
+  return {
+    org: {
+      name: "The Ironwood Circle",
+      type: "Fraternal Family Trust Network",
+      tagline: "Rooted in family. Built for legacy.",
+      foundedDate: new Date().toISOString().split('T')[0],
+      description: "The Ironwood Circle is a private fraternal trust network founded by a core family and their closest trusted friends. Its purpose is mutual financial support, shared wealth building through rotating savings, and the establishment of a lasting legacy fund for the next generation."
+    },
+    constitution: {
+      version: "1.0.0",
+      articles: [
+        {id:"A1",title:"Foundation & Purpose",body:"The Ironwood Circle exists to strengthen the financial foundations of its founding families through disciplined shared saving, mutual accountability, and democratic self-governance. We hold that lasting wealth is built together, not alone."},
+        {id:"A2",title:"Membership",body:"Membership is open to family members and trusted friends nominated by existing members. All nominations require a two-thirds approval vote. Members are admitted on a basis of trust, mutual respect, and commitment to the Circle's financial obligations."},
+        {id:"A3",title:"Brotherhood & Conduct",body:"All members shall treat each other with dignity and respect. Financial disputes shall be resolved through the established governance process. Members who act in bad faith toward the Circle or its members may be subject to removal by unanimous Council vote."},
+        {id:"A4",title:"Savings Rotation",body:"The Circle operates a rotating savings pool. Each cycle, one member receives the full pool. Order is determined by founding lottery and may be adjusted by member vote for documented hardship. Every member receives their payout before a second round begins."},
+        {id:"A5",title:"Governance",body:"All legislative authority rests with the full membership. The AI Governance Engine serves as a neutral, transparent executor of this Constitution and the Circle's laws. It may not override member votes and must log all decisions with full reasoning."},
+        {id:"A6",title:"Legacy Fund",body:"A percentage of each payout is retained in the Legacy Fund. These funds shall not be distributed until a vote of three-quarters of all members, or upon conditions specified in separate Trust documents. The Legacy Fund belongs to the Circle in perpetuity."},
+        {id:"A7",title:"Amendment & Dissolution",body:"This Constitution may be amended by a two-thirds supermajority. The Circle may be dissolved only by unanimous consent after all obligations are settled. Upon dissolution, remaining funds are distributed proportionally to members in good standing."}
+      ]
+    },
+    laws: [
+      {id:"L001",title:"Cycle Period",body:"Each savings cycle is 30 days.",status:"active"},
+      {id:"L002",title:"Monthly Contribution",body:"Each member contributes $300 per cycle. Contributions are due by the 5th of each month.",status:"active"},
+      {id:"L003",title:"Late Penalty",body:"Late contributions incur a 5% penalty. Three missed contributions trigger a membership review.",status:"active"},
+      {id:"L004",title:"Legacy Reserve",body:"8% of each payout is held in the Legacy Fund.",status:"active"},
+      {id:"L005",title:"Voting Quorum",body:"Standard votes require 60% participation. Constitutional amendments require 80% and a 14-day open window.",status:"active"},
+      {id:"L006",title:"Hardship Provisions",body:"Any member may file a hardship claim to advance their rotation position. Claims require documentation and a simple majority vote.",status:"active"}
+    ],
+    members: [
+      {id:"M001",name:"Marcus Johnson",avatar:"MJ",role:"Founder",status:"active",joined:new Date().toISOString().split('T')[0],contributions:0,balance:0,rotationPos:1},
+      {id:"M002",name:"Denise Johnson",avatar:"DJ",role:"Co-Founder",status:"active",joined:new Date().toISOString().split('T')[0],contributions:0,balance:0,rotationPos:2},
+      {id:"M003",name:"Raymond Johnson",avatar:"RJ",role:"Founding Member",status:"active",joined:new Date().toISOString().split('T')[0],contributions:0,balance:0,rotationPos:3},
+      {id:"M004",name:"Tanya Williams",avatar:"TW",role:"Founding Member",status:"active",joined:new Date().toISOString().split('T')[0],contributions:0,balance:0,rotationPos:4},
+      {id:"M005",name:"Darnell Cooper",avatar:"DC",role:"Founding Member",status:"active",joined:new Date().toISOString().split('T')[0],contributions:0,balance:0,rotationPos:5},
+      {id:"M006",name:"Keisha Moore",avatar:"KM",role:"Founding Member",status:"active",joined:new Date().toISOString().split('T')[0],contributions:0,balance:0,rotationPos:6}
+    ],
+    treasury: {
+      cycleAmount:300,cyclePeriod:"month",reservePct:8,
+      currentBalance:0,reserveFund:0,
+      nextPayoutMember:"M001",nextPayoutDate:new Date(Date.now()+30*86400000).toISOString().split('T')[0]
+    },
+    sarLog: [
+      {id:"SAR001",timestamp:new Date().toISOString(),sense:"Founding charter ratified by all 6 members of The Ironwood Circle.",analyze:"Verified all founding members present. Checked constitutional completeness. Confirmed quorum met (100% attendance).",respond:"Charter officially ratified. Organization status set to ACTIVE. Member registry sealed. All members notified.",status:"completed"},
+      {id:"SAR002",timestamp:new Date(Date.now()-300000).toISOString(),sense:"Initial rotation order established by founding lottery.",analyze:"Lottery conducted with verifiable random seed. All 6 members assigned positions 1–6. Order logged immutably.",respond:"Rotation order confirmed and published to all members. First payout cycle begins.",status:"completed"},
+      {id:"SAR003",timestamp:new Date(Date.now()-600000).toISOString(),sense:"Treasury structure initialized. Contribution schedule and legacy reserve configured.",analyze:"Validated contribution amounts against member count. Confirmed 8% legacy reserve rate per L004. Payout calculation verified.",respond:"Treasury active. First contribution window opens. Members notified of first due date.",status:"completed"}
+    ]
+  };
+}
+</script>
+</body>
+</html>

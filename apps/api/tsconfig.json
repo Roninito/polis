@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "types": [],
+    "paths": {
+      "@polis/sar": ["../../packages/sar/src"],
+      "@polis/sar/*": ["../../packages/sar/src/*"],
+      "~/*": ["./src/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/env.d.ts"],
+  "exclude": ["node_modules", "dist"]
+}

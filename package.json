@@ -1,0 +1,24 @@
+{
+  "name": "polis",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "bun run --filter './apps/web' dev",
+    "dev:api": "bun run --filter './apps/api' dev",
+    "build": "bun run --filter './apps/*' build",
+    "typecheck": "bun run --filter '*' typecheck",
+    "test": "bun run --filter './apps/*' test",
+    "test:watch": "bun run --filter './apps/*' test:watch",
+    "test:coverage": "bun run --filter './apps/*' test:coverage",
+    "test:e2e": "bun run --filter './apps/web' test:e2e",
+    "db:generate": "bun run --filter './apps/api' db:generate",
+    "db:migrate": "bun run --filter './apps/api' db:migrate",
+    "db:seed": "bun run --filter './apps/api' db:seed",
+    "db:seed-demo": "bun run --cwd apps/api src/db/seed-demo.ts"
+  }
+}

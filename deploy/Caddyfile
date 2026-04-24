@@ -1,0 +1,47 @@
+# POLIS Caddyfile — automatic HTTPS reverse proxy
+#
+# Replace {$DOMAIN} with your actual domain, or set the DOMAIN env var.
+# Caddy automatically obtains and renews TLS certificates via Let's Encrypt.
+
+{$DOMAIN:localhost} {
+	# API and WebSocket — proxy to Bun server
+	handle /api/* {
+		reverse_proxy polis:3141
+	}
+
+	handle /ws {
+		reverse_proxy polis:3141
+	}
+
+	handle /healthz {
+		reverse_proxy polis:3141
+	}
+
+	handle /readyz {
+		reverse_proxy polis:3141
+	}
+
+	# Frontend — serve SvelteKit build
+	handle {
+		reverse_proxy polis:3141
+	}
+
+	# Security headers
+	header {
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "SAMEORIGIN"
+		X-XSS-Protection "1; mode=block"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		-Server
+	}
+
+	# Compression
+	encode gzip zstd
+
+	# Logging
+	log {
+		output stdout
+		format json
+	}
+}

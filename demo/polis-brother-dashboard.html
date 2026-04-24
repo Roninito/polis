@@ -1,0 +1,984 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Brother Ashveil · The Order of the Obsidian Table</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --ink:#09090e;
+  --ink2:#111118;
+  --ink3:#18181f;
+  --ink4:#202028;
+  --ink5:#2a2a35;
+  --ink6:#34343f;
+  --gold:#c9961a;
+  --gold2:#e0ac28;
+  --gold3:#f5c84a;
+  --gold-dim:rgba(201,150,26,.15);
+  --gold-glow:rgba(201,150,26,.08);
+  --crimson:#7a1828;
+  --crimson2:#9b2035;
+  --ivory:#f0ebe0;
+  --ivory2:#d8d0be;
+  --ivory3:#a89880;
+  --ivory4:rgba(240,235,224,.35);
+  --ivory5:rgba(240,235,224,.15);
+  --green-dim:rgba(34,197,94,.08);
+  --green-text:rgba(100,210,140,.7);
+  --red-dim:rgba(155,32,53,.15);
+  --red-text:rgba(200,80,100,.7);
+  --blue-dim:rgba(42,82,160,.12);
+  --blue-text:rgba(100,150,230,.65);
+  --border:rgba(201,150,26,.1);
+  --border2:rgba(255,255,255,.05);
+  --shadow:0 4px 24px rgba(0,0,0,.5);
+  --shadow-lg:0 12px 48px rgba(0,0,0,.7);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{background:var(--ink);color:var(--ivory);font-family:'EB Garamond',serif;font-size:14px}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--ink6);border-radius:99px}
+::selection{background:var(--gold);color:var(--ink)}
+
+/* grain */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.5;
+background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E")}
+
+/* ── APP SHELL ── */
+.app{display:flex;height:100vh;overflow:hidden;position:relative}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:200px;min-width:200px;
+  background:var(--ink2);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  overflow:hidden;z-index:10;
+  box-shadow:4px 0 20px rgba(0,0,0,.4);
+}
+.sb-top{
+  padding:22px 18px 18px;
+  border-bottom:1px solid var(--border2);
+}
+.sb-order-name{
+  font-family:'Cinzel',serif;font-size:8px;
+  color:rgba(201,150,26,.4);letter-spacing:.22em;text-transform:uppercase;margin-bottom:6px;
+}
+.sb-logo{display:flex;align-items:center;gap:10px}
+.sb-seal{
+  width:30px;height:30px;border-radius:50%;
+  border:1px solid rgba(201,150,26,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cinzel',serif;font-size:14px;color:var(--gold);
+}
+.sb-title{font-family:'Cinzel Decorative',serif;font-size:11px;color:var(--ivory2);font-weight:700;line-height:1.2}
+
+.sb-brother{
+  padding:16px 18px;border-bottom:1px solid var(--border2);
+  display:flex;align-items:center;gap:10px;
+}
+.sb-av{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--ink4);border:1.5px solid rgba(201,150,26,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cinzel Decorative',serif;font-size:13px;color:var(--gold);
+  flex-shrink:0;position:relative;
+}
+.sb-av::after{
+  content:'';position:absolute;inset:-4px;border-radius:50%;
+  border:1px solid rgba(201,150,26,.1);
+}
+.sb-brother-name{font-family:'Cinzel',serif;font-size:11px;color:var(--ivory2);letter-spacing:.04em}
+.sb-brother-role{font-size:10px;color:var(--ivory3);font-family:'EB Garamond',serif;font-style:italic;margin-top:1px}
+.sb-status{
+  display:flex;align-items:center;gap:4px;margin-top:4px;
+  font-family:'Cinzel',serif;font-size:8px;color:var(--green-text);
+  letter-spacing:.12em;text-transform:uppercase;
+}
+.sb-status-dot{width:4px;height:4px;border-radius:50%;background:var(--green-text);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
+
+.sb-nav{flex:1;padding:10px 0;overflow-y:auto}
+.sb-section{font-family:'Cinzel',serif;font-size:8px;color:rgba(201,150,26,.3);letter-spacing:.2em;text-transform:uppercase;padding:10px 18px 4px;margin-top:4px}
+.sb-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 18px;cursor:pointer;
+  border:none;background:none;width:100%;text-align:left;
+  font-family:'Cinzel',serif;font-size:11px;color:rgba(240,235,224,.35);
+  letter-spacing:.06em;transition:all .15s;position:relative;
+}
+.sb-item:hover{color:rgba(240,235,224,.65);background:rgba(255,255,255,.02)}
+.sb-item.active{color:var(--gold);background:rgba(201,150,26,.06)}
+.sb-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold)}
+.sb-item-icon{font-size:13px;width:16px;text-align:center;flex-shrink:0;opacity:.7}
+.sb-badge{margin-left:auto;font-family:'Cinzel',serif;font-size:8px;padding:2px 6px;letter-spacing:.08em;border-radius:2px}
+.sb-badge.alert{background:rgba(155,32,53,.2);color:rgba(200,80,100,.8);border:1px solid rgba(155,32,53,.2)}
+.sb-badge.dim{background:rgba(255,255,255,.04);color:rgba(240,235,224,.3);border:1px solid rgba(255,255,255,.04)}
+
+.sb-dues{
+  padding:14px 16px;border-top:1px solid var(--border2);
+  background:rgba(201,150,26,.04);
+}
+.sb-dues-label{font-family:'Cinzel',serif;font-size:8px;color:rgba(201,150,26,.4);letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}
+.sb-dues-val{font-family:'Cinzel Decorative',serif;font-size:16px;color:var(--gold3);margin-bottom:2px}
+.sb-dues-sub{font-size:11px;color:var(--ivory3);font-family:'EB Garamond',serif;font-style:italic}
+.sb-dues-status{font-family:'Cinzel',serif;font-size:8px;color:var(--green-text);letter-spacing:.1em;text-transform:uppercase;margin-top:4px;display:flex;align-items:center;gap:4px}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── TOPBAR ── */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;height:54px;
+  background:var(--ink2);border-bottom:1px solid var(--border2);
+  flex-shrink:0;
+}
+.topbar-left{display:flex;align-items:center;gap:14px}
+.tb-title{font-family:'Cinzel',serif;font-size:15px;color:var(--ivory2);letter-spacing:.06em}
+.tb-sub{font-family:'EB Garamond',serif;font-size:12px;color:var(--ivory3);font-style:italic}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.tb-btn{
+  background:transparent;border:1px solid var(--border);
+  color:rgba(201,150,26,.5);padding:6px 14px;
+  font-family:'Cinzel',serif;font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+  cursor:pointer;transition:all .2s;
+}
+.tb-btn:hover{background:var(--gold-dim);color:var(--gold);border-color:rgba(201,150,26,.3)}
+.tb-btn.primary{background:var(--gold-dim);color:var(--gold);border-color:rgba(201,150,26,.25)}
+.tb-btn.primary:hover{background:rgba(201,150,26,.2)}
+.sar-live-pill{
+  display:flex;align-items:center;gap:6px;
+  border:1px solid rgba(100,210,140,.15);padding:5px 12px;
+  background:rgba(34,197,94,.05);
+  font-family:'Cinzel',serif;font-size:8px;color:var(--green-text);letter-spacing:.14em;text-transform:uppercase;
+}
+.slp-dot{width:5px;height:5px;border-radius:50%;background:var(--green-text);animation:pulse 2s infinite}
+
+/* ── CONTENT ── */
+.content{flex:1;overflow-y:auto;padding:24px 28px;background:var(--ink)}
+
+/* ── VIEWS ── */
+.view{display:none}
+.view.active{display:block;animation:viewIn .3s ease}
+@keyframes viewIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── GRID HELPERS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.g-left-heavy{display:grid;grid-template-columns:3fr 2fr;gap:14px}
+.g-right-heavy{display:grid;grid-template-columns:2fr 3fr;gap:14px}
+.mt1{margin-top:6px}.mt2{margin-top:10px}.mt3{margin-top:14px}.mt4{margin-top:18px}.mt5{margin-top:22px}
+
+/* ── PANELS ── */
+.panel{background:var(--ink2);border:1px solid var(--border2);overflow:hidden;margin-bottom:14px;position:relative}
+.panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,150,26,.12),transparent)}
+.panel-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border2)}
+.ph-title{font-family:'Cinzel',serif;font-size:9px;color:rgba(201,150,26,.4);letter-spacing:.18em;text-transform:uppercase}
+.ph-action{font-family:'Cinzel',serif;font-size:9px;color:rgba(240,235,224,.25);cursor:pointer;letter-spacing:.1em;text-transform:uppercase;transition:color .2s}
+.ph-action:hover{color:var(--gold)}
+.ph-badge{font-family:'Cinzel',serif;font-size:8px;padding:2px 8px;letter-spacing:.1em;text-transform:uppercase}
+.ph-badge.open{background:rgba(201,150,26,.1);color:rgba(201,150,26,.7);border:1px solid rgba(201,150,26,.15)}
+.ph-badge.done{background:var(--green-dim);color:var(--green-text);border:1px solid rgba(34,197,94,.1)}
+
+/* ── STAT CARDS ── */
+.scard{background:var(--ink2);border:1px solid var(--border2);padding:18px;position:relative;overflow:hidden}
+.scard::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:40px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.4}
+.sc-label{font-family:'Cinzel',serif;font-size:8px;color:rgba(201,150,26,.35);letter-spacing:.2em;text-transform:uppercase;margin-bottom:8px}
+.sc-val{font-family:'Cinzel Decorative',serif;font-size:28px;color:var(--ivory);font-weight:700;margin-bottom:3px;line-height:1}
+.sc-sub{font-family:'EB Garamond',serif;font-size:12px;color:var(--ivory3);font-style:italic}
+.sc-delta{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.06em;margin-top:6px}
+.sc-delta.up{color:var(--green-text)}
+.sc-delta.neutral{color:rgba(201,150,26,.5)}
+
+/* ── TAGS ── */
+.tag{font-family:'Cinzel',serif;font-size:8px;padding:2px 8px;letter-spacing:.1em;text-transform:uppercase;border-radius:1px}
+.tag.open{background:rgba(201,150,26,.1);color:rgba(201,150,26,.7);border:1px solid rgba(201,150,26,.15)}
+.tag.passed{background:var(--green-dim);color:var(--green-text);border:1px solid rgba(34,197,94,.1)}
+.tag.failed{background:var(--red-dim);color:var(--red-text);border:1px solid rgba(155,32,53,.15)}
+.tag.upcoming{background:var(--blue-dim);color:var(--blue-text);border:1px solid rgba(42,82,160,.15)}
+.tag.complete{background:rgba(255,255,255,.04);color:rgba(240,235,224,.35);border:1px solid rgba(255,255,255,.05)}
+
+/* ── TABLE ── */
+.dtable{width:100%;border-collapse:collapse;font-size:13px}
+.dtable th{padding:8px 14px;text-align:left;font-family:'Cinzel',serif;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,235,224,.2);border-bottom:1px solid rgba(255,255,255,.03)}
+.dtable td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.025);color:var(--ivory4);vertical-align:middle}
+.dtable tbody tr:hover td{background:rgba(255,255,255,.015)}
+.dtable tbody tr:last-child td{border-bottom:none}
+.mono{font-family:'DM Mono',monospace;font-size:11px;color:rgba(240,235,224,.25)}
+.amt-c{font-family:'DM Mono',monospace;color:rgba(201,150,26,.6);font-weight:500}
+.amt-d{font-family:'DM Mono',monospace;color:rgba(155,32,53,.8);font-weight:500}
+
+/* ── BROTHER ROW ── */
+.brother-row{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid rgba(255,255,255,.025)}
+.brother-row:last-child{border-bottom:none}
+.br-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cinzel Decorative',serif;font-size:11px;color:var(--gold);flex-shrink:0;border:1px solid rgba(201,150,26,.2)}
+.br-name{font-family:'Cinzel',serif;font-size:12px;color:var(--ivory2);letter-spacing:.04em;flex:1}
+.br-role{font-family:'EB Garamond',serif;font-size:11px;color:var(--ivory3);font-style:italic}
+.br-status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* ── EDICT CARD ── */
+.edict-item{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.025);cursor:pointer;transition:background .15s;position:relative}
+.edict-item:hover{background:rgba(255,255,255,.015)}
+.edict-item:last-child{border-bottom:none}
+.edict-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent,rgba(201,150,26,.3),transparent);opacity:0;transition:opacity .2s}
+.edict-item:hover::before{opacity:1}
+.ei-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:5px}
+.ei-title{font-family:'Cinzel',serif;font-size:12px;color:var(--ivory2);letter-spacing:.04em;flex:1;line-height:1.4}
+.ei-meta{font-family:'EB Garamond',serif;font-size:12px;color:var(--ivory3);font-style:italic;margin-bottom:8px}
+.ei-vbar{height:3px;background:rgba(255,255,255,.04);border-radius:2px;margin:6px 0;display:flex;overflow:hidden}
+.ei-vfor{background:rgba(201,150,26,.45)}
+.ei-vag{background:rgba(155,32,53,.5)}
+.ei-tally{display:flex;gap:12px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:.06em}
+.vt-for{color:rgba(201,150,26,.65)}
+.vt-ag{color:rgba(200,80,100,.65)}
+.vt-abs{color:rgba(240,235,224,.25)}
+.vote-btns-mini{display:flex;gap:6px;margin-top:8px}
+.vbm{padding:5px 12px;border:1px solid;font-family:'Cinzel',serif;font-size:8px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;background:transparent;transition:all .15s}
+.vbm.for{border-color:rgba(201,150,26,.2);color:rgba(201,150,26,.5)}
+.vbm.for:hover{background:rgba(201,150,26,.08);color:var(--gold);border-color:rgba(201,150,26,.35)}
+.vbm.ag{border-color:rgba(155,32,53,.2);color:rgba(200,80,100,.5)}
+.vbm.ag:hover{background:rgba(155,32,53,.08);color:var(--red-text);border-color:rgba(155,32,53,.35)}
+.vbm.abs{border-color:rgba(255,255,255,.06);color:rgba(240,235,224,.25)}
+.vbm.abs:hover{background:rgba(255,255,255,.03);color:rgba(240,235,224,.45)}
+
+/* ── GATHERING CARD ── */
+.gathering-item{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.025)}
+.gathering-item:last-child{border-bottom:none}
+.gi-when{font-family:'Cinzel',serif;font-size:8px;color:rgba(201,150,26,.35);letter-spacing:.16em;text-transform:uppercase;margin-bottom:4px}
+.gi-title{font-family:'Cinzel',serif;font-size:13px;color:var(--ivory2);letter-spacing:.05em;margin-bottom:3px}
+.gi-where{font-family:'EB Garamond',serif;font-size:12px;color:var(--ivory3);font-style:italic;margin-bottom:8px}
+.gi-rites{display:flex;flex-direction:column;gap:4px}
+.gi-rite{font-family:'EB Garamond',serif;font-size:12px;color:rgba(240,235,224,.35);display:flex;align-items:center;gap:7px}
+.gi-rite::before{content:'◆';font-size:6px;color:rgba(201,150,26,.3);flex-shrink:0}
+.gi-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.025)}
+.gi-cost{font-family:'Cinzel Decorative',serif;font-size:16px;color:var(--gold3)}
+.gi-rsvp{font-family:'Cinzel',serif;font-size:8px;color:var(--green-text);letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(34,197,94,.15);padding:4px 10px;cursor:pointer;transition:all .2s}
+.gi-rsvp:hover{background:var(--green-dim)}
+
+/* ── SAR PANEL ── */
+.sar-panel{background:rgba(0,0,0,.4);border:1px solid rgba(201,150,26,.07);overflow:hidden}
+.sar-panel-hdr{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.03);background:rgba(0,0,0,.3)}
+.sar-live-ind{display:flex;align-items:center;gap:5px;font-family:'Cinzel',serif;font-size:8px;color:rgba(100,210,140,.5);letter-spacing:.14em;text-transform:uppercase}
+.sar-live-dot{width:4px;height:4px;border-radius:50%;background:rgba(100,210,140,.6);animation:pulse 2s infinite}
+.sar-entries-mini{max-height:220px;overflow-y:auto}
+.sar-entry-mini{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.02)}
+.sar-entry-mini:last-child{border-bottom:none}
+.sar-em-id{font-family:'DM Mono',monospace;font-size:9px;color:rgba(201,150,26,.2);margin-bottom:5px}
+.sar-em-row{display:flex;gap:8px;font-size:11px;margin-bottom:4px}
+.sar-em-lbl{font-family:'Cinzel',serif;font-size:7px;letter-spacing:.12em;text-transform:uppercase;padding:2px 6px;min-width:48px;text-align:center;flex-shrink:0;margin-top:1px;border-radius:1px}
+.sar-em-lbl.s{background:rgba(42,82,160,.15);color:rgba(100,150,230,.5)}
+.sar-em-lbl.a{background:rgba(201,150,26,.08);color:rgba(201,150,26,.45)}
+.sar-em-lbl.r{background:rgba(34,100,68,.12);color:rgba(100,200,130,.4)}
+.sar-em-txt{color:rgba(240,235,224,.28);line-height:1.6;font-family:'EB Garamond',serif}
+
+/* ── OVERVIEW HERO ── */
+.overview-hero{
+  background:linear-gradient(135deg,var(--ink2) 0%,var(--ink3) 100%);
+  border:1px solid var(--border2);padding:24px;margin-bottom:14px;
+  position:relative;overflow:hidden;
+}
+.oh-glow{position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(201,150,26,.06) 0%,transparent 70%);pointer-events:none}
+.oh-content{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:20px}
+.oh-left{}
+.oh-greeting{font-family:'Cinzel',serif;font-size:9px;color:rgba(201,150,26,.4);letter-spacing:.22em;text-transform:uppercase;margin-bottom:6px}
+.oh-name{font-family:'Cinzel Decorative',serif;font-size:28px;color:var(--ivory);font-weight:700;margin-bottom:4px;letter-spacing:.03em}
+.oh-real{font-family:'EB Garamond',serif;font-size:14px;color:var(--ivory3);font-style:italic;margin-bottom:14px}
+.oh-role{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(201,150,26,.2);padding:5px 14px;background:rgba(201,150,26,.05)}
+.oh-role-text{font-family:'Cinzel',serif;font-size:9px;color:rgba(201,150,26,.6);letter-spacing:.14em;text-transform:uppercase}
+.oh-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px;flex-shrink:0}
+.oh-sigil{
+  width:72px;height:72px;border-radius:50%;
+  background:var(--ink4);border:1.5px solid rgba(201,150,26,.25);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cinzel Decorative',serif;font-size:26px;color:var(--gold);
+  position:relative;
+}
+.oh-sigil::after{content:'';position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(201,150,26,.08)}
+.oh-stat-row{display:flex;gap:20px;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.04)}
+.oh-stat{text-align:left}
+.oh-stat-val{font-family:'Cinzel',serif;font-size:20px;color:var(--ivory2);font-weight:600}
+.oh-stat-label{font-family:'Cinzel',serif;font-size:8px;color:rgba(240,235,224,.25);letter-spacing:.12em;text-transform:uppercase;margin-top:2px}
+
+/* ── DUES TRACKER ── */
+.dues-track{display:flex;flex-direction:column;gap:6px;padding:14px 16px}
+.dt-row{display:flex;align-items:center;gap:10px}
+.dt-month{font-family:'Cinzel',serif;font-size:9px;color:rgba(240,235,224,.3);letter-spacing:.1em;width:28px}
+.dt-bar-wrap{flex:1;height:4px;background:rgba(255,255,255,.04);border-radius:2px;overflow:hidden}
+.dt-bar-fill{height:100%;border-radius:2px}
+.dt-bar-fill.paid{background:rgba(201,150,26,.5)}
+.dt-bar-fill.late{background:rgba(155,32,53,.5)}
+.dt-amount{font-family:'DM Mono',monospace;font-size:10px;min-width:38px;text-align:right}
+.dt-amount.paid{color:rgba(201,150,26,.5)}
+.dt-status{font-family:'Cinzel',serif;font-size:7px;letter-spacing:.1em;text-transform:uppercase;min-width:30px;text-align:right}
+.dt-status.paid{color:var(--green-text)}
+.dt-status.late{color:var(--red-text)}
+
+/* ── MISSION PROGRESS ── */
+.mission-mini{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.025)}
+.mission-mini:last-child{border-bottom:none}
+.mm-type{font-family:'Cinzel',serif;font-size:8px;color:rgba(201,150,26,.35);letter-spacing:.16em;text-transform:uppercase;margin-bottom:3px}
+.mm-title{font-family:'Cinzel',serif;font-size:12px;color:var(--ivory2);letter-spacing:.04em;margin-bottom:6px}
+.mm-bar-row{display:flex;align-items:center;gap:8px}
+.mm-track{flex:1;height:3px;background:rgba(255,255,255,.04);border-radius:2px;overflow:hidden}
+.mm-fill{height:100%;background:linear-gradient(90deg,rgba(201,150,26,.4),rgba(245,200,74,.5));border-radius:2px;transition:width 1.2s ease}
+.mm-pct{font-family:'DM Mono',monospace;font-size:10px;color:rgba(201,150,26,.45);min-width:30px;text-align:right}
+.mm-amt{font-family:'DM Mono',monospace;font-size:10px;color:rgba(240,235,224,.2);min-width:42px;text-align:right}
+
+/* ── NOTIFICATION TOAST ── */
+#toast{display:none;position:fixed;bottom:22px;right:22px;z-index:10000;background:var(--ink4);color:var(--ivory2);padding:12px 18px;border:1px solid rgba(201,150,26,.2);font-family:'Cinzel',serif;font-size:10px;letter-spacing:.08em;box-shadow:var(--shadow-lg);max-width:300px;line-height:1.6;animation:toastIn .2s ease}
+@keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── PROFILE VIEW ── */
+.profile-grid{display:grid;grid-template-columns:280px 1fr;gap:14px}
+.profile-card{background:var(--ink2);border:1px solid var(--border2);padding:28px;text-align:center;position:relative;overflow:hidden}
+.profile-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% -10%,rgba(201,150,26,.06) 0%,transparent 70%)}
+.pc-content{position:relative;z-index:1}
+.pc-sigil{width:80px;height:80px;border-radius:50%;margin:0 auto 16px;background:var(--ink4);border:2px solid rgba(201,150,26,.25);display:flex;align-items:center;justify-content:center;font-family:'Cinzel Decorative',serif;font-size:30px;color:var(--gold);position:relative}
+.pc-sigil::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(201,150,26,.1)}
+.pc-order-name{font-family:'Cinzel Decorative',serif;font-size:22px;color:var(--ivory);font-weight:700;margin-bottom:4px}
+.pc-real-name{font-family:'EB Garamond',serif;font-size:14px;color:var(--ivory3);font-style:italic;margin-bottom:12px}
+.pc-role-badge{display:inline-block;font-family:'Cinzel',serif;font-size:8px;color:rgba(201,150,26,.6);border:1px solid rgba(201,150,26,.2);padding:4px 14px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:18px;background:rgba(201,150,26,.04)}
+.pc-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
+.pc-stat{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);padding:10px}
+.pc-stat-val{font-family:'Cinzel',serif;font-size:18px;color:var(--ivory2);font-weight:600}
+.pc-stat-label{font-family:'Cinzel',serif;font-size:7px;color:rgba(240,235,224,.25);letter-spacing:.14em;text-transform:uppercase;margin-top:2px}
+.pc-standing{font-family:'Cinzel',serif;font-size:8px;color:var(--green-text);letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:5px;border:1px solid rgba(34,197,94,.1);padding:6px;background:var(--green-dim)}
+.pc-oath{margin-top:16px;padding:14px;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.03);font-family:'EB Garamond',serif;font-size:13px;color:rgba(240,235,224,.35);font-style:italic;line-height:1.7;text-align:left}
+.profile-details{display:flex;flex-direction:column;gap:14px}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-top">
+      <div class="sb-order-name">Order of the Obsidian Table</div>
+      <div class="sb-logo">
+        <div class="sb-seal">◈</div>
+        <div class="sb-title">The Table</div>
+      </div>
+    </div>
+
+    <div class="sb-brother">
+      <div class="sb-av">Λ</div>
+      <div>
+        <div class="sb-brother-name">Ashveil</div>
+        <div class="sb-brother-role">"Jerome K."</div>
+        <div class="sb-status"><div class="sb-status-dot"></div>In Good Standing</div>
+      </div>
+    </div>
+
+    <nav class="sb-nav">
+      <div class="sb-section">Chamber</div>
+      <button class="sb-item active" onclick="setView('overview',this)">
+        <span class="sb-item-icon">◈</span>Overview
+      </button>
+      <button class="sb-item" onclick="setView('edicts',this)">
+        <span class="sb-item-icon">◇</span>Edicts
+        <span class="sb-badge alert">2 Open</span>
+      </button>
+      <button class="sb-item" onclick="setView('gatherings',this)">
+        <span class="sb-item-icon">🕯</span>Gatherings
+        <span class="sb-badge dim">1 Soon</span>
+      </button>
+      <button class="sb-item" onclick="setView('treasury',this)">
+        <span class="sb-item-icon">⚗</span>Treasury
+      </button>
+      <button class="sb-item" onclick="setView('missions',this)">
+        <span class="sb-item-icon">⚔</span>Missions
+      </button>
+      <div class="sb-section">Brotherhood</div>
+      <button class="sb-item" onclick="setView('brothers',this)">
+        <span class="sb-item-icon">◫</span>The Nine
+      </button>
+      <button class="sb-item" onclick="setView('sar',this)">
+        <span class="sb-item-icon">⊞</span>SAR Log
+        <span class="sb-badge dim">Live</span>
+      </button>
+      <div class="sb-section">Personal</div>
+      <button class="sb-item" onclick="setView('profile',this)">
+        <span class="sb-item-icon">◎</span>My Record
+      </button>
+    </nav>
+
+    <div class="sb-dues">
+      <div class="sb-dues-label">Dues This Month</div>
+      <div class="sb-dues-val">$75</div>
+      <div class="sb-dues-sub">Due November 1</div>
+      <div class="sb-dues-status"><div class="sb-status-dot"></div>Paid · On Time</div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <div>
+          <div class="tb-title">Brother Ashveil</div>
+          <div class="tb-sub">Anno Domini MMXXIV · November Session</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="sar-live-pill"><div class="slp-dot"></div>SAR Active</div>
+        <button class="tb-btn primary" onclick="showToast('Edict submission form — available in next release of the Mechanical Scribe.')">+ Submit Edict</button>
+      </div>
+    </header>
+
+    <div class="content" id="content">
+
+      <!-- OVERVIEW -->
+      <div class="view active" id="view-overview">
+
+        <div class="overview-hero">
+          <div class="oh-glow"></div>
+          <div class="oh-content">
+            <div class="oh-left">
+              <div class="oh-greeting">Welcome back, Brother</div>
+              <div class="oh-name">Ashveil</div>
+              <div class="oh-real">"Jerome K." · Inducted Year VI</div>
+              <div class="oh-role">
+                <span style="font-size:12px;color:rgba(201,150,26,.5)">◆</span>
+                <span class="oh-role-text">Brother · Founding Member · Edict E-2024-019 Author</span>
+              </div>
+              <div class="oh-stat-row">
+                <div class="oh-stat"><div class="oh-stat-val">8</div><div class="oh-stat-label">Years at Table</div></div>
+                <div class="oh-stat"><div class="oh-stat-val">49</div><div class="oh-stat-label">Gatherings</div></div>
+                <div class="oh-stat"><div class="oh-stat-val">6</div><div class="oh-stat-label">Missions</div></div>
+                <div class="oh-stat"><div class="oh-stat-val">$8,100</div><div class="oh-stat-label">Contributed</div></div>
+              </div>
+            </div>
+            <div class="oh-right">
+              <div class="oh-sigil">Λ</div>
+              <div class="tag open">Edict E-2024-019 — Active</div>
+              <div class="tag upcoming" style="margin-top:4px">Winter Rite · 38 days</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="g4" style="margin-bottom:14px">
+          <div class="scard">
+            <div class="sc-label">Common Purse</div>
+            <div class="sc-val">$5,850</div>
+            <div class="sc-sub">Total treasury balance</div>
+            <div class="sc-delta neutral">↑ +$675 this month</div>
+          </div>
+          <div class="scard">
+            <div class="sc-label">Open Edicts</div>
+            <div class="sc-val">2</div>
+            <div class="sc-sub">Your vote needed</div>
+            <div class="sc-delta up">◆ Both require action</div>
+          </div>
+          <div class="scard">
+            <div class="sc-label">Next Gathering</div>
+            <div class="sc-val">38d</div>
+            <div class="sc-sub">Winter Rite · Dec 14</div>
+            <div class="sc-delta up">◆ Upstate New York</div>
+          </div>
+          <div class="scard">
+            <div class="sc-label">Brotherhood</div>
+            <div class="sc-val">9</div>
+            <div class="sc-sub">All in good standing</div>
+            <div class="sc-delta neutral">+ 1 nomination pending</div>
+          </div>
+        </div>
+
+        <div class="g-left-heavy">
+          <div>
+            <!-- Active edicts quick view -->
+            <div class="panel">
+              <div class="panel-header">
+                <span class="ph-title">Your Open Votes</span>
+                <span class="ph-action" onclick="setView('edicts',document.querySelector('[onclick*=edicts]'))">All Edicts →</span>
+              </div>
+              <div id="overview-edicts"></div>
+            </div>
+
+            <!-- Upcoming gathering -->
+            <div class="panel">
+              <div class="panel-header">
+                <span class="ph-title">Next Gathering</span>
+                <span class="ph-badge upcoming">38 Days</span>
+              </div>
+              <div class="gathering-item">
+                <div class="gi-when">December 14–16, 2024</div>
+                <div class="gi-title">The Winter Rite</div>
+                <div class="gi-where">📍 Brother Ironside's estate · Upstate New York</div>
+                <div class="gi-rites">
+                  <div class="gi-rite">Reading of the Founding Oath</div>
+                  <div class="gi-rite">Council of Three Annual Election</div>
+                  <div class="gi-rite">The Feast of Nine</div>
+                  <div class="gi-rite">Annual reflection — review of 2024</div>
+                  <div class="gi-rite">One new tradition voted in by brotherhood</div>
+                </div>
+                <div class="gi-footer">
+                  <div class="gi-cost">$680</div>
+                  <div class="gi-rsvp" onclick="showToast('RSVP confirmed for The Winter Rite. The Table has been notified.')">Confirm RSVP ◆</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <!-- SAR mini -->
+            <div class="panel">
+              <div class="panel-header">
+                <span class="ph-title">Mechanical Scribe — Recent</span>
+                <span class="ph-action" onclick="setView('sar',document.querySelector('[onclick*=sar]'))">Full Log →</span>
+              </div>
+              <div class="sar-panel" style="border:none">
+                <div class="sar-panel-hdr">
+                  <div class="sar-live-ind"><div class="sar-live-dot"></div>SAR Engine Active</div>
+                </div>
+                <div class="sar-entries-mini" id="overview-sar"></div>
+              </div>
+            </div>
+
+            <!-- Mission progress -->
+            <div class="panel">
+              <div class="panel-header">
+                <span class="ph-title">Active Missions</span>
+                <span class="ph-action" onclick="setView('missions',document.querySelector('[onclick*=missions]'))">All →</span>
+              </div>
+              <div id="overview-missions"></div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /overview -->
+
+      <!-- EDICTS -->
+      <div class="view" id="view-edicts">
+        <div class="g2" style="margin-bottom:14px">
+          <div class="scard"><div class="sc-label">Open Edicts</div><div class="sc-val">2</div><div class="sc-sub">Awaiting your vote</div></div>
+          <div class="scard"><div class="sc-label">Your Edicts This Year</div><div class="sc-val">2</div><div class="sc-sub">E-2024-019 active · E-2024-011 passed</div></div>
+        </div>
+        <div class="panel" id="edicts-panel-full">
+          <div class="panel-header"><span class="ph-title">All Edicts — Current Session</span></div>
+          <div id="edicts-full-list"></div>
+        </div>
+      </div>
+
+      <!-- GATHERINGS -->
+      <div class="view" id="view-gatherings">
+        <div class="g3" style="margin-bottom:14px">
+          <div class="scard"><div class="sc-label">Gatherings Attended</div><div class="sc-val">49</div><div class="sc-sub">Of 52 total · 94%</div></div>
+          <div class="scard"><div class="sc-label">This Year</div><div class="sc-val">3 of 4</div><div class="sc-sub">Winter Rite remaining</div></div>
+          <div class="scard"><div class="sc-label">Perfect Attendance Years</div><div class="sc-val">5</div><div class="sc-sub">2017 · 2018 · 2020 · 2021 · 2022</div></div>
+        </div>
+        <div class="panel"><div class="panel-header"><span class="ph-title">Year MMXXIV — Calendar of Rites</span></div><div id="gatherings-list"></div></div>
+      </div>
+
+      <!-- TREASURY -->
+      <div class="view" id="view-treasury">
+        <div class="g4" style="margin-bottom:14px">
+          <div class="scard"><div class="sc-label">Gathering Fund</div><div class="sc-val">$2,340</div><div class="sc-sub">40% of dues · 4 rites/yr</div></div>
+          <div class="scard"><div class="sc-label">Mission Fund</div><div class="sc-val">$1,755</div><div class="sc-sub">Adventures &amp; projects</div></div>
+          <div class="scard"><div class="sc-label">Reserve</div><div class="sc-val">$1,170</div><div class="sc-sub">Emergency &amp; opportunity</div></div>
+          <div class="scard"><div class="sc-label">Legacy Chest</div><div class="sc-val">$585</div><div class="sc-sub">Permanent endowment</div></div>
+        </div>
+        <div class="g-left-heavy">
+          <div class="panel">
+            <div class="panel-header"><span class="ph-title">Immutable Ledger</span></div>
+            <table class="dtable">
+              <thead><tr><th>Cipher</th><th>Date</th><th>Type</th><th>Description</th><th>Amount</th><th>Balance</th></tr></thead>
+              <tbody id="treasury-ledger"></tbody>
+            </table>
+          </div>
+          <div>
+            <div class="panel">
+              <div class="panel-header"><span class="ph-title">Your Dues Record</span><span class="ph-badge done">Current</span></div>
+              <div class="dues-track" id="dues-track"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MISSIONS -->
+      <div class="view" id="view-missions">
+        <div class="panel"><div class="panel-header"><span class="ph-title">The Works — Mission Ledger</span></div><div id="missions-list"></div></div>
+      </div>
+
+      <!-- BROTHERS -->
+      <div class="view" id="view-brothers">
+        <div class="g2" style="margin-bottom:14px">
+          <div class="scard"><div class="sc-label">Brothers</div><div class="sc-val">9</div><div class="sc-sub">All in good standing</div></div>
+          <div class="scard"><div class="sc-label">Nomination Pending</div><div class="sc-val">1</div><div class="sc-sub">Edict E-2024-020 · Your vote cast: Yea</div></div>
+        </div>
+        <div class="panel"><div class="panel-header"><span class="ph-title">The Nine Brothers</span></div><div id="brothers-list"></div></div>
+      </div>
+
+      <!-- SAR LOG -->
+      <div class="view" id="view-sar">
+        <div class="panel" style="background:rgba(0,0,0,.3)">
+          <div class="panel-header" style="background:rgba(0,0,0,.3)">
+            <span class="ph-title" style="color:rgba(100,210,140,.4)">◈ Mechanical Scribe — Full Log</span>
+            <div class="sar-live-ind"><div class="sar-live-dot"></div>Active</div>
+          </div>
+          <div id="sar-full-list"></div>
+        </div>
+      </div>
+
+      <!-- PROFILE -->
+      <div class="view" id="view-profile">
+        <div class="profile-grid">
+          <div class="profile-card">
+            <div class="pc-content">
+              <div class="pc-sigil">Λ</div>
+              <div class="pc-order-name">Ashveil</div>
+              <div class="pc-real-name">"Jerome K."</div>
+              <div class="pc-role-badge">Brother · Founding Member</div>
+              <div class="pc-stats">
+                <div class="pc-stat"><div class="pc-stat-val">8</div><div class="pc-stat-label">Years</div></div>
+                <div class="pc-stat"><div class="pc-stat-val">49</div><div class="pc-stat-label">Present</div></div>
+                <div class="pc-stat"><div class="pc-stat-val">6</div><div class="pc-stat-label">Missions</div></div>
+                <div class="pc-stat"><div class="pc-stat-val">14</div><div class="pc-stat-label">Edicts</div></div>
+              </div>
+              <div class="pc-standing"><div class="sb-status-dot"></div>In Good Standing</div>
+              <div class="pc-oath">"I took my place at the Table not to lead it but to serve it. The constitution binds me as it binds all. I hold no authority the brotherhood has not given me."</div>
+            </div>
+          </div>
+          <div class="profile-details">
+            <div class="panel">
+              <div class="panel-header"><span class="ph-title">Standing Record</span></div>
+              <table class="dtable">
+                <tbody>
+                  <tr><td style="color:rgba(201,150,26,.4);font-family:'Cinzel',serif;font-size:9px;letter-spacing:.12em;text-transform:uppercase">Inducted</td><td style="color:var(--ivory2)">Year VI of the Order · 2016</td></tr>
+                  <tr><td style="color:rgba(201,150,26,.4);font-family:'Cinzel',serif;font-size:9px;letter-spacing:.12em;text-transform:uppercase">Sponsored By</td><td style="color:var(--ivory2)">Brother Ironside &amp; Brother The Scribe</td></tr>
+                  <tr><td style="color:rgba(201,150,26,.4);font-family:'Cinzel',serif;font-size:9px;letter-spacing:.12em;text-transform:uppercase">Dues Cycles</td><td style="color:var(--ivory2)">96 of 96 — no defaults</td></tr>
+                  <tr><td style="color:rgba(201,150,26,.4);font-family:'Cinzel',serif;font-size:9px;letter-spacing:.12em;text-transform:uppercase">Total Contributed</td><td style="color:var(--ivory2)">$8,100 to Common Purse</td></tr>
+                  <tr><td style="color:rgba(201,150,26,.4);font-family:'Cinzel',serif;font-size:9px;letter-spacing:.12em;text-transform:uppercase">Edicts Authored</td><td style="color:var(--ivory2)">14 total · 11 passed · 2 failed · 1 active</td></tr>
+                  <tr><td style="color:rgba(201,150,26,.4);font-family:'Cinzel',serif;font-size:9px;letter-spacing:.12em;text-transform:uppercase">Attendance Rate</td><td style="color:var(--ivory2)">94.2% — 5 perfect attendance years</td></tr>
+                  <tr><td style="color:rgba(201,150,26,.4);font-family:'Cinzel',serif;font-size:9px;letter-spacing:.12em;text-transform:uppercase">Council Service</td><td style="color:var(--ivory2)">Warden of the Purse · Years VIII–IX (2018–2019)</td></tr>
+                  <tr><td style="color:rgba(201,150,26,.4);font-family:'Cinzel',serif;font-size:9px;letter-spacing:.12em;text-transform:uppercase">Current Status</td><td><span class="tag passed">In Good Standing</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="panel">
+              <div class="panel-header"><span class="ph-title">Your Vote History — 2024</span></div>
+              <table class="dtable">
+                <thead><tr><th>Edict</th><th>Subject</th><th>Your Vote</th><th>Result</th></tr></thead>
+                <tbody id="vote-history"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </main>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────
+const EDICTS = [
+  {num:'E-2024-019',title:'Dues Increase — $75 to $100/month from January 2025',status:'open',proposed:'Ashveil (You)',date:'Nov 8, 2024',body:'With the brotherhood nine strong and the Mission Fund regularly underfunded after major gatherings, proposes increasing monthly dues to $100. The additional $225/month strengthens the Mission and Reserve funds. Voting closes November 13.',for:5,against:2,abs:1,myVote:'authored',closing:'Nov 13, 2024'},
+  {num:'E-2024-020',title:'New Member Nomination — "The Initiate"',status:'open',proposed:'Brother The Scribe',date:'Nov 10, 2024',body:'Formal nomination of a candidate for induction as the tenth brother. The nominee has attended two open gatherings as a guest. Five brothers have seconded. Per Article I, admission requires unanimous approval. Deliberation: 14 days.',for:6,against:1,abs:2,myVote:null,closing:'Nov 24, 2024'},
+  {num:'E-2024-017',title:'Emergency Medical Assistance — Brother Coldwater',status:'passed',proposed:'Brother Thornwood',date:'Oct 3, 2024',body:'Emergency disbursement of $800 from the Reserve to assist Brother Coldwater with an unexpected medical expense. Article V emergency session. Passed unanimously.',for:9,against:0,abs:0,myVote:'yea',closing:'Oct 6, 2024'},
+  {num:'E-2024-016',title:'Annual Brotherhood Weekend — Lake Tahoe, November 2024',status:'passed',proposed:'Brother Ironside',date:'Sep 12, 2024',body:'3-night brotherhood excursion to Lake Tahoe. Cabin rental, provisions, activities from Mission Fund. $2,100 for 7 attending brothers. Passed 8–0–1.',for:8,against:0,abs:1,myVote:'yea',closing:'Sep 17, 2024'},
+  {num:'E-2024-013',title:'Charter Amendment — Quorum Reduction for Emergency Sessions',status:'failed',proposed:'Brother Ravenmoor',date:'Aug 20, 2024',body:'Proposed reducing emergency session quorum from 7 brothers to 5. Article VIII supermajority (8 of 9) not met — 6 in favor. Quorum of 7 remains.',for:6,against:2,abs:1,myVote:'nay',closing:'Sep 3, 2024'},
+];
+
+const GATHERINGS_DATA = [
+  {when:'April 12–14, 2024',name:'The Spring Convocation',where:"Brother Ashveil's cabin · Blue Ridge Mountains",status:'complete',cost:'$540',attended:true,rites:['State of the Table by Grand Master','Edict review & new proposals','The Blue Ridge Expedition','Mission Fund allocation vote']},
+  {when:'July 19–21, 2024',name:'The Summer Ordeal',where:'Lake Tahoe, California',status:'complete',cost:'$2,100',attended:true,rites:['The Mountain Traverse (22 miles)','Rites of Reaffirmation at summit','Lakeside feast','Annual photo & chronicle update']},
+  {when:'November 2–3, 2024',name:'The Autumn Reckoning',where:'Shenandoah Valley, Virginia',status:'complete',cost:'$1,240',attended:true,rites:['Treasury review & ledger audit','Outstanding edicts resolved','2025 gathering locations voted','The Reckoning Dinner']},
+  {when:'December 14–16, 2024',name:'The Winter Rite',where:"Brother Ironside's estate · Upstate New York",status:'upcoming',cost:'$680',attended:false,rites:['Reading of the Founding Oath','Council of Three Election','The Feast of Nine','Annual reflection — review of MMXXIV']},
+];
+
+const BROTHERS_DATA = [
+  {sigil:'GM',name:'Ironside',real:'Marcus J.',role:'Grand Master',color:'#8b1a2e',standing:true,me:false},
+  {sigil:'KR',name:'The Scribe',real:'David T.',role:'Keeper of Records',color:'#1a3a1e',standing:true,me:false},
+  {sigil:'WP',name:'Thornwood',real:'Raymond O.',role:'Warden of the Purse',color:'#1a2a4a',standing:true,me:false},
+  {sigil:'Λ',name:'Ashveil',real:'Jerome K.',role:'Brother',color:'#2a1a3a',standing:true,me:true},
+  {sigil:'Ω',name:'Coldwater',real:'Nathan S.',role:'Brother',color:'#3a1a1a',standing:true,me:false},
+  {sigil:'Φ',name:'The Pilgrim',real:'Isaiah W.',role:'Brother',color:'#1a3a35',standing:true,me:false},
+  {sigil:'Σ',name:'Ravenmoor',real:'Carlos D.',role:'Brother',color:'#3a2a10',standing:true,me:false},
+  {sigil:'Δ',name:'Greyveil',real:'Patrick M.',role:'Brother',color:'#1a1a3a',standing:true,me:false},
+  {sigil:'Ψ',name:'Blackthorn',real:'Antoine F.',role:'Brother',color:'#2a3a1a',standing:true,me:false},
+];
+
+const LEDGER_DATA = [
+  {id:'TX·MMXXIV·089',date:'Nov 2024',type:'dues',desc:'Monthly dues — all 9 brothers',amount:675,balance:5850,credit:true},
+  {id:'TX·MMXXIV·088',date:'Nov 2024',type:'gathering',desc:'Autumn Reckoning — Shenandoah Valley',amount:-1240,balance:5175,credit:false},
+  {id:'TX·MMXXIV·087',date:'Oct 2024',type:'dues',desc:'Monthly dues — all 9 brothers',amount:675,balance:6415,credit:true},
+  {id:'TX·MMXXIV·086',date:'Oct 2024',type:'mission',desc:'Brotherhood Weekend — Lake Tahoe',amount:-2100,balance:5740,credit:false},
+  {id:'TX·MMXXIV·085',date:'Oct 2024',type:'reserve',desc:'Emergency — Brother Coldwater medical',amount:-800,balance:7840,credit:false},
+  {id:'TX·MMXXIV·084',date:'Sep 2024',type:'dues',desc:'Monthly dues — all 9 brothers',amount:675,balance:8640,credit:true},
+];
+
+const DUES_TRACK = [
+  {month:'Jan',amount:75,paid:true},{month:'Feb',amount:75,paid:true},{month:'Mar',amount:75,paid:true},
+  {month:'Apr',amount:75,paid:true},{month:'May',amount:75,paid:true},{month:'Jun',amount:75,paid:true},
+  {month:'Jul',amount:75,paid:true},{month:'Aug',amount:75,paid:true},{month:'Sep',amount:75,paid:true},
+  {month:'Oct',amount:75,paid:true},{month:'Nov',amount:75,paid:true},
+];
+
+const MISSIONS_DATA = [
+  {type:'Adventure',title:'Lake Tahoe Brotherhood Weekend',funded:100,amount:'$2,100',status:'complete',desc:'7 of 9 brothers. 3 nights, one cabin, the Sierra Nevada. Mission Fund fully expended.'},
+  {type:'Legacy',title:'The Chronicle of the Table',funded:60,amount:'$340',status:'active',desc:'A physical bound volume documenting the Order\'s history. Updated at each Winter Rite.'},
+  {type:'Investment',title:'Collective Camping & Gear Fund',funded:80,amount:'$1,840',status:'active',desc:'Shared adventure gear owned by the brotherhood. Stored at Thornwood\'s, logged as Order property.'},
+  {type:'Adventure',title:'2025 Scotland Highland Ordeal',funded:15,amount:'$8,400',status:'planned',desc:'7-day Highland expedition. Edinburgh, Glencoe, whisky distillery, a night in a Scottish castle.'},
+  {type:'Charitable',title:'Anonymous Scholarship Fund',funded:0,amount:'$2,000/yr',status:'planned',desc:'Annual anonymous scholarship — a mission of The Pilgrim. Vote scheduled for Winter Rite.'},
+];
+
+const SAR_DATA = [
+  {id:'SAR·MMXXIV·0441',
+   s:'E-2024-019 — dues increase edict. Authored by Ashveil. Checks: Article III scope (dues amendments require simple majority, not Art. VIII supermajority). Vote window: 5 days.',
+   a:'Verified: dues rate changes are standard legislation under Art. III. Simple majority = 5 of 9 required. Current: 5 For, 2 Against, 1 Abstain. Threshold currently met. 1 brother has not yet voted.',
+   r:'Vote window active. Day 3 of 5. Reminder dispatched to Brother Blackthorn (not yet voted). Grand Master notified of current tally. No further action until window closes Nov 13.'},
+  {id:'SAR·MMXXIV·0439',
+   s:'E-2024-020 — new member nomination. Authored by The Scribe. Article I unanimous approval requirement triggered. Deliberation period: 14 days.',
+   a:'Art. I: all sitting members must approve. 9 brothers currently seated. Tally: 6 Yea, 1 Nay, 2 Abstain. Unanimous threshold NOT yet met. Brother Ravenmoor voted Nay — deliberation active.',
+   r:'Deliberation phase continues. All brothers notified. Window closes Nov 24. No vote can be forced before deliberation period ends. Result is recorded but not enacted until unanimous threshold or edict fails.'},
+  {id:'SAR·MMXXIV·0437',
+   s:'November dues collection complete. All 9 brothers paid within window. TX·MMXXIV·089 posted.',
+   a:'9/9 payments received by Nov 7. No late fees triggered. Fund allocation applied: Gathering $270 · Mission $202.50 · Reserve $135 · Legacy Chest $67.50. Brother Blackthorn paid day 6 — within grace period, no penalty.',
+   r:'TX·MMXXIV·089 posted. Balances updated across all four funds. Monthly ledger entry sealed. All members notified of treasury status. SAR entry permanent.'},
+];
+
+const VOTE_HISTORY = [
+  {num:'E-2024-019',subject:'Dues Increase to $100/month',vote:'Authored',result:'open'},
+  {num:'E-2024-020',subject:'New Member Nomination',vote:'Yea',result:'open'},
+  {num:'E-2024-017',subject:'Emergency — Brother Coldwater',vote:'Yea',result:'passed'},
+  {num:'E-2024-016',subject:'Lake Tahoe Brotherhood Weekend',vote:'Yea',result:'passed'},
+  {num:'E-2024-013',subject:'Quorum Amendment',vote:'Nay',result:'failed'},
+  {num:'E-2024-011',subject:'Scotland 2025 Ordeal Planning',vote:'Yea',result:'passed'},
+];
+
+// ── VIEW SWITCHING ─────────────────────────────────────────────────────
+let currentView = 'overview';
+function setView(name, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  else { const b = document.querySelector(`[onclick*="${name}"]`); if(b) b.classList.add('active'); }
+  document.getElementById('content').scrollTop = 0;
+  currentView = name;
+}
+
+// ── BUILD ──────────────────────────────────────────────────────────────
+function buildAll() {
+  buildOverviewEdicts();
+  buildOverviewSAR();
+  buildOverviewMissions();
+  buildEdictsFullList();
+  buildGatherings();
+  buildTreasuryLedger();
+  buildDuesTrack();
+  buildMissions();
+  buildBrothers();
+  buildSARFull();
+  buildVoteHistory();
+}
+
+function votePct(e) { const t=e.for+e.against+e.abs; return t?Math.round(e.for/t*100):0; }
+
+function buildOverviewEdicts() {
+  const open = EDICTS.filter(e => e.status === 'open');
+  document.getElementById('overview-edicts').innerHTML = open.map(e => {
+    const tot = e.for+e.against+e.abs;
+    const pct = tot ? Math.round(e.for/tot*100) : 0;
+    const needsVote = !e.myVote;
+    return `<div class="edict-item">
+      <div class="ei-top">
+        <div class="ei-title">${e.title}</div>
+        <span class="tag ${e.status}">${e.status}</span>
+      </div>
+      <div class="ei-meta">${e.num} · Closes ${e.closing}</div>
+      <div class="ei-vbar">
+        <div class="ei-vfor" style="width:${pct}%"></div>
+        <div class="ei-vag" style="width:${tot?Math.round(e.against/tot*100):0}%"></div>
+      </div>
+      <div class="ei-tally"><span class="vt-for">${e.for} Yea</span><span class="vt-ag">${e.against} Nay</span><span class="vt-abs">${e.abs} Abs</span></div>
+      ${needsVote ? `<div class="vote-btns-mini">
+        <button class="vbm for" onclick="castVote(this,'Yea','${e.num}')">Yea</button>
+        <button class="vbm ag" onclick="castVote(this,'Nay','${e.num}')">Nay</button>
+        <button class="vbm abs" onclick="castVote(this,'Abstain','${e.num}')">Abstain</button>
+      </div>` : `<div style="font-family:'Cinzel',serif;font-size:8px;color:rgba(201,150,26,.35);letter-spacing:.12em;text-transform:uppercase;margin-top:6px">${e.myVote === 'authored' ? '◆ You authored this edict' : '◆ Your vote: ' + e.myVote}</div>`}
+    </div>`;
+  }).join('');
+}
+
+function buildOverviewSAR() {
+  document.getElementById('overview-sar').innerHTML = SAR_DATA.slice(0,2).map(s => `
+    <div class="sar-entry-mini">
+      <div class="sar-em-id">${s.id}</div>
+      <div class="sar-em-row"><span class="sar-em-lbl s">SENSE</span><span class="sar-em-txt">${s.s.substring(0,90)}…</span></div>
+      <div class="sar-em-row"><span class="sar-em-lbl r">RESPOND</span><span class="sar-em-txt">${s.r.substring(0,80)}…</span></div>
+    </div>`).join('');
+}
+
+function buildOverviewMissions() {
+  document.getElementById('overview-missions').innerHTML = MISSIONS_DATA.filter(m => m.status !== 'complete').slice(0,3).map(m => `
+    <div class="mission-mini">
+      <div class="mm-type">${m.type}</div>
+      <div class="mm-title">${m.title}</div>
+      <div class="mm-bar-row">
+        <div class="mm-track"><div class="mm-fill" style="width:${m.funded}%"></div></div>
+        <div class="mm-pct">${m.funded}%</div>
+        <div class="mm-amt">${m.amount}</div>
+      </div>
+    </div>`).join('');
+}
+
+function buildEdictsFullList() {
+  document.getElementById('edicts-full-list').innerHTML = EDICTS.map(e => {
+    const tot = e.for+e.against+e.abs;
+    const pct = tot ? Math.round(e.for/tot*100) : 0;
+    const badges = {open:'open',passed:'passed',failed:'failed'};
+    const needsVote = e.status === 'open' && !e.myVote;
+    return `<div class="edict-item">
+      <div class="ei-top">
+        <div class="ei-title">${e.title}</div>
+        <span class="tag ${badges[e.status]}">${e.status}</span>
+      </div>
+      <div class="ei-meta">${e.num} · Proposed by ${e.proposed} · ${e.date}${e.status==='open'?' · Closes '+e.closing:''}</div>
+      <div style="font-family:'EB Garamond',serif;font-size:13px;color:rgba(240,235,224,.4);line-height:1.7;margin-bottom:10px;font-style:italic">${e.body}</div>
+      <div class="ei-vbar">
+        <div class="ei-vfor" style="width:${pct}%"></div>
+        <div class="ei-vag" style="width:${tot?Math.round(e.against/tot*100):0}%"></div>
+      </div>
+      <div class="ei-tally" style="margin-bottom:${needsVote?'8px':'0'}">
+        <span class="vt-for">${e.for} Yea</span>
+        <span class="vt-ag">${e.against} Nay</span>
+        <span class="vt-abs">${e.abs} Abstain</span>
+        ${e.myVote ? `<span style="margin-left:auto;font-family:'Cinzel',serif;font-size:8px;color:rgba(201,150,26,.4);letter-spacing:.1em;text-transform:uppercase">${e.myVote==='authored'?'◆ Authored':'◆ You voted: '+e.myVote}</span>` : ''}
+      </div>
+      ${needsVote ? `<div class="vote-btns-mini">
+        <button class="vbm for" onclick="castVote(this,'Yea','${e.num}')">Cast Yea</button>
+        <button class="vbm ag" onclick="castVote(this,'Nay','${e.num}')">Cast Nay</button>
+        <button class="vbm abs" onclick="castVote(this,'Abstain','${e.num}')">Abstain</button>
+      </div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function buildGatherings() {
+  document.getElementById('gatherings-list').innerHTML = GATHERINGS_DATA.map(g => `
+    <div class="gathering-item">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+        <div style="flex:1">
+          <div class="gi-when">${g.when}</div>
+          <div class="gi-title">${g.name}</div>
+          <div class="gi-where">📍 ${g.where}</div>
+          <span class="tag ${g.status}">${g.status}</span>
+          ${g.attended ? `<span style="margin-left:8px;font-family:'Cinzel',serif;font-size:8px;color:rgba(100,210,140,.5);letter-spacing:.1em;text-transform:uppercase">◆ Attended</span>` : `<span style="margin-left:8px;font-family:'Cinzel',serif;font-size:8px;color:rgba(201,150,26,.5);letter-spacing:.1em;text-transform:uppercase">◈ Upcoming</span>`}
+          <div class="gi-rites" style="margin-top:10px">${g.rites.map(r=>`<div class="gi-rite">${r}</div>`).join('')}</div>
+        </div>
+        <div class="gi-cost" style="flex-shrink:0;margin-top:4px">${g.cost}</div>
+      </div>
+      ${g.status==='upcoming'?`<div style="margin-top:12px;display:flex;justify-content:flex-end"><div class="gi-rsvp" onclick="showToast('RSVP confirmed for ${g.name}. The Table has been notified.')">Confirm RSVP ◆</div></div>`:''}
+    </div>`).join('');
+}
+
+function buildTreasuryLedger() {
+  document.getElementById('treasury-ledger').innerHTML = LEDGER_DATA.map(tx => `
+    <tr>
+      <td class="mono">${tx.id}</td>
+      <td style="font-style:italic;color:rgba(240,235,224,.3)">${tx.date}</td>
+      <td><span style="font-family:'Cinzel',serif;font-size:8px;padding:2px 7px;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.04);color:rgba(240,235,224,.3);border:1px solid rgba(255,255,255,.05)">${tx.type}</span></td>
+      <td>${tx.desc}</td>
+      <td class="${tx.credit?'amt-c':'amt-d'}">${tx.credit?'+':'-'}$${Math.abs(tx.amount)}</td>
+      <td class="mono" style="color:rgba(201,150,26,.35)">$${tx.balance.toLocaleString()}</td>
+    </tr>`).join('');
+}
+
+function buildDuesTrack() {
+  document.getElementById('dues-track').innerHTML = DUES_TRACK.map(d => `
+    <div class="dt-row">
+      <div class="dt-month">${d.month}</div>
+      <div class="dt-bar-wrap"><div class="dt-bar-fill ${d.paid?'paid':'late'}" style="width:${d.paid?'100':'40'}%"></div></div>
+      <div class="dt-amount ${d.paid?'paid':''}">$${d.amount}</div>
+      <div class="dt-status ${d.paid?'paid':'late'}">${d.paid?'✓':'!'}</div>
+    </div>`).join('');
+}
+
+function buildMissions() {
+  document.getElementById('missions-list').innerHTML = MISSIONS_DATA.map(m => `
+    <div style="padding:16px;border-bottom:1px solid rgba(255,255,255,.025)">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px">
+        <div style="flex:1">
+          <div style="font-family:'Cinzel',serif;font-size:8px;color:rgba(201,150,26,.35);letter-spacing:.16em;text-transform:uppercase;margin-bottom:3px">${m.type}</div>
+          <div style="font-family:'Cinzel',serif;font-size:13px;color:var(--ivory2);letter-spacing:.04em;margin-bottom:4px">${m.title}</div>
+          <div style="font-family:'EB Garamond',serif;font-size:12px;color:rgba(240,235,224,.35);font-style:italic">${m.desc}</div>
+        </div>
+        <div style="flex-shrink:0">
+          <span class="tag ${m.status}">${m.status}</span>
+          <div style="font-family:'Cinzel Decorative',serif;font-size:18px;color:var(--gold3);margin-top:8px;text-align:right">${m.amount}</div>
+        </div>
+      </div>
+      <div class="mm-bar-row">
+        <div style="font-family:'Cinzel',serif;font-size:8px;color:rgba(201,150,26,.3);letter-spacing:.12em;text-transform:uppercase;min-width:44px">Funded</div>
+        <div class="mm-track"><div class="mm-fill" style="width:${m.funded}%"></div></div>
+        <div class="mm-pct">${m.funded}%</div>
+      </div>
+    </div>`).join('');
+}
+
+function buildBrothers() {
+  document.getElementById('brothers-list').innerHTML = BROTHERS_DATA.map(b => `
+    <div class="brother-row" style="${b.me?'background:rgba(201,150,26,.04);':''}">
+      <div class="br-av" style="background:${b.color};color:var(--gold);border-color:rgba(201,150,26,.${b.me?'4':'2'})">${b.sigil}</div>
+      <div style="flex:1">
+        <div class="br-name" style="${b.me?'color:var(--gold)':''}">${b.name} ${b.me?'<span style="font-family:Cinzel,serif;font-size:8px;color:rgba(201,150,26,.4);letter-spacing:.1em;text-transform:uppercase">(You)</span>':''}</div>
+        <div class="br-role">${b.role} · "${b.real}"</div>
+      </div>
+      <div class="br-status-dot" style="background:${b.standing?'rgba(100,210,140,.6)':'rgba(200,80,100,.6)'}"></div>
+    </div>`).join('');
+}
+
+function buildSARFull() {
+  document.getElementById('sar-full-list').innerHTML = SAR_DATA.map(s => `
+    <div style="padding:16px;border-bottom:1px solid rgba(255,255,255,.025)">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(201,150,26,.2);margin-bottom:8px">${s.id}</div>
+      <div class="sar-em-row"><span class="sar-em-lbl s">SENSE</span><span class="sar-em-txt">${s.s}</span></div>
+      <div class="sar-em-row" style="margin-top:6px"><span class="sar-em-lbl a">ANALYZE</span><span class="sar-em-txt">${s.a}</span></div>
+      <div class="sar-em-row" style="margin-top:6px"><span class="sar-em-lbl r">RESPOND</span><span class="sar-em-txt">${s.r}</span></div>
+    </div>`).join('');
+}
+
+function buildVoteHistory() {
+  document.getElementById('vote-history').innerHTML = VOTE_HISTORY.map(v => {
+    const vc = {'Yea':'rgba(100,210,140,.6)','Nay':'rgba(200,80,100,.6)','Authored':'rgba(201,150,26,.5)','Abstain':'rgba(240,235,224,.25)'};
+    return `<tr>
+      <td class="mono">${v.num}</td>
+      <td style="color:rgba(240,235,224,.4);font-family:'EB Garamond',serif;font-style:italic">${v.subject}</td>
+      <td style="font-family:'Cinzel',serif;font-size:9px;color:${vc[v.vote]||'rgba(240,235,224,.3)'};letter-spacing:.08em;text-transform:uppercase">${v.vote}</td>
+      <td><span class="tag ${v.result}">${v.result}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── ACTIONS ───────────────────────────────────────────────────────────────
+function castVote(btn, vote, edictNum) {
+  const row = btn.closest('.vote-btns-mini') || btn.closest('.vote-row-dark');
+  if(row) row.querySelectorAll('button').forEach(b => b.disabled = true);
+  const colors = {Yea:['rgba(201,150,26,.08)','var(--gold)','rgba(201,150,26,.35)'],Nay:['rgba(155,32,53,.08)','rgba(200,80,100,.7)','rgba(155,32,53,.3)'],Abstain:['rgba(255,255,255,.03)','rgba(240,235,224,.45)','rgba(255,255,255,.08)']};
+  const [bg,color,border] = colors[vote]||colors.Abstain;
+  btn.style.background=bg; btn.style.color=color; btn.style.borderColor=border;
+  showToast(`Your ${vote} on Edict ${edictNum} has been sealed by the Mechanical Scribe.`);
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.display = 'block';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.style.display = 'none', 4500);
+}
+
+buildAll();
+</script>
+</body>
+</html>

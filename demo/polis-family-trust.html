@@ -1,0 +1,1237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>The Okonkwo-Williams Circle — A POLIS Family Trust Story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --forest:#1a3329;
+  --forest2:#24463a;
+  --forest3:#2d5a48;
+  --moss:#3d7a62;
+  --sage:#7aaa94;
+  --amber:#c17f2a;
+  --amber2:#d9963e;
+  --amber3:#f0b558;
+  --cream:#faf6ef;
+  --cream2:#f3ece0;
+  --cream3:#e8ddc8;
+  --ink:#1c1a16;
+  --ink2:#3a3630;
+  --ink3:#6b6456;
+  --white:#ffffff;
+  --border:#ddd5c4;
+  --border2:#ccc1ae;
+  --red:#9b2c2c;
+  --gold:#b8963e;
+  --shadow:0 2px 16px rgba(26,51,41,.08);
+  --shadow-md:0 6px 32px rgba(26,51,41,.12);
+  --shadow-lg:0 16px 60px rgba(26,51,41,.18);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--cream);
+  font-family:'Outfit',sans-serif;
+  color:var(--ink);
+  overflow-x:hidden;
+}
+::selection{background:var(--amber3);color:var(--forest)}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
+
+/* ── NOISE OVERLAY ── */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:999;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  opacity:.5;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;height:64px;
+  background:rgba(250,246,239,.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  transition:box-shadow .3s;
+}
+nav.scrolled{box-shadow:var(--shadow)}
+.nav-left{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-logo{
+  width:34px;height:34px;border-radius:8px;
+  background:var(--forest);color:var(--amber3);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Lora',serif;font-size:18px;font-weight:700;
+}
+.nav-name{font-family:'Lora',serif;font-size:16px;color:var(--forest);font-weight:600}
+.nav-right{display:flex;align-items:center;gap:24px}
+.nav-right a{font-size:13px;color:var(--ink3);text-decoration:none;transition:color .2s}
+.nav-right a:hover{color:var(--forest)}
+.nav-cta{
+  background:var(--forest);color:var(--cream);
+  padding:8px 20px;border-radius:6px;font-size:13px;font-weight:600;
+  text-decoration:none;transition:all .2s;font-family:'Outfit',sans-serif;
+}
+.nav-cta:hover{background:var(--forest2);color:var(--cream)!important}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding:120px 80px 80px;
+  background:var(--forest);
+  position:relative;overflow:hidden;
+}
+.hero-bg-pattern{
+  position:absolute;inset:0;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(193,127,42,.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(61,122,98,.2) 0%, transparent 50%),
+    radial-gradient(circle at 60% 80%, rgba(193,127,42,.08) 0%, transparent 40%);
+}
+.hero-leaves{
+  position:absolute;right:0;top:0;bottom:0;width:50%;
+  background:linear-gradient(135deg, rgba(36,70,58,.6) 0%, rgba(26,51,41,0) 60%);
+  display:flex;align-items:center;justify-content:center;
+}
+.hero-tree-art{
+  font-size:280px;opacity:.06;line-height:1;
+  position:absolute;right:80px;top:50%;transform:translateY(-50%);
+  filter:blur(2px);
+}
+.hero-content{
+  position:relative;z-index:2;
+  max-width:680px;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  border:1px solid rgba(193,127,42,.3);
+  padding:7px 16px;border-radius:99px;
+  font-size:11px;color:var(--amber3);
+  letter-spacing:.16em;text-transform:uppercase;
+  font-family:'DM Mono',monospace;margin-bottom:32px;
+  background:rgba(193,127,42,.08);
+  animation:fadeUp .8s ease both;
+}
+.hero-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--amber3);animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-h1{
+  font-family:'Lora',serif;
+  font-size:clamp(38px,5.5vw,72px);
+  line-height:1.1;color:var(--cream);
+  font-weight:700;margin-bottom:8px;
+  animation:fadeUp .8s .1s ease both;
+}
+.hero-h1 em{font-style:italic;color:var(--amber3)}
+.hero-subtitle{
+  font-family:'Lora',serif;
+  font-size:clamp(16px,2vw,22px);
+  color:var(--sage);font-weight:400;
+  font-style:italic;margin-bottom:24px;
+  animation:fadeUp .8s .15s ease both;
+}
+.hero-desc{
+  font-size:16px;color:rgba(250,246,239,.65);
+  line-height:1.8;max-width:540px;margin-bottom:40px;
+  font-weight:300;
+  animation:fadeUp .8s .2s ease both;
+}
+.hero-desc strong{color:var(--cream);font-weight:500}
+.hero-stats{
+  display:flex;gap:36px;
+  padding-top:36px;border-top:1px solid rgba(255,255,255,.08);
+  animation:fadeUp .8s .3s ease both;flex-wrap:wrap;
+}
+.hs-val{font-family:'Lora',serif;font-size:32px;color:var(--amber3);font-weight:700}
+.hs-label{font-size:11px;color:var(--sage);letter-spacing:.1em;text-transform:uppercase;margin-top:3px}
+.hs-sep{width:1px;background:rgba(255,255,255,.08)}
+.hero-scroll{
+  position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  color:rgba(250,246,239,.3);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  animation:fadeUp .8s .5s ease both;
+}
+.hero-scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,rgba(250,246,239,.2),transparent)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SECTION BASE ── */
+section{padding:96px 80px;position:relative}
+.section-label{
+  font-size:10px;color:var(--amber);letter-spacing:.2em;text-transform:uppercase;
+  font-family:'DM Mono',monospace;margin-bottom:14px;
+  display:flex;align-items:center;gap:10px;
+}
+.section-label::before{content:'';width:28px;height:1px;background:var(--amber)}
+.section-h2{
+  font-family:'Lora',serif;
+  font-size:clamp(28px,3.5vw,48px);
+  color:var(--ink);line-height:1.2;font-weight:700;
+  margin-bottom:14px;
+}
+.section-h2 em{font-style:italic;color:var(--forest3)}
+.section-sub{
+  font-size:16px;color:var(--ink3);line-height:1.8;
+  max-width:580px;font-weight:300;
+}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* ── THE STORY ── */
+.story-section{background:var(--cream)}
+.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;margin-top:60px}
+.story-text p{font-size:16px;color:var(--ink2);line-height:1.85;margin-bottom:20px;font-weight:300}
+.story-text p strong{color:var(--ink);font-weight:600}
+.story-text p em{font-style:italic;color:var(--forest3)}
+.pull-quote{
+  border-left:3px solid var(--amber);
+  padding:20px 24px;margin:28px 0;
+  background:rgba(193,127,42,.05);border-radius:0 8px 8px 0;
+}
+.pull-quote-text{
+  font-family:'Lora',serif;font-size:20px;
+  color:var(--ink);line-height:1.5;font-style:italic;
+  margin-bottom:8px;
+}
+.pull-quote-attr{font-size:12px;color:var(--ink3);letter-spacing:.08em}
+
+.founding-doc{
+  background:var(--cream2);
+  border:1px solid var(--border);border-radius:14px;
+  padding:32px;box-shadow:var(--shadow-md);
+  position:relative;overflow:hidden;
+}
+.founding-doc::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--amber),var(--amber3),var(--amber));
+}
+.fd-title{
+  font-family:'Lora',serif;font-size:13px;
+  color:var(--ink3);letter-spacing:.12em;text-transform:uppercase;
+  margin-bottom:4px;
+}
+.fd-name{
+  font-family:'Lora',serif;font-size:24px;
+  color:var(--forest);font-weight:700;margin-bottom:4px;
+}
+.fd-sub{font-size:12px;color:var(--ink3);font-family:'DM Mono',monospace;margin-bottom:24px}
+.fd-article{
+  padding:14px 0;border-top:1px solid var(--border);
+}
+.fd-article:first-of-type{border-top:none}
+.fd-article-id{
+  font-size:10px;color:var(--amber);letter-spacing:.12em;text-transform:uppercase;
+  font-family:'DM Mono',monospace;margin-bottom:4px;
+}
+.fd-article-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.fd-article-body{font-size:12px;color:var(--ink3);line-height:1.7}
+.fd-seal{
+  display:flex;align-items:center;gap:10px;
+  margin-top:22px;padding-top:18px;border-top:1px solid var(--border);
+}
+.fd-seal-mark{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--forest);color:var(--amber3);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Lora',serif;font-size:17px;font-weight:700;flex-shrink:0;
+}
+.fd-seal-text{font-size:11px;color:var(--ink3);line-height:1.5}
+.fd-seal-text strong{color:var(--forest);display:block}
+
+/* ── MEMBERS ── */
+.members-section{background:var(--forest);padding:96px 80px}
+.members-section .section-label{color:var(--amber3)}
+.members-section .section-label::before{background:var(--amber3)}
+.members-section .section-h2{color:var(--cream)}
+.members-section .section-h2 em{color:var(--amber3)}
+.members-section .section-sub{color:var(--sage)}
+.members-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:18px;margin-top:52px;
+}
+.member-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:24px;
+  transition:all .25s;
+  position:relative;overflow:hidden;
+}
+.member-card:hover{
+  background:rgba(255,255,255,.07);
+  border-color:rgba(193,127,42,.25);
+  transform:translateY(-3px);
+}
+.member-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--amber),transparent);
+  opacity:0;transition:opacity .25s;
+}
+.member-card:hover::before{opacity:1}
+.mc-top{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.mc-av{
+  width:48px;height:48px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Mono',monospace;font-size:14px;font-weight:600;
+  color:var(--cream);flex-shrink:0;
+}
+.mc-name{font-size:15px;font-weight:600;color:var(--cream);margin-bottom:2px}
+.mc-relation{font-size:12px;color:var(--sage)}
+.mc-role-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 9px;border-radius:99px;font-family:'DM Mono',monospace;
+  font-weight:500;margin-bottom:14px;
+}
+.mc-role-badge.founder{background:rgba(193,127,42,.18);color:var(--amber3);border:1px solid rgba(193,127,42,.2)}
+.mc-role-badge.member{background:rgba(122,170,148,.12);color:var(--sage);border:1px solid rgba(122,170,148,.15)}
+.mc-role-badge.elder{background:rgba(255,255,255,.06);color:rgba(250,246,239,.6);border:1px solid rgba(255,255,255,.08)}
+.mc-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mc-stat{background:rgba(0,0,0,.15);border-radius:8px;padding:10px 12px}
+.mc-stat-label{font-size:9px;color:rgba(122,170,148,.7);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px}
+.mc-stat-val{font-size:15px;font-weight:700;color:var(--cream)}
+.mc-occupation{font-size:12px;color:rgba(250,246,239,.4);margin-top:10px}
+
+/* ── HOW IT WORKS ── */
+.mechanics-section{background:var(--cream2)}
+.mechanics-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;margin-top:60px}
+.cycle-visual{
+  background:var(--cream);border:1px solid var(--border);
+  border-radius:16px;padding:28px;box-shadow:var(--shadow);
+}
+.cv-title{
+  font-size:11px;font-weight:700;color:var(--ink3);
+  text-transform:uppercase;letter-spacing:.12em;margin-bottom:20px;
+  display:flex;align-items:center;gap:8px;
+}
+.cv-title::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--moss)}
+
+/* Rotation ring */
+.rotation-ring{
+  position:relative;width:260px;height:260px;
+  margin:0 auto 24px;
+}
+.rr-center{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:88px;height:88px;border-radius:50%;
+  background:var(--forest);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  box-shadow:0 0 0 8px rgba(26,51,41,.06);
+}
+.rr-center-val{font-family:'Lora',serif;font-size:22px;color:var(--amber3);font-weight:700}
+.rr-center-label{font-size:9px;color:var(--sage);text-transform:uppercase;letter-spacing:.1em}
+.rr-member{
+  position:absolute;
+  width:44px;height:44px;
+  transform-origin:130px 130px;
+}
+.rr-av{
+  width:44px;height:44px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Mono',monospace;font-size:11px;font-weight:700;
+  color:var(--cream);border:2px solid var(--cream);
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+  cursor:default;transition:transform .2s;
+}
+.rr-av:hover{transform:scale(1.15)}
+.rr-av.next-up{border-color:var(--amber3);box-shadow:0 0 0 3px rgba(193,127,42,.2)}
+.rr-av.received{opacity:.5}
+.rotation-legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.rl-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink3)}
+.rl-dot{width:8px;height:8px;border-radius:50%}
+
+.cycle-details{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+.cd-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 14px;background:var(--cream2);border-radius:8px;
+  font-size:13px;
+}
+.cd-label{color:var(--ink3)}
+.cd-val{font-weight:600;color:var(--ink)}
+.cd-val.green{color:var(--moss)}
+.cd-val.amber{color:var(--amber)}
+
+/* Timeline */
+.timeline{display:flex;flex-direction:column;gap:0;margin-top:8px}
+.tl-item{display:flex;gap:20px;padding-bottom:28px;position:relative}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{
+  content:'';position:absolute;left:18px;top:36px;bottom:0;width:1px;
+  background:linear-gradient(to bottom,var(--border),transparent);
+}
+.tl-item:last-child::before{display:none}
+.tl-dot-wrap{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+.tl-dot{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;flex-shrink:0;
+  border:2px solid var(--border);background:var(--cream);
+}
+.tl-dot.done{background:var(--forest);border-color:var(--forest);color:var(--amber3)}
+.tl-dot.current{background:var(--amber);border-color:var(--amber);color:var(--cream)}
+.tl-dot.future{background:var(--cream2);color:var(--ink3)}
+.tl-content{padding-top:6px;flex:1}
+.tl-cycle{font-size:10px;color:var(--amber);letter-spacing:.12em;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:2px}
+.tl-name{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.tl-detail{font-size:12px;color:var(--ink3);line-height:1.5}
+.tl-amount{
+  font-family:'Lora',serif;font-size:18px;
+  font-weight:700;margin-left:auto;padding-top:6px;flex-shrink:0;
+}
+.tl-amount.received{color:var(--moss)}
+.tl-amount.upcoming{color:var(--amber)}
+.tl-amount.future{color:var(--border2)}
+
+/* ── TREASURY ── */
+.treasury-section{background:var(--cream)}
+.treasury-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:48px 0 32px}
+.t-stat{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:12px;padding:22px;box-shadow:var(--shadow);
+}
+.t-stat.primary{border-top:3px solid var(--forest)}
+.t-stat.amber-top{border-top:3px solid var(--amber)}
+.t-stat.green-top{border-top:3px solid var(--moss)}
+.t-stat.red-top{border-top:3px solid #c4704a}
+.t-stat-label{font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:.12em;font-weight:700;margin-bottom:8px}
+.t-stat-val{font-family:'Lora',serif;font-size:30px;color:var(--ink);margin-bottom:3px}
+.t-stat-sub{font-size:11px;color:var(--ink3)}
+.t-bar{height:3px;background:var(--cream3);border-radius:2px;margin-top:10px}
+.t-bar-fill{height:100%;border-radius:2px;background:var(--forest)}
+
+.ledger-table{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:12px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:24px;
+}
+.lt-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 22px;border-bottom:1px solid var(--cream3);
+}
+.lt-title{font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.12em}
+.lt-export{font-size:12px;color:var(--forest);cursor:pointer;font-weight:500}
+table.ledger{width:100%;border-collapse:collapse}
+table.ledger th{
+  padding:10px 18px;text-align:left;
+  font-size:10px;font-weight:700;color:var(--ink3);
+  text-transform:uppercase;letter-spacing:.1em;
+  background:var(--cream2);border-bottom:1px solid var(--border);
+}
+table.ledger td{
+  padding:12px 18px;border-bottom:1px solid var(--cream2);
+  font-size:13px;vertical-align:middle;
+}
+table.ledger tbody tr:last-child td{border-bottom:none}
+table.ledger tbody tr:hover td{background:var(--cream2)}
+.tx-id{font-family:'DM Mono',monospace;font-size:11px;color:var(--ink3)}
+.tx-type{
+  font-size:10px;padding:2px 8px;border-radius:4px;
+  font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+}
+.tx-type.contribution{background:#f0fdf4;color:var(--moss)}
+.tx-type.payout{background:rgba(193,127,42,.1);color:var(--amber)}
+.tx-type.reserve{background:#eff6ff;color:#1d4ed8}
+.tx-type.penalty{background:#fff7ed;color:#c2410c}
+.tx-amount{font-family:'DM Mono',monospace;font-weight:600}
+.tx-amount.credit{color:var(--moss)}
+.tx-amount.debit{color:var(--red)}
+
+/* ── LEGACY FUND ── */
+.legacy-section{
+  background:linear-gradient(160deg, var(--forest) 0%, var(--forest2) 60%, var(--forest3) 100%);
+  padding:96px 80px;position:relative;overflow:hidden;
+}
+.legacy-bg{
+  position:absolute;inset:0;
+  background-image:radial-gradient(ellipse 60% 60% at 80% 40%, rgba(193,127,42,.08) 0%, transparent 70%);
+}
+.legacy-section .section-label{color:var(--amber3)}
+.legacy-section .section-label::before{background:var(--amber3)}
+.legacy-section .section-h2{color:var(--cream)}
+.legacy-section .section-h2 em{color:var(--amber3)}
+.legacy-section .section-sub{color:var(--sage)}
+.legacy-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-top:52px}
+.legacy-left{}
+.legacy-projection{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:28px;
+}
+.lp-title{font-size:11px;color:var(--sage);text-transform:uppercase;letter-spacing:.14em;font-family:'DM Mono',monospace;margin-bottom:20px}
+.lp-bars{display:flex;flex-direction:column;gap:14px}
+.lp-bar-row{display:flex;align-items:center;gap:14px}
+.lp-year{font-size:12px;color:var(--sage);font-family:'DM Mono',monospace;min-width:36px}
+.lp-track{flex:1;height:10px;background:rgba(255,255,255,.06);border-radius:5px;overflow:hidden}
+.lp-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--amber),var(--amber3));transition:width 1.5s ease}
+.lp-val{font-size:13px;font-weight:700;color:var(--amber3);min-width:68px;text-align:right;font-family:'DM Mono',monospace}
+.legacy-rules{display:flex;flex-direction:column;gap:14px;margin-top:32px}
+.lr-item{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:16px;background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.07);border-radius:10px;
+}
+.lr-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.lr-title{font-size:13px;font-weight:600;color:var(--cream);margin-bottom:3px}
+.lr-body{font-size:12px;color:var(--sage);line-height:1.6}
+
+/* ── SAR TRANSPARENCY ── */
+.sar-section{background:var(--cream2)}
+.sar-demo-box{
+  background:var(--forest);border-radius:14px;
+  padding:28px;margin-top:48px;
+  box-shadow:var(--shadow-lg);
+}
+.sdb-header{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:20px;padding-bottom:16px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.sdb-live{
+  display:flex;align-items:center;gap:6px;
+  font-size:9px;color:#4ade80;letter-spacing:.16em;text-transform:uppercase;
+  font-family:'DM Mono',monospace;
+  border:1px solid rgba(74,222,128,.25);padding:3px 10px;border-radius:99px;
+}
+.sdb-live-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite}
+.sdb-title{font-size:14px;color:var(--cream);font-weight:500;flex:1}
+.sdb-ts{font-size:11px;color:rgba(255,255,255,.3);font-family:'DM Mono',monospace}
+.sar-entries{display:flex;flex-direction:column;gap:14px}
+.sar-entry{}
+.sar-phase-row{display:flex;gap:14px;margin-bottom:8px;font-size:13px}
+.sar-phase-label{
+  font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  padding:3px 9px;border-radius:4px;min-width:64px;text-align:center;
+  flex-shrink:0;margin-top:2px;height:fit-content;
+}
+.sar-phase-label.s{background:rgba(59,130,246,.15);color:#93c5fd}
+.sar-phase-label.a{background:rgba(251,191,36,.12);color:#fcd34d}
+.sar-phase-label.r{background:rgba(74,222,128,.1);color:#86efac}
+.sar-phase-text{color:rgba(250,246,239,.6);line-height:1.65}
+.sar-separator{height:1px;background:rgba(255,255,255,.05);margin:16px 0}
+
+/* ── INSPIRE ── */
+.inspire-section{
+  background:var(--cream);
+  text-align:center;padding:96px 80px;
+}
+.inspire-h2{
+  font-family:'Lora',serif;
+  font-size:clamp(32px,4.5vw,60px);
+  color:var(--ink);line-height:1.15;font-weight:700;margin-bottom:20px;
+}
+.inspire-h2 em{font-style:italic;color:var(--forest3)}
+.inspire-sub{
+  font-size:17px;color:var(--ink3);max-width:620px;
+  margin:0 auto 48px;line-height:1.8;font-weight:300;
+}
+.inspire-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:0 auto 60px;max-width:960px}
+.ic{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:14px;padding:28px 24px;text-align:left;
+  box-shadow:var(--shadow);transition:transform .25s,box-shadow .25s;
+}
+.ic:hover{transform:translateY(-5px);box-shadow:var(--shadow-md)}
+.ic-icon{font-size:32px;margin-bottom:16px}
+.ic-title{font-family:'Lora',serif;font-size:18px;color:var(--ink);font-weight:700;margin-bottom:8px}
+.ic-body{font-size:13px;color:var(--ink3);line-height:1.7}
+.ic-examples{
+  margin-top:14px;padding-top:14px;border-top:1px solid var(--border);
+  display:flex;flex-direction:column;gap:5px;
+}
+.ic-ex{font-size:12px;color:var(--forest3);display:flex;align-items:center;gap:7px}
+.ic-ex::before{content:'→';color:var(--amber);font-weight:600}
+.cta-box{
+  background:var(--forest);border-radius:20px;
+  padding:56px;max-width:760px;margin:0 auto;
+  position:relative;overflow:hidden;box-shadow:var(--shadow-lg);
+}
+.cta-box::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 60% at 80% 20%, rgba(193,127,42,.1) 0%, transparent 70%);
+}
+.cta-box-content{position:relative;z-index:1}
+.cta-h3{
+  font-family:'Lora',serif;font-size:34px;color:var(--cream);
+  font-weight:700;line-height:1.2;margin-bottom:12px;
+}
+.cta-h3 em{color:var(--amber3);font-style:italic}
+.cta-p{font-size:15px;color:var(--sage);line-height:1.7;margin-bottom:32px;font-weight:300}
+.cta-actions{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.btn-primary{
+  background:var(--amber);color:var(--forest);border:none;
+  padding:14px 36px;border-radius:8px;font-size:15px;font-weight:700;
+  font-family:'Outfit',sans-serif;cursor:pointer;transition:all .2s;
+  text-decoration:none;display:inline-block;letter-spacing:.02em;
+}
+.btn-primary:hover{background:var(--amber2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(193,127,42,.3)}
+.btn-secondary{
+  background:rgba(255,255,255,.08);color:var(--cream);
+  border:1px solid rgba(255,255,255,.15);
+  padding:14px 36px;border-radius:8px;font-size:15px;
+  font-family:'Outfit',sans-serif;cursor:pointer;transition:all .2s;
+  text-decoration:none;display:inline-block;
+}
+.btn-secondary:hover{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.25)}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--forest);border-top:1px solid rgba(255,255,255,.06);
+  padding:32px 80px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.footer-left{display:flex;align-items:center;gap:10px}
+.footer-logo{
+  width:30px;height:30px;border-radius:6px;background:var(--amber);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Lora',serif;font-size:16px;font-weight:700;color:var(--forest);
+}
+.footer-text{font-size:13px;color:var(--sage)}
+.footer-right{font-size:12px;color:rgba(122,170,148,.5);font-family:'DM Mono',monospace}
+
+@media(max-width:900px){
+  nav{padding:0 20px}
+  section{padding:64px 24px}
+  .hero{padding:100px 24px 64px}
+  .story-grid,.mechanics-grid,.legacy-grid{grid-template-columns:1fr}
+  .treasury-grid{grid-template-columns:1fr 1fr}
+  .inspire-cards{grid-template-columns:1fr}
+  .members-section{padding:64px 24px}
+  footer{padding:24px;flex-direction:column;gap:12px;text-align:center}
+  .rotation-ring{width:220px;height:220px}
+  .rr-center{width:72px;height:72px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-left" href="#">
+    <div class="nav-logo">Π</div>
+    <div class="nav-name">POLIS</div>
+  </a>
+  <div class="nav-right">
+    <a href="#story">The Story</a>
+    <a href="#members">The Circle</a>
+    <a href="#mechanics">How It Works</a>
+    <a href="#legacy">Legacy Fund</a>
+    <a href="#start" class="nav-cta">Start Your Trust →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-tree-art">🌳</div>
+  <div class="hero-content">
+    <div class="hero-eyebrow"><div class="hero-eyebrow-dot"></div>POLIS Family Trust · Case Study</div>
+    <h1 class="hero-h1">The Okonkwo-<br><em>Williams Circle</em></h1>
+    <p class="hero-subtitle">A family trust of twelve. One constitution. One ledger. One future.</p>
+    <p class="hero-desc">
+      What started as a conversation at a Sunday dinner in Atlanta became a <strong>governed financial circle</strong> connecting twelve people across four states. In their first year, they pooled <strong>$28,800</strong>, built a <strong>$2,304 legacy fund</strong>, and helped every founding member break a savings barrier they couldn't break alone.
+    </p>
+    <div class="hero-stats">
+      <div>
+        <div class="hs-val">$28,800</div>
+        <div class="hs-label">Pooled Year 1</div>
+      </div>
+      <div class="hs-sep"></div>
+      <div>
+        <div class="hs-val">12</div>
+        <div class="hs-label">Members</div>
+      </div>
+      <div class="hs-sep"></div>
+      <div>
+        <div class="hs-val">$2,304</div>
+        <div class="hs-label">Legacy Fund</div>
+      </div>
+      <div class="hs-sep"></div>
+      <div>
+        <div class="hs-val">100%</div>
+        <div class="hs-label">Transparent</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    Scroll to read their story
+  </div>
+</section>
+
+<!-- THE STORY -->
+<section class="story-section" id="story">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="section-label reveal">Their Story</div>
+    <h2 class="section-h2 reveal d1">Built on a Sunday afternoon,<br><em>funded by Monday morning.</em></h2>
+    <div class="story-grid">
+      <div class="story-text reveal d2">
+        <p>It started with a question that <strong>Adaeze Okonkwo</strong> had been sitting on for months. Her grandmother had told her about the <em>ajo</em> — the rotating savings circle that had built her family's first house in Lagos. Simple math, shared discipline, radical trust. Adaeze wondered if something like that could work here, for people like them, with the same spirit but with rules that could hold up at scale.</p>
+
+        <p>She brought it up at her brother Emeka's Fourth of July cookout. By the time the brisket was done, six people had pulled out their phones to run the math. By Monday morning, they had a group chat. By the following Sunday, they had a constitution.</p>
+
+        <div class="pull-quote">
+          <div class="pull-quote-text">"We didn't need a bank to believe in us. We needed to believe in each other — and have something written down to remind us of that when things got hard."</div>
+          <div class="pull-quote-attr">— Adaeze Okonkwo, Founding Member & Circle President</div>
+        </div>
+
+        <p>Using POLIS, they drafted their founding charter in a single afternoon. The AI asked them the right questions: What are your values? Who gets a vote? What happens if someone misses a payment? What if someone needs their payout early? <strong>Every answer became a law.</strong> Every law became enforceable.</p>
+
+        <p>Twelve people. Four states. Two generations. Three family names. One shared understanding that <em>wealth is not built alone</em> — and that trust, properly structured, is the most valuable asset any community can hold.</p>
+      </div>
+
+      <div class="reveal d3">
+        <div class="founding-doc">
+          <div class="fd-title">Founding Charter</div>
+          <div class="fd-name">The Okonkwo-Williams Circle</div>
+          <div class="fd-sub">Version 1.0.0 · Ratified January 14, 2024 · 12 founding signatures</div>
+
+          <div class="fd-article">
+            <div class="fd-article-id">Article I</div>
+            <div class="fd-article-title">Purpose & Bond</div>
+            <div class="fd-article-body">This Circle exists to multiply the financial power of its members through shared saving, mutual accountability, and democratic self-governance. We hold that wealth built together endures longer than wealth built alone.</div>
+          </div>
+          <div class="fd-article">
+            <div class="fd-article-id">Article II</div>
+            <div class="fd-article-title">Membership & Trust</div>
+            <div class="fd-article-body">Membership is by invitation and approval of two-thirds of the Circle. All members are equal in vote. No member may hold more than one position in any vote. Trust is the entry fee; the constitution is the receipt.</div>
+          </div>
+          <div class="fd-article">
+            <div class="fd-article-id">Article III</div>
+            <div class="fd-article-title">The Rotation</div>
+            <div class="fd-article-body">Each cycle, one member receives the full pool. Order is determined by founding lottery. Positions may be traded by mutual written consent. Hardship claims are reviewed and voted upon by the full Circle.</div>
+          </div>
+          <div class="fd-article">
+            <div class="fd-article-id">Article IV</div>
+            <div class="fd-article-title">The Legacy Fund</div>
+            <div class="fd-article-body">Eight percent of every payout is held in the Legacy Fund. These funds belong to the Circle in perpetuity and may only be distributed by a three-quarters vote. The Legacy Fund is a gift to the future members of this Circle.</div>
+          </div>
+          <div class="fd-article">
+            <div class="fd-article-id">Article V</div>
+            <div class="fd-article-title">Governance & The AI</div>
+            <div class="fd-article-body">The POLIS Governance Engine enforces this Charter impartially. It may not override member votes. It may not spend funds. Every action it takes is logged in the permanent SAR record and visible to all members.</div>
+          </div>
+
+          <div class="fd-seal">
+            <div class="fd-seal-mark">Π</div>
+            <div class="fd-seal-text">
+              <strong>Ratified by 12 founding signatures</strong>
+              Governed by POLIS Engine v1.0 · January 14, 2024
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERS -->
+<section class="members-section" id="members">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="section-label reveal">The Circle</div>
+    <h2 class="section-h2 reveal d1">Twelve people.<br><em>One governing body.</em></h2>
+    <p class="section-sub reveal d2">Friends, family, and one trusted neighbor. Spread across Atlanta, Houston, Chicago, and Charlotte. Connected by more than blood — connected by a written agreement they all helped write.</p>
+
+    <div class="members-grid" id="members-grid"></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="mechanics-section" id="mechanics">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="section-label reveal">The Mechanics</div>
+    <h2 class="section-h2 reveal d1">Simple math.<br><em>Governed fairly.</em></h2>
+    <p class="section-sub reveal d2">$200 per member, per month. 12 members. 12 cycles. Every member contributes. Every member receives. The AI handles the enforcement so no one has to be the bad guy.</p>
+
+    <div class="mechanics-grid">
+      <div class="reveal d2">
+        <div class="cycle-visual">
+          <div class="cv-title">Rotation Order — Year 1</div>
+          <div class="rotation-ring" id="rotation-ring">
+            <div class="rr-center">
+              <div class="rr-center-val">$2,208</div>
+              <div class="rr-center-label">Per Payout</div>
+            </div>
+          </div>
+          <div class="rotation-legend">
+            <div class="rl-item"><div class="rl-dot" style="background:var(--moss)"></div>Received</div>
+            <div class="rl-item"><div class="rl-dot" style="background:var(--amber);box-shadow:0 0 0 3px rgba(193,127,42,.2)"></div>Next Up</div>
+            <div class="rl-item"><div class="rl-dot" style="background:var(--border2)"></div>Upcoming</div>
+          </div>
+          <div class="cycle-details">
+            <div class="cd-row"><span class="cd-label">Contribution / member</span><span class="cd-val">$200 / month</span></div>
+            <div class="cd-row"><span class="cd-label">Monthly pool collected</span><span class="cd-val green">$2,400</span></div>
+            <div class="cd-row"><span class="cd-label">Legacy deduction (8%)</span><span class="cd-val amber">— $192</span></div>
+            <div class="cd-row"><span class="cd-label">Net payout to member</span><span class="cd-val">$2,208</span></div>
+            <div class="cd-row"><span class="cd-label">Late fee (if applicable)</span><span class="cd-val amber">5% of contribution</span></div>
+            <div class="cd-row"><span class="cd-label">Full round duration</span><span class="cd-val">12 months</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal d3">
+        <div style="font-size:14px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:20px;display:flex;align-items:center;gap:8px">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--amber);display:inline-block"></span>
+          Payout Timeline — Year 1
+        </div>
+        <div class="timeline" id="timeline"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TREASURY -->
+<section class="treasury-section" id="treasury">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="section-label reveal">The Ledger</div>
+    <h2 class="section-h2 reveal d1">Every dollar,<br><em>accounted for.</em></h2>
+    <p class="section-sub reveal d2">The POLIS ledger is immutable and visible to every member at any time. No surprises. No hidden fees. No "I thought you were handling that."</p>
+
+    <div class="treasury-grid reveal d2">
+      <div class="t-stat primary">
+        <div class="t-stat-label">Total Collected YTD</div>
+        <div class="t-stat-val">$28,800</div>
+        <div class="t-stat-sub">12 members × $200 × 12 months</div>
+      </div>
+      <div class="t-stat amber-top">
+        <div class="t-stat-label">Legacy Fund</div>
+        <div class="t-stat-val">$2,304</div>
+        <div class="t-stat-sub">8% of each payout · Growing</div>
+        <div class="t-bar"><div class="t-bar-fill" style="width:100%;background:var(--amber)"></div></div>
+      </div>
+      <div class="t-stat green-top">
+        <div class="t-stat-label">Payouts Disbursed</div>
+        <div class="t-stat-val">$24,288</div>
+        <div class="t-stat-sub">11 of 12 members paid out</div>
+        <div class="t-bar"><div class="t-bar-fill" style="width:92%"></div></div>
+      </div>
+      <div class="t-stat amber-top">
+        <div class="t-stat-label">Current Balance</div>
+        <div class="t-stat-val">$2,208</div>
+        <div class="t-stat-sub">Final payout queued for Dec</div>
+      </div>
+    </div>
+
+    <div class="ledger-table reveal d3">
+      <div class="lt-header">
+        <span class="lt-title">Recent Transactions</span>
+        <span class="lt-export" onclick="showToast('Ledger export — JSON/CSV/PDF available on Collective plan')">Export Ledger ↗</span>
+      </div>
+      <table class="ledger">
+        <thead>
+          <tr><th>TX ID</th><th>Date</th><th>Type</th><th>Member</th><th>Amount</th><th>Running Balance</th><th>Note</th></tr>
+        </thead>
+        <tbody id="ledger-body"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- LEGACY FUND -->
+<section class="legacy-section" id="legacy">
+  <div class="legacy-bg"></div>
+  <div style="max-width:1100px;margin:0 auto;position:relative;z-index:1">
+    <div class="section-label reveal">The Legacy Fund</div>
+    <h2 class="section-h2 reveal d1">Not just for now.<br><em>For the next generation.</em></h2>
+    <p class="section-sub reveal d2">Eight percent of every payout flows into the Legacy Fund — a pool that belongs to the Circle forever. It grows every cycle. It can only be spent by a three-quarters vote. It is the Circle's gift to the future.</p>
+
+    <div class="legacy-grid">
+      <div class="reveal d2">
+        <div style="margin-bottom:28px">
+          <div style="font-family:'Lora',serif;font-size:48px;color:var(--amber3);font-weight:700;margin-bottom:4px" id="legacy-counter">$2,304</div>
+          <div style="font-size:13px;color:var(--sage)">Legacy Fund balance · Year 1 complete</div>
+        </div>
+
+        <div class="legacy-projection">
+          <div class="lp-title">Projected Growth — If the Circle Continues</div>
+          <div class="lp-bars" id="legacy-bars"></div>
+        </div>
+
+        <div style="margin-top:28px;padding:20px;background:rgba(193,127,42,.08);border:1px solid rgba(193,127,42,.15);border-radius:10px">
+          <div style="font-size:12px;color:var(--amber3);font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;font-family:'DM Mono',monospace">What the Legacy Fund Can Become</div>
+          <div style="font-size:14px;color:var(--sage);line-height:1.8">
+            At $2,304/year, held in a high-yield account at 4.5% APY, the Legacy Fund reaches <strong style="color:var(--amber3)">$29,000</strong> in 10 years. That's a college semester. A down payment assistance fund. A small business seed grant. A gift from a Circle that chose to think beyond this month.
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal d3">
+        <div style="font-size:13px;color:var(--sage);text-transform:uppercase;letter-spacing:.12em;font-family:'DM Mono',monospace;margin-bottom:18px">Legacy Fund Rules — Written in the Charter</div>
+        <div class="legacy-rules">
+          <div class="lr-item">
+            <div class="lr-icon">🔒</div>
+            <div>
+              <div class="lr-title">Locked by Constitution</div>
+              <div class="lr-body">The Legacy Fund cannot be touched without a three-quarters vote of all active members. Not even the founders can access it unilaterally. The AI enforces this absolutely.</div>
+            </div>
+          </div>
+          <div class="lr-item">
+            <div class="lr-icon">📈</div>
+            <div>
+              <div class="lr-title">Grows Every Cycle</div>
+              <div class="lr-body">8% of every payout flows in automatically. The SAR engine logs each contribution. The balance is visible to all members in real time on the treasury dashboard.</div>
+            </div>
+          </div>
+          <div class="lr-item">
+            <div class="lr-icon">🎯</div>
+            <div>
+              <div class="lr-title">Purpose-Driven Spending</div>
+              <div class="lr-body">Proposals to spend Legacy Fund must specify a purpose — education, emergency, business seed, or community project. The Circle votes on each. The SAR engine analyzes against the charter before any vote opens.</div>
+            </div>
+          </div>
+          <div class="lr-item">
+            <div class="lr-icon">👶</div>
+            <div>
+              <div class="lr-title">Built for Future Members</div>
+              <div class="lr-body">When children of members come of age, they may apply to join. The Legacy Fund belongs to the Circle — not to the founding twelve. It grows with the generations.</div>
+            </div>
+          </div>
+          <div class="lr-item">
+            <div class="lr-icon">📋</div>
+            <div>
+              <div class="lr-title">Always Auditable</div>
+              <div class="lr-body">Every Legacy Fund transaction appears in the immutable ledger. No member ever has to wonder where the money went. The answer is always one click away.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SAR TRANSPARENCY -->
+<section class="sar-section">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="section-label reveal">The Governance Engine</div>
+    <h2 class="section-h2 reveal d1">The AI never decides.<br><em>It only enforces.</em></h2>
+    <p class="section-sub reveal d2">Every automated action the POLIS engine takes is logged with three-phase reasoning — what it sensed, what it analyzed, what it did. No hidden decisions. No mystery. The ledger and the log are always open to every member.</p>
+
+    <div class="sar-demo-box reveal d3">
+      <div class="sdb-header">
+        <div class="sdb-live"><div class="sdb-live-dot"></div>SAR Engine Active</div>
+        <div class="sdb-title">Okonkwo-Williams Circle — Recent Activity</div>
+        <div class="sdb-ts">Nov 2024</div>
+      </div>
+      <div class="sar-entries" id="sar-entries"></div>
+    </div>
+  </div>
+</section>
+
+<!-- INSPIRE -->
+<section class="inspire-section" id="start">
+  <div class="section-label reveal" style="justify-content:center">Start Your Own</div>
+  <h2 class="inspire-h2 reveal d1">Your circle is out there.<br><em>It just needs a constitution.</em></h2>
+  <p class="inspire-sub reveal d2">The Okonkwo-Williams family didn't have special access to financial tools. They had Sunday dinner and a shared belief that they were stronger together. POLIS gave them the infrastructure to prove it.</p>
+
+  <div class="inspire-cards">
+    <div class="ic reveal d1">
+      <div class="ic-icon">👨‍👩‍👧‍👦</div>
+      <div class="ic-title">Family Trust</div>
+      <div class="ic-body">Siblings, cousins, and parents coming together to pool savings, build a legacy fund, and govern their shared finances with written rules everyone agreed to.</div>
+      <div class="ic-examples">
+        <div class="ic-ex">Rotating savings pool every month</div>
+        <div class="ic-ex">Legacy fund for education &amp; homeownership</div>
+        <div class="ic-ex">Hardship provisions for emergencies</div>
+        <div class="ic-ex">Democratic vote on all major decisions</div>
+      </div>
+    </div>
+    <div class="ic reveal d2">
+      <div class="ic-icon">🏘</div>
+      <div class="ic-title">Neighbor Circle</div>
+      <div class="ic-body">Six families on the same block, pooling resources to tackle shared goals — bulk buying, emergency funds, neighborhood improvement projects.</div>
+      <div class="ic-examples">
+        <div class="ic-ex">Shared emergency fund ($500/family)</div>
+        <div class="ic-ex">Bulk purchase savings for utilities &amp; groceries</div>
+        <div class="ic-ex">Neighborhood improvement project fund</div>
+        <div class="ic-ex">Rotating childcare and service credits</div>
+      </div>
+    </div>
+    <div class="ic reveal d3">
+      <div class="ic-icon">🤝</div>
+      <div class="ic-title">Friends Cooperative</div>
+      <div class="ic-body">A tight-knit group of friends who've decided that financial loneliness ends here. Accountability built in. No awkward money conversations — just the constitution.</div>
+      <div class="ic-examples">
+        <div class="ic-ex">Susu / tontine savings rotation</div>
+        <div class="ic-ex">Small business seed fund</div>
+        <div class="ic-ex">Vacation &amp; experience club</div>
+        <div class="ic-ex">Debt payoff support circle</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-box reveal d2">
+    <div class="cta-box-content">
+      <h3 class="cta-h3">Ready to found<br><em>your circle?</em></h3>
+      <p class="cta-p">It takes one conversation and one afternoon. POLIS will interview you, draft your constitution, and have your governance engine running before dinner. The Okonkwo-Williams family did it in an afternoon. So can you.</p>
+      <div class="cta-actions">
+        <a class="btn-primary" href="#" onclick="showToast('Starting your founding interview — let\'s build something lasting.')">Found Your Circle Free →</a>
+        <a class="btn-secondary" href="#" onclick="showToast('Loading the full POLIS platform tour...')">See Full Platform</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <div class="footer-logo">Π</div>
+    <div class="footer-text">POLIS Governance Engine · Family Trust Platform</div>
+  </div>
+  <div class="footer-right">SAR ENGINE LIVE · © 2025 POLIS</div>
+</footer>
+
+<!-- TOAST -->
+<div id="toast" style="display:none;position:fixed;bottom:28px;right:28px;z-index:1000;background:var(--forest);color:var(--cream);padding:13px 22px;border-radius:9px;font-size:13px;box-shadow:var(--shadow-lg);font-family:'Outfit',sans-serif;max-width:320px;line-height:1.5;animation:fadeUp .2s ease"></div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────
+const MEMBERS = [
+  {initials:'AO',name:'Adaeze Okonkwo',relation:'Sister — Atlanta, GA',role:'founder',occupation:'Registered Nurse',color:'#1a3329',rotation:1,paid:true,payout:'$2,208',joined:'Jan 2024'},
+  {initials:'EO',name:'Emeka Okonkwo',relation:'Brother — Atlanta, GA',role:'founder',occupation:'Software Engineer',color:'#24463a',rotation:2,paid:true,payout:'$2,208',joined:'Jan 2024'},
+  {initials:'GW',name:'Gloria Williams',relation:'Aunt — Houston, TX',role:'elder',occupation:'Retired Teacher',color:'#4a3520',rotation:3,paid:true,payout:'$2,208',joined:'Jan 2024'},
+  {initials:'DW',name:'Derek Williams',relation:'Cousin — Houston, TX',role:'member',occupation:'HVAC Technician',color:'#2d3a1a',rotation:4,paid:true,payout:'$2,208',joined:'Jan 2024'},
+  {initials:'TN',name:'Tanya Nwosu',relation:'Best friend — Charlotte, NC',role:'member',occupation:'Elementary Teacher',color:'#1a2a3a',rotation:5,paid:true,payout:'$2,208',joined:'Jan 2024'},
+  {initials:'JW',name:'James Williams Jr.',relation:'Cousin — Houston, TX',role:'member',occupation:'Warehouse Manager',color:'#3a1a2a',rotation:6,paid:true,payout:'$2,208',joined:'Jan 2024'},
+  {initials:'CN',name:'Chioma Nwosu',relation:'Friend of family — Chicago, IL',role:'member',occupation:'Accountant',color:'#1a3a2a',rotation:7,paid:true,payout:'$2,208',joined:'Jan 2024'},
+  {initials:'RO',name:'Raymond Okonkwo',relation:'Uncle — Atlanta, GA',role:'elder',occupation:'Business Owner',color:'#2a1a3a',rotation:8,paid:true,payout:'$2,208',joined:'Jan 2024'},
+  {initials:'KM',name:'Keisha Moore',relation:'Neighbor — Atlanta, GA',role:'member',occupation:'Social Worker',color:'#1a3535',rotation:9,paid:true,payout:'$2,208',joined:'Jan 2024'},
+  {initials:'BW',name:'Brenda Williams',relation:'Aunt — Charlotte, NC',role:'member',occupation:'Nurse Practitioner',color:'#352a1a',rotation:10,paid:true,payout:'$2,208',joined:'Jan 2024'},
+  {initials:'MO',name:'Marcus Okonkwo',relation:'Brother-in-law — Atlanta, GA',role:'member',occupation:'Firefighter',color:'#1a352a',rotation:11,paid:true,payout:'$2,208',joined:'Jan 2024'},
+  {initials:'LW',name:'Lydia Williams',relation:'Cousin — Chicago, IL',role:'member',occupation:'Graduate Student',color:'#2a3520',rotation:12,paid:false,payout:'$2,208',joined:'Jan 2024'},
+];
+
+const TIMELINE = [
+  {cycle:'Cycle 1 · Jan',name:'Adaeze Okonkwo',detail:'Founder · Circle President · Used for emergency fund',amount:'$2,208',state:'done'},
+  {cycle:'Cycle 2 · Feb',name:'Emeka Okonkwo',detail:'Founder · Used toward car repairs + savings',amount:'$2,208',state:'done'},
+  {cycle:'Cycle 3 · Mar',name:'Gloria Williams',detail:'Hardship priority approved by 11–0 vote',amount:'$2,208',state:'done'},
+  {cycle:'Cycle 4 · Apr',name:'Derek Williams',detail:'Used as first and last month rent deposit',amount:'$2,208',state:'done'},
+  {cycle:'Cycle 5 · May',name:'Tanya Nwosu',detail:'School supplies fund for her classroom',amount:'$2,208',state:'done'},
+  {cycle:'Cycle 6 · Jun',name:'James Williams Jr.',detail:'Emergency home repair — HVAC unit',amount:'$2,208',state:'done'},
+  {cycle:'Cycle 7 · Jul',name:'Chioma Nwosu',detail:'CPA exam prep course + certification fees',amount:'$2,208',state:'done'},
+  {cycle:'Cycle 8 · Aug',name:'Raymond Okonkwo',detail:'Business inventory expansion',amount:'$2,208',state:'done'},
+  {cycle:'Cycle 9 · Sep',name:'Keisha Moore',detail:'First time meeting deductible in 5 years',amount:'$2,208',state:'done'},
+  {cycle:'Cycle 10 · Oct',name:'Brenda Williams',detail:'Graduate school application fees + prep',amount:'$2,208',state:'done'},
+  {cycle:'Cycle 11 · Nov',name:'Marcus Okonkwo',detail:'Children\'s holiday savings goal',amount:'$2,208',state:'done'},
+  {cycle:'Cycle 12 · Dec',name:'Lydia Williams',detail:'Next up · Dissertation research expenses',amount:'$2,208',state:'next'},
+];
+
+const LEDGER_DATA = [
+  {id:'TX-1144',date:'Nov 1, 2024',type:'contribution',member:'Lydia Williams',amount:200,balance:2400,note:'Cycle 12 contribution'},
+  {id:'TX-1143',date:'Nov 1, 2024',type:'contribution',member:'Marcus Okonkwo',amount:200,balance:2200,note:'Cycle 12 contribution'},
+  {id:'TX-1142',date:'Nov 1, 2024',type:'contribution',member:'Brenda Williams',amount:200,balance:2000,note:'Cycle 12 contribution'},
+  {id:'TX-1141',date:'Oct 31, 2024',type:'payout',member:'Marcus Okonkwo',amount:-2208,balance:0,note:'Cycle 11 payout disbursed'},
+  {id:'TX-1140',date:'Oct 31, 2024',type:'reserve',member:null,amount:-192,balance:2208,note:'Legacy Fund (8%) — Cycle 11'},
+  {id:'TX-1139',date:'Oct 15, 2024',type:'contribution',member:'Keisha Moore',amount:200,balance:2400,note:'Cycle 11 contribution'},
+  {id:'TX-1138',date:'Sep 30, 2024',type:'payout',member:'Brenda Williams',amount:-2208,balance:0,note:'Cycle 10 payout disbursed'},
+  {id:'TX-1137',date:'Sep 1, 2024',type:'contribution',member:'All members',amount:2400,balance:2400,note:'Cycle 10 — all 12 on time'},
+];
+
+const SAR_ENTRIES = [
+  {
+    sense:'Cycle 12 contribution window opened. All 12 members notified. Contribution deadline: November 5, 2024.',
+    analyze:'Verified active member count: 12. Expected contribution total: $2,400. Legacy Fund current balance: $2,112. No missed contributions in last 3 cycles. Rotation position 12 (Lydia Williams) confirmed for December payout.',
+    respond:'Contribution window open. Reminders dispatched via email and in-app to all members. Auto-check scheduled for day 6. No action required.'
+  },
+  {
+    sense:'Cycle 11 payout executed — Marcus Okonkwo (rotation position 11). Pool fully collected: $2,400.',
+    analyze:'Verified all 12 contributions received by deadline. Applied Legacy Fund deduction: 8% = $192 per Article IV. Net payout: $2,208. Running Legacy Fund balance: $2,112 → $2,304. No hardship claims pending.',
+    respond:'Payout TX-1141 executed to Marcus Okonkwo. Legacy Fund TX-1140 written to reserve. All members notified. Cycle 12 initiated. Immutable ledger updated. SAR entry sealed.'
+  },
+  {
+    sense:'Hardship claim submitted by Gloria Williams (position 3) in Cycle 3 — requesting priority advancement citing documented medical bills totaling $1,847.',
+    analyze:'Reviewed claim against Article III hardship provisions. Documentation verified on file. Checked original lottery holder (position 3 was already Gloria Williams — no swap needed). Quorum check: 12 active members, threshold 60% = 8 votes required.',
+    respond:'Hardship claim opened for member vote. 5-day voting window initiated. Plain-language summary distributed. Result: 11 For, 0 Against, 1 Abstain. Claim approved. Original rotation honored. No ledger impact.'
+  }
+];
+
+// ── RENDER ────────────────────────────────────────────────────────────────
+function buildMembers() {
+  const grid = document.getElementById('members-grid');
+  grid.innerHTML = MEMBERS.map((m,i) => `
+    <div class="member-card reveal" style="transition-delay:${(i%4)*.08}s">
+      <div class="mc-top">
+        <div class="mc-av" style="background:${m.color}">${m.initials}</div>
+        <div>
+          <div class="mc-name">${m.name}</div>
+          <div class="mc-relation">${m.relation}</div>
+        </div>
+      </div>
+      <div class="mc-role-badge ${m.role}">${m.role === 'founder' ? '⭐ Founder' : m.role === 'elder' ? '🌿 Elder' : '● Member'}</div>
+      <div class="mc-stats">
+        <div class="mc-stat">
+          <div class="mc-stat-label">Rotation</div>
+          <div class="mc-stat-val">#${m.rotation}</div>
+        </div>
+        <div class="mc-stat">
+          <div class="mc-stat-label">Payout</div>
+          <div class="mc-stat-val" style="${m.paid?'color:var(--amber3)':''}">${m.paid ? m.payout : 'Dec \'24'}</div>
+        </div>
+      </div>
+      <div class="mc-occupation">${m.occupation}</div>
+    </div>`).join('');
+}
+
+function buildRotationRing() {
+  const ring = document.getElementById('rotation-ring');
+  const cx = 130, cy = 130, r = 100;
+  MEMBERS.forEach((m, i) => {
+    const angle = (i / MEMBERS.length) * 2 * Math.PI - Math.PI / 2;
+    const x = cx + r * Math.cos(angle) - 22;
+    const y = cy + r * Math.sin(angle) - 22;
+    const el = document.createElement('div');
+    el.className = 'rr-member';
+    el.style.cssText = `left:${x}px;top:${y}px;position:absolute`;
+    const isNext = !m.paid;
+    const isReceived = m.paid && m.rotation < 12;
+    el.innerHTML = `<div class="rr-av ${isNext?'next-up':''} ${isReceived?'received':''}"
+      style="background:${m.color};${isNext?'border-color:var(--amber3)':''}"
+      title="${m.name}">${m.initials}</div>`;
+    ring.appendChild(el);
+  });
+}
+
+function buildTimeline() {
+  const tl = document.getElementById('timeline');
+  tl.innerHTML = TIMELINE.slice(0, 8).map(t => `
+    <div class="tl-item">
+      <div class="tl-dot-wrap">
+        <div class="tl-dot ${t.state}">${t.state==='done'?'✓':t.state==='next'?'→':'○'}</div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-cycle">${t.cycle}</div>
+        <div class="tl-name">${t.name}</div>
+        <div class="tl-detail">${t.detail}</div>
+      </div>
+      <div class="tl-amount ${t.state==='done'?'received':t.state==='next'?'upcoming':'future'}">${t.amount}</div>
+    </div>`).join('') +
+    `<div class="tl-item">
+      <div class="tl-dot-wrap"><div class="tl-dot future">…</div></div>
+      <div class="tl-content">
+        <div class="tl-cycle">Cycles 9–11</div>
+        <div class="tl-name">Keisha, Brenda, Marcus</div>
+        <div class="tl-detail">All received, all on time</div>
+      </div>
+      <div class="tl-amount received">$6,624</div>
+    </div>` +
+    `<div class="tl-item">
+      <div class="tl-dot-wrap"><div class="tl-dot current">→</div></div>
+      <div class="tl-content">
+        <div class="tl-cycle">Cycle 12 · Dec 2024</div>
+        <div class="tl-name">Lydia Williams</div>
+        <div class="tl-detail">Graduate student · Dissertation expenses · Next up</div>
+      </div>
+      <div class="tl-amount upcoming">$2,208</div>
+    </div>`;
+}
+
+function buildLedger() {
+  document.getElementById('ledger-body').innerHTML = LEDGER_DATA.map(tx => `
+    <tr>
+      <td class="tx-id">${tx.id}</td>
+      <td style="color:var(--ink3);font-size:12px">${tx.date}</td>
+      <td><span class="tx-type ${tx.type}">${tx.type}</span></td>
+      <td style="font-size:13px;color:var(--ink2)">${tx.member || '—'}</td>
+      <td class="tx-amount ${tx.amount>0?'credit':'debit'}">${tx.amount>0?'+':''}\$${Math.abs(tx.amount).toLocaleString()}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--ink2)">\$${tx.balance.toLocaleString()}</td>
+      <td style="font-size:12px;color:var(--ink3)">${tx.note}</td>
+    </tr>`).join('');
+}
+
+function buildLegacyBars() {
+  const years = [
+    {year:'Y1',amount:2304,max:30000},
+    {year:'Y2',amount:4820,max:30000},
+    {year:'Y3',amount:7568,max:30000},
+    {year:'Y5',amount:13940,max:30000},
+    {year:'Y10',amount:29100,max:30000},
+  ];
+  const container = document.getElementById('legacy-bars');
+  container.innerHTML = years.map(y => `
+    <div class="lp-bar-row">
+      <div class="lp-year">${y.year}</div>
+      <div class="lp-track">
+        <div class="lp-fill" data-width="${Math.round(y.amount/y.max*100)}%" style="width:0%"></div>
+      </div>
+      <div class="lp-val">\$${y.amount.toLocaleString()}</div>
+    </div>`).join('');
+}
+
+function buildSAR() {
+  document.getElementById('sar-entries').innerHTML = SAR_ENTRIES.map((e, i) => `
+    <div class="sar-entry">
+      ${i > 0 ? '<div class="sar-separator"></div>' : ''}
+      <div class="sar-phase-row">
+        <span class="sar-phase-label s">SENSE</span>
+        <span class="sar-phase-text">${e.sense}</span>
+      </div>
+      <div class="sar-phase-row">
+        <span class="sar-phase-label a">ANALYZE</span>
+        <span class="sar-phase-text">${e.analyze}</span>
+      </div>
+      <div class="sar-phase-row">
+        <span class="sar-phase-label r">RESPOND</span>
+        <span class="sar-phase-text">${e.respond}</span>
+      </div>
+    </div>`).join('');
+}
+
+// ── SCROLL REVEAL ──────────────────────────────────────────────────────────
+function initReveal() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('in');
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+}
+
+function initLegacyBars() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.lp-fill').forEach(bar => {
+          bar.style.width = bar.dataset.width;
+        });
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  const container = document.getElementById('legacy-bars');
+  if (container) obs.observe(container);
+}
+
+// ── NAV SCROLL ─────────────────────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ── TOAST ──────────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.style.display = 'none', 3800);
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────────
+buildMembers();
+buildRotationRing();
+buildTimeline();
+buildLedger();
+buildLegacyBars();
+buildSAR();
+setTimeout(() => {
+  initReveal();
+  initLegacyBars();
+}, 100);
+</script>
+</body>
+</html>

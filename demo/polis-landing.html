@@ -1,0 +1,1111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>POLIS — Govern Anything. Together.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --ink:#0d0d0f;
+  --ink2:#1a1a1e;
+  --ink3:#2e2e35;
+  --cream:#f5f0e8;
+  --cream2:#ede7d8;
+  --cream3:#d9d0bc;
+  --gold:#c9a84c;
+  --gold2:#e0bc6a;
+  --gold3:#f5d78a;
+  --muted:#6b6b78;
+  --muted2:#4a4a55;
+  --white:#ffffff;
+  --green:#22c55e;
+  --border-dark:rgba(255,255,255,.07);
+  --border-light:rgba(201,168,76,.15);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--ink);color:var(--cream);font-family:'Outfit',sans-serif;overflow-x:hidden;cursor:default}
+::selection{background:var(--gold);color:var(--ink)}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:99px}
+
+/* ── NOISE TEXTURE ── */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:.4;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 60px;height:68px;
+  background:rgba(13,13,15,.85);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border-dark);
+  transition:all .3s;
+}
+.nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-mark{
+  width:36px;height:36px;border-radius:8px;
+  background:var(--gold);color:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:20px;font-weight:700;
+}
+.nav-name{font-family:'Playfair Display',serif;font-size:18px;color:var(--cream);letter-spacing:.06em;font-weight:400}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-links a{font-size:13px;color:var(--muted);text-decoration:none;letter-spacing:.04em;transition:color .2s}
+.nav-links a:hover{color:var(--cream)}
+.nav-cta{
+  background:var(--gold);color:var(--ink);border:none;
+  padding:9px 22px;border-radius:6px;font-size:13px;font-weight:600;
+  font-family:'Outfit',sans-serif;cursor:pointer;letter-spacing:.03em;
+  transition:all .2s;
+}
+.nav-cta:hover{background:var(--gold2);transform:translateY(-1px)}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:120px 60px 80px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201,168,76,.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 80% 60%, rgba(201,168,76,.05) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 60% at 20% 80%, rgba(30,58,95,.15) 0%, transparent 70%);
+}
+.hero-grid{
+  position:absolute;inset:0;z-index:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%);
+}
+.hero-content{position:relative;z-index:1;max-width:900px}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--border-light);
+  padding:6px 16px;border-radius:99px;
+  font-size:11px;color:var(--gold);letter-spacing:.14em;text-transform:uppercase;
+  margin-bottom:36px;font-family:'DM Mono',monospace;
+  background:rgba(201,168,76,.06);
+  animation:fadeUp .8s ease both;
+}
+.hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero-h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(48px,7vw,96px);
+  line-height:1.0;color:var(--cream);
+  font-weight:700;margin-bottom:24px;
+  animation:fadeUp .8s .1s ease both;
+}
+.hero-h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{
+  font-size:clamp(16px,2vw,20px);color:var(--muted);
+  line-height:1.7;max-width:640px;margin:0 auto 48px;
+  font-weight:300;
+  animation:fadeUp .8s .2s ease both;
+}
+.hero-sub strong{color:var(--cream2);font-weight:400}
+.hero-actions{
+  display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;
+  animation:fadeUp .8s .3s ease both;
+}
+.btn-hero-primary{
+  background:var(--gold);color:var(--ink);border:none;
+  padding:15px 36px;border-radius:8px;font-size:15px;font-weight:600;
+  font-family:'Outfit',sans-serif;cursor:pointer;letter-spacing:.02em;
+  transition:all .2s;display:flex;align-items:center;gap:8px;
+}
+.btn-hero-primary:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 12px 40px rgba(201,168,76,.25)}
+.btn-hero-secondary{
+  background:transparent;color:var(--cream2);
+  border:1px solid rgba(255,255,255,.15);
+  padding:15px 36px;border-radius:8px;font-size:15px;
+  font-family:'Outfit',sans-serif;cursor:pointer;
+  transition:all .2s;
+}
+.btn-hero-secondary:hover{border-color:rgba(255,255,255,.3);color:var(--cream)}
+.hero-stats{
+  display:flex;align-items:center;justify-content:center;gap:48px;
+  margin-top:72px;padding-top:48px;
+  border-top:1px solid var(--border-dark);
+  animation:fadeUp .8s .4s ease both;
+}
+.hero-stat-val{font-family:'Playfair Display',serif;font-size:36px;color:var(--cream);font-weight:700}
+.hero-stat-label{font-size:12px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
+.hero-stat-sep{width:1px;height:40px;background:var(--border-dark)}
+
+/* ── SECTION COMMON ── */
+section{padding:100px 60px;position:relative;z-index:1}
+.section-tag{
+  font-size:10px;color:var(--gold);letter-spacing:.18em;text-transform:uppercase;
+  font-family:'DM Mono',monospace;margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+}
+.section-tag::before{content:'';width:24px;height:1px;background:var(--gold)}
+.section-h2{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(32px,4vw,54px);
+  color:var(--cream);line-height:1.15;font-weight:700;
+  margin-bottom:16px;
+}
+.section-h2 em{font-style:italic;color:var(--gold)}
+.section-sub{font-size:17px;color:var(--muted);line-height:1.7;max-width:560px;font-weight:300}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+
+/* ── HOW IT WORKS ── */
+.how-section{background:var(--ink2);border-top:1px solid var(--border-dark);border-bottom:1px solid var(--border-dark)}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:64px}
+.step-card{
+  background:var(--ink);padding:36px 28px;
+  position:relative;overflow:hidden;
+}
+.step-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.step-card:hover::after{opacity:1}
+.step-num{
+  font-family:'Playfair Display',serif;font-size:64px;
+  color:rgba(201,168,76,.08);font-weight:900;
+  line-height:1;margin-bottom:16px;
+  transition:color .3s;
+}
+.step-card:hover .step-num{color:rgba(201,168,76,.15)}
+.step-icon{font-size:28px;margin-bottom:14px}
+.step-title{font-size:16px;font-weight:600;color:var(--cream);margin-bottom:10px}
+.step-body{font-size:13px;color:var(--muted);line-height:1.7}
+
+/* ── USE CASES ── */
+.use-cases-section{max-width:1200px;margin:0 auto}
+.uc-tabs{
+  display:flex;gap:0;
+  background:var(--ink2);border-radius:12px;
+  padding:4px;margin:48px 0 0;
+  border:1px solid var(--border-dark);
+  flex-wrap:wrap;
+}
+.uc-tab{
+  flex:1;min-width:100px;
+  padding:11px 16px;border-radius:8px;border:none;
+  background:none;color:var(--muted);font-size:13px;
+  font-family:'Outfit',sans-serif;font-weight:500;cursor:pointer;
+  transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px;
+  white-space:nowrap;
+}
+.uc-tab:hover{color:var(--cream2)}
+.uc-tab.active{background:var(--ink);color:var(--cream);box-shadow:0 2px 12px rgba(0,0,0,.4)}
+.uc-tab-icon{font-size:16px}
+.uc-content{
+  display:grid;grid-template-columns:1fr 1fr;gap:48px;
+  padding-top:56px;align-items:start;
+}
+.uc-left .uc-title{
+  font-family:'Playfair Display',serif;font-size:38px;
+  color:var(--cream);line-height:1.15;font-weight:700;margin-bottom:16px;
+}
+.uc-left .uc-title em{font-style:italic;color:var(--gold)}
+.uc-left .uc-desc{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:32px;font-weight:300}
+.uc-features{display:flex;flex-direction:column;gap:14px}
+.uc-feature{display:flex;align-items:flex-start;gap:14px}
+.uc-feature-icon{
+  width:32px;height:32px;border-radius:8px;
+  background:rgba(201,168,76,.1);border:1px solid var(--border-light);
+  display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;
+}
+.uc-feature-title{font-size:14px;font-weight:600;color:var(--cream2);margin-bottom:3px}
+.uc-feature-body{font-size:13px;color:var(--muted);line-height:1.6}
+.uc-right{position:relative}
+.uc-mockup{
+  background:var(--ink2);border:1px solid var(--border-dark);
+  border-radius:14px;overflow:hidden;
+  box-shadow:0 24px 80px rgba(0,0,0,.5);
+}
+.uc-mockup-bar{
+  display:flex;align-items:center;gap:7px;
+  padding:12px 16px;border-bottom:1px solid var(--border-dark);
+  background:rgba(255,255,255,.02);
+}
+.uc-mockup-dot{width:10px;height:10px;border-radius:50%}
+.uc-mockup-body{padding:20px}
+.uc-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.uc-mini-stat{background:rgba(255,255,255,.03);border:1px solid var(--border-dark);border-radius:8px;padding:14px}
+.uc-ms-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;font-family:'DM Mono',monospace}
+.uc-ms-val{font-family:'Playfair Display',serif;font-size:22px;color:var(--cream)}
+.uc-ms-sub{font-size:10px;color:var(--muted);margin-top:2px}
+.uc-member-row{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 0;border-bottom:1px solid var(--border-dark);
+}
+.uc-member-row:last-child{border-bottom:none}
+.uc-av{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:600;font-family:'DM Mono',monospace;flex-shrink:0;
+}
+.uc-mname{font-size:13px;color:var(--cream2);flex:1}
+.uc-mrole{font-size:10px;color:var(--muted)}
+.uc-tag{font-size:9px;padding:2px 8px;border-radius:4px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.uc-tag.active{background:rgba(34,197,94,.12);color:#22c55e}
+.uc-tag.next{background:rgba(201,168,76,.12);color:var(--gold)}
+.uc-tag.pending{background:rgba(255,255,255,.06);color:var(--muted)}
+
+/* ── TRANSPARENCY ── */
+.transparency-section{
+  background:var(--ink2);
+  border-top:1px solid var(--border-dark);
+  border-bottom:1px solid var(--border-dark);
+}
+.trans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:64px}
+.trans-card{
+  border:1px solid var(--border-dark);border-radius:14px;
+  padding:32px;position:relative;overflow:hidden;
+  transition:border-color .3s,transform .3s;background:var(--ink);
+}
+.trans-card:hover{border-color:var(--border-light);transform:translateY(-4px)}
+.trans-card-glow{
+  position:absolute;top:-40px;right:-40px;width:120px;height:120px;
+  border-radius:50%;background:rgba(201,168,76,.06);
+  filter:blur(30px);pointer-events:none;
+}
+.trans-icon{font-size:32px;margin-bottom:20px}
+.trans-title{font-size:18px;font-weight:600;color:var(--cream);margin-bottom:10px}
+.trans-body{font-size:14px;color:var(--muted);line-height:1.7}
+.trans-detail{
+  margin-top:20px;padding-top:20px;border-top:1px solid var(--border-dark);
+  font-size:12px;color:var(--muted2);font-family:'DM Mono',monospace;line-height:1.8;
+}
+.trans-detail span{color:var(--gold)}
+
+/* ── SAR DEMO ── */
+.sar-demo{
+  background:rgba(0,0,0,.3);border:1px solid var(--border-dark);
+  border-radius:12px;padding:24px;margin-top:48px;
+  font-family:'DM Mono',monospace;font-size:12px;
+}
+.sar-demo-title{font-size:10px;color:var(--gold);letter-spacing:.16em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.sar-demo-title::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;animation:pulse 2s infinite}
+.sar-row{display:flex;gap:12px;margin-bottom:10px;line-height:1.6}
+.sar-label{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:2px 7px;border-radius:3px;height:fit-content;flex-shrink:0;margin-top:1px}
+.sar-s{background:#1e3a5f33;color:#60a5fa}
+.sar-a{background:#78350f33;color:#fbbf24}
+.sar-r{background:#14532d33;color:#4ade80}
+.sar-text{color:rgba(255,255,255,.5)}
+
+/* ── PRICING ── */
+.pricing-section{max-width:1100px;margin:0 auto}
+.pricing-toggle{
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  margin:48px 0 0;
+}
+.toggle-label{font-size:14px;color:var(--muted)}
+.toggle-label.active{color:var(--cream)}
+.toggle-track{
+  width:44px;height:24px;border-radius:99px;
+  background:var(--ink2);border:1px solid var(--border-dark);
+  cursor:pointer;position:relative;transition:background .2s;
+}
+.toggle-track.on{background:var(--gold)}
+.toggle-thumb{
+  width:18px;height:18px;border-radius:50%;background:var(--cream);
+  position:absolute;top:2px;left:2px;transition:left .2s;
+}
+.toggle-track.on .toggle-thumb{left:22px;background:var(--ink)}
+.save-badge{
+  font-size:10px;background:rgba(34,197,94,.15);color:var(--green);
+  padding:2px 9px;border-radius:99px;font-weight:600;letter-spacing:.06em;
+}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+.price-card{
+  background:var(--ink2);border:1px solid var(--border-dark);
+  border-radius:16px;padding:36px 32px;position:relative;overflow:hidden;
+  transition:transform .3s,border-color .3s;
+}
+.price-card:hover{transform:translateY(-6px)}
+.price-card.featured{
+  border-color:var(--gold);background:var(--ink);
+}
+.price-card.featured::before{
+  content:'Most Popular';
+  position:absolute;top:20px;right:-28px;
+  background:var(--gold);color:var(--ink);
+  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 40px;transform:rotate(35deg);
+}
+.price-tier{font-size:11px;color:var(--gold);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:12px}
+.price-val{
+  font-family:'Playfair Display',serif;font-size:52px;
+  color:var(--cream);line-height:1;margin-bottom:4px;display:flex;align-items:flex-start;gap:4px;
+}
+.price-val-sym{font-size:24px;margin-top:10px;color:var(--muted)}
+.price-val-sub{font-size:13px;color:var(--muted);margin-bottom:6px}
+.price-period{font-size:13px;color:var(--muted)}
+.price-desc{font-size:13px;color:var(--muted);line-height:1.6;margin:20px 0;padding:16px 0;border-top:1px solid var(--border-dark);border-bottom:1px solid var(--border-dark)}
+.price-features{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.price-feature{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--cream2)}
+.price-feature-icon{color:var(--green);font-size:14px;flex-shrink:0}
+.price-feature.muted .price-feature-icon{color:var(--muted2)}
+.price-feature.muted{color:var(--muted2)}
+.btn-price{
+  width:100%;padding:13px;border-radius:8px;font-size:14px;font-weight:600;
+  font-family:'Outfit',sans-serif;cursor:pointer;transition:all .2s;border:none;
+}
+.btn-price.primary{background:var(--gold);color:var(--ink)}
+.btn-price.primary:hover{background:var(--gold2);transform:translateY(-1px)}
+.btn-price.secondary{background:rgba(255,255,255,.07);color:var(--cream2)}
+.btn-price.secondary:hover{background:rgba(255,255,255,.12)}
+.pricing-note{text-align:center;font-size:13px;color:var(--muted);margin-top:24px;line-height:1.7}
+.pricing-note a{color:var(--gold);text-decoration:none}
+
+/* ── USE CASES CAROUSEL — examples with detail ── */
+.examples-section{max-width:1100px;margin:0 auto}
+.example-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px}
+.example-card{
+  background:var(--ink2);border:1px solid var(--border-dark);
+  border-radius:14px;overflow:hidden;
+  transition:transform .25s,border-color .25s;
+}
+.example-card:hover{transform:translateY(-5px);border-color:var(--border-light)}
+.example-card-img{
+  height:140px;display:flex;align-items:center;justify-content:center;
+  font-size:52px;position:relative;overflow:hidden;
+}
+.example-card-body{padding:22px}
+.example-card-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--cream);margin-bottom:6px}
+.example-card-org{font-size:11px;color:var(--gold);font-family:'DM Mono',monospace;letter-spacing:.08em;margin-bottom:10px}
+.example-card-desc{font-size:13px;color:var(--muted);line-height:1.65}
+.example-card-stats{
+  display:flex;gap:16px;margin-top:16px;padding-top:16px;
+  border-top:1px solid var(--border-dark);
+}
+.example-card-stat-val{font-size:18px;font-weight:700;color:var(--cream)}
+.example-card-stat-label{font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+
+/* ── QUOTE STRIP ── */
+.quote-strip{
+  background:var(--gold);padding:60px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.quote-strip::before{
+  content:'"';position:absolute;font-family:'Playfair Display',serif;
+  font-size:320px;color:rgba(13,13,15,.08);top:-40px;left:40px;
+  line-height:1;font-weight:900;
+}
+.quote-text{
+  font-family:'Playfair Display',serif;font-size:clamp(20px,3vw,32px);
+  color:var(--ink);max-width:800px;margin:0 auto;line-height:1.5;
+  font-style:italic;position:relative;z-index:1;
+}
+.quote-attr{font-size:14px;color:rgba(13,13,15,.6);margin-top:16px;font-weight:500;position:relative;z-index:1}
+
+/* ── CTA ── */
+.cta-section{
+  text-align:center;padding:120px 60px;
+  background:radial-gradient(ellipse 60% 80% at 50% 50%, rgba(201,168,76,.08) 0%, transparent 70%);
+}
+.cta-h2{
+  font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,68px);
+  color:var(--cream);line-height:1.1;font-weight:700;margin-bottom:20px;
+}
+.cta-h2 em{font-style:italic;color:var(--gold)}
+.cta-sub{font-size:18px;color:var(--muted);max-width:500px;margin:0 auto 48px;line-height:1.7;font-weight:300}
+.cta-actions{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:32px}
+.cta-note{font-size:12px;color:var(--muted2)}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--ink2);border-top:1px solid var(--border-dark);
+  padding:48px 60px;
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;
+}
+.footer-brand-name{font-family:'Playfair Display',serif;font-size:20px;color:var(--cream);margin-bottom:8px}
+.footer-brand-desc{font-size:13px;color:var(--muted);line-height:1.7;max-width:260px}
+.footer-col-title{font-size:11px;font-weight:700;color:var(--cream3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px}
+.footer-links{display:flex;flex-direction:column;gap:8px}
+.footer-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--cream)}
+.footer-bottom{
+  background:var(--ink2);border-top:1px solid var(--border-dark);
+  padding:20px 60px;display:flex;align-items:center;justify-content:space-between;
+}
+.footer-bottom-text{font-size:12px;color:var(--muted2)}
+.footer-bottom-right{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted2);font-family:'DM Mono',monospace}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  nav{padding:0 24px}
+  .nav-links{display:none}
+  section{padding:72px 24px}
+  .hero{padding:100px 24px 60px}
+  .steps-grid{grid-template-columns:repeat(2,1fr)}
+  .uc-content{grid-template-columns:1fr}
+  .uc-right{display:none}
+  .trans-grid{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr}
+  .example-cards{grid-template-columns:1fr}
+  footer{grid-template-columns:1fr 1fr}
+  .footer-bottom{flex-direction:column;gap:8px;text-align:center}
+  .hero-stats{gap:24px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="nav-brand" href="#">
+    <div class="nav-mark">Π</div>
+    <div class="nav-name">POLIS</div>
+  </a>
+  <div class="nav-links">
+    <a href="#how">How It Works</a>
+    <a href="#examples">Examples</a>
+    <a href="#transparency">Transparency</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#docs">Docs</a>
+  </div>
+  <button class="nav-cta" onclick="scrollTo('#pricing')">Get Started Free</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-tag"><div class="hero-tag-dot"></div>AI-Governed Organizations · Now Open</div>
+    <h1 class="hero-h1">Govern <em>anything.</em><br>Together.</h1>
+    <p class="hero-sub">
+      POLIS is an <strong>open governance platform</strong> for any organization that needs rules, transparency, and fair decision-making — families, towns, cooperatives, churches, businesses. Built on the SAR engine. Powered by AI.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-hero-primary" onclick="document.getElementById('examples-section').scrollIntoView({behavior:'smooth'})">
+        See How It Works <span>→</span>
+      </button>
+      <button class="btn-hero-secondary" onclick="document.getElementById('pricing-section').scrollIntoView({behavior:'smooth'})">
+        View Pricing
+      </button>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-val">6</div>
+        <div class="hero-stat-label">Org Types</div>
+      </div>
+      <div class="hero-stat-sep"></div>
+      <div>
+        <div class="hero-stat-val">100%</div>
+        <div class="hero-stat-label">Transparent</div>
+      </div>
+      <div class="hero-stat-sep"></div>
+      <div>
+        <div class="hero-stat-val">SAR</div>
+        <div class="hero-stat-label">AI Engine</div>
+      </div>
+      <div class="hero-stat-sep"></div>
+      <div>
+        <div class="hero-stat-val">$0</div>
+        <div class="hero-stat-label">To Start</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="section-tag reveal">The Process</div>
+    <h2 class="section-h2 reveal reveal-delay-1">From idea to <em>governed organization</em><br>in minutes.</h2>
+    <p class="section-sub reveal reveal-delay-2">Answer a few questions. AI drafts your constitution, laws, and member structure. Launch. Every decision made afterward is logged, transparent, and enforced by the same rules you wrote.</p>
+    <div class="steps-grid">
+      <div class="step-card reveal reveal-delay-1">
+        <div class="step-num">01</div>
+        <div class="step-icon">🎯</div>
+        <div class="step-title">Define Your Organization</div>
+        <div class="step-body">Choose your org type — family trust, town, savings circle, church, business, or community. Our AI founding wizard interviews you about your purpose, members, finances, and values.</div>
+      </div>
+      <div class="step-card reveal reveal-delay-2">
+        <div class="step-num">02</div>
+        <div class="step-icon">📜</div>
+        <div class="step-title">AI Drafts Your Charter</div>
+        <div class="step-body">The AI generates a complete constitution, operating laws, member registry, and treasury structure based on your interview. Every word is yours to review and edit before ratification.</div>
+      </div>
+      <div class="step-card reveal reveal-delay-3">
+        <div class="step-num">03</div>
+        <div class="step-icon">⚖️</div>
+        <div class="step-title">Govern by the Rules You Set</div>
+        <div class="step-body">Members propose laws, vote, manage funds, and review decisions — all within your constitution. The AI enforces the rules impartially. It can't override member votes. Ever.</div>
+      </div>
+      <div class="step-card reveal reveal-delay-4">
+        <div class="step-num">04</div>
+        <div class="step-icon">🔍</div>
+        <div class="step-title">Full Transparency Always</div>
+        <div class="step-body">Every AI decision is logged in the SAR Activity Log with its full reasoning — what it saw, what it analyzed, what it did. The ledger is immutable. The records are permanent.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASE DEEP DIVES -->
+<section id="examples-section" style="padding:100px 60px">
+  <div class="use-cases-section">
+    <div class="section-tag reveal">Use Cases</div>
+    <h2 class="section-h2 reveal reveal-delay-1">One platform.<br><em>Every kind of organization.</em></h2>
+    <p class="section-sub reveal reveal-delay-2">POLIS adapts to your governance needs — not the other way around.</p>
+
+    <div class="uc-tabs reveal reveal-delay-3" id="uc-tabs">
+      <button class="uc-tab active" onclick="setUCTab('family',this)"><span class="uc-tab-icon">🤝</span>Family Trust</button>
+      <button class="uc-tab" onclick="setUCTab('town',this)"><span class="uc-tab-icon">🏛</span>Town Gov</button>
+      <button class="uc-tab" onclick="setUCTab('susu',this)"><span class="uc-tab-icon">💰</span>Savings Circle</button>
+      <button class="uc-tab" onclick="setUCTab('church',this)"><span class="uc-tab-icon">⛪</span>Church</button>
+      <button class="uc-tab" onclick="setUCTab('business',this)"><span class="uc-tab-icon">🏢</span>Business DAO</button>
+    </div>
+
+    <div class="uc-content" id="uc-content"></div>
+  </div>
+</section>
+
+<!-- EXAMPLE ORGS -->
+<section id="examples" style="padding:20px 60px 100px">
+  <div class="examples-section">
+    <div class="section-tag reveal">Live Examples</div>
+    <h2 class="section-h2 reveal reveal-delay-1">Organizations <em>already running</em><br>on POLIS.</h2>
+    <div class="example-cards">
+      <div class="example-card reveal reveal-delay-1">
+        <div class="example-card-img" style="background:linear-gradient(135deg,#1e3a5f,#2d4f7c)">🏛</div>
+        <div class="example-card-body">
+          <div class="example-card-org">ORG-0042 · Town Government</div>
+          <div class="example-card-title">Town of Maplewood, Ohio</div>
+          <div class="example-card-desc">3,847 registered voters. 7-member elected council. Full budget transparency — every tax dollar tracked on the public ledger. AI governance engine monitors 127 active ordinances and flags conflicts before votes.</div>
+          <div class="example-card-stats">
+            <div><div class="example-card-stat-val">127</div><div class="example-card-stat-label">Ordinances</div></div>
+            <div><div class="example-card-stat-val">$4.2M</div><div class="example-card-stat-label">Budget</div></div>
+            <div><div class="example-card-stat-val">94%</div><div class="example-card-stat-label">Approval</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="example-card reveal reveal-delay-2">
+        <div class="example-card-img" style="background:linear-gradient(135deg,#1c2a1e,#2d5a35)">🤝</div>
+        <div class="example-card-body">
+          <div class="example-card-org">ORG-0118 · Fraternal Trust</div>
+          <div class="example-card-title">The Ironwood Circle</div>
+          <div class="example-card-desc">A 12-member family and friends fraternal trust network. Rotating savings pool of $2,400/cycle. Legacy fund growing toward generational wealth. Constitution written in one afternoon using the AI wizard.</div>
+          <div class="example-card-stats">
+            <div><div class="example-card-stat-val">12</div><div class="example-card-stat-label">Members</div></div>
+            <div><div class="example-card-stat-val">$2.4K</div><div class="example-card-stat-label">Per Cycle</div></div>
+            <div><div class="example-card-stat-val">$330</div><div class="example-card-stat-label">Reserve</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="example-card reveal reveal-delay-3">
+        <div class="example-card-img" style="background:linear-gradient(135deg,#2a1a0e,#7c3d12)">⛪</div>
+        <div class="example-card-body">
+          <div class="example-card-org">ORG-0279 · Church Ministry</div>
+          <div class="example-card-title">New Hope Community Church</div>
+          <div class="example-card-desc">240-member congregation with democratic budget governance. Tithe allocation voted on quarterly. Building fund managed transparently. Every deacon decision logged and visible to the whole congregation.</div>
+          <div class="example-card-stats">
+            <div><div class="example-card-stat-val">240</div><div class="example-card-stat-label">Members</div></div>
+            <div><div class="example-card-stat-val">$88K</div><div class="example-card-stat-label">Annual Fund</div></div>
+            <div><div class="example-card-stat-val">100%</div><div class="example-card-stat-label">Transparent</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRANSPARENCY SECTION -->
+<section class="transparency-section" id="transparency">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="section-tag reveal">Radical Transparency</div>
+    <h2 class="section-h2 reveal reveal-delay-1">The AI works for <em>your members.</em><br>Not the platform.</h2>
+    <p class="section-sub reveal reveal-delay-2">POLIS's governance engine is constitutionally bound to your organization. It has no agenda, no preferences, and no way to act outside the rules you wrote.</p>
+
+    <div class="trans-grid">
+      <div class="trans-card reveal reveal-delay-1">
+        <div class="trans-card-glow"></div>
+        <div class="trans-icon">📋</div>
+        <div class="trans-title">SAR Activity Log</div>
+        <div class="trans-body">Every automated action is recorded with three phases: what the AI sensed, what it analyzed against your rules, and exactly what it did in response. No hidden decisions. Ever.</div>
+        <div class="trans-detail">
+          <span>SENSE</span> → New proposal submitted<br>
+          <span>ANALYZE</span> → Checked vs. Constitution<br>
+          <span>RESPOND</span> → Opened vote window
+        </div>
+      </div>
+      <div class="trans-card reveal reveal-delay-2">
+        <div class="trans-card-glow"></div>
+        <div class="trans-icon">🔒</div>
+        <div class="trans-title">Immutable Ledger</div>
+        <div class="trans-body">Every financial transaction, every vote, every member action is written to an append-only ledger. Nobody can edit history — including us. Your records are permanent and independently verifiable.</div>
+        <div class="trans-detail">
+          TX-0891 · <span>+$2,400</span> · Cycle 6 pool<br>
+          TX-0892 · <span>-$2,280</span> · Payout Kofi M.<br>
+          TX-0893 · <span>-$120</span> · Reserve (5%)
+        </div>
+      </div>
+      <div class="trans-card reveal reveal-delay-3">
+        <div class="trans-card-glow"></div>
+        <div class="trans-icon">⚖️</div>
+        <div class="trans-title">Constitution Lock</div>
+        <div class="trans-body">The AI cannot act outside your constitution. It can flag conflicts and surface ambiguities for member vote, but it cannot override your governing document — regardless of any external instruction.</div>
+        <div class="trans-detail">
+          AI cannot override member votes<br>
+          AI cannot spend funds<br>
+          AI <span>enforces</span>, members <span>decide</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SAR Demo -->
+    <div class="sar-demo reveal">
+      <div class="sar-demo-title">Live SAR Entry — Town of Maplewood</div>
+      <div class="sar-row"><span class="sar-label sar-s">SENSE</span><span class="sar-text">Emergency ordinance ORD-2025-041 submitted by Council Member Singh — Water Main Replacement, $280,000 capital drawdown requested.</span></div>
+      <div class="sar-row"><span class="sar-label sar-a">ANALYZE</span><span class="sar-text">Classified as emergency motion per Charter A5. Capital reserve balance $380K — sufficient. 72-hour public notice verified. No charter conflicts detected. Fast-track eligible with 60% council majority (4/7 votes).</span></div>
+      <div class="sar-row"><span class="sar-label sar-r">RESPOND</span><span class="sar-text">Emergency vote window opened (7-day). All 7 council members notified. Public notice posted. Entry written to immutable ledger SAR-2025-089. No further AI action until vote closes.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing-section" style="padding:100px 60px">
+  <div class="pricing-section">
+    <div style="text-align:center;max-width:600px;margin:0 auto">
+      <div class="section-tag reveal" style="justify-content:center">Pricing</div>
+      <h2 class="section-h2 reveal reveal-delay-1" style="text-align:center">Simple. Fair. <em>Transparent.</em></h2>
+      <p class="section-sub reveal reveal-delay-2" style="margin:0 auto">Like everything POLIS does, pricing follows the same principle: the rules are clear, written down, and don't change without your consent.</p>
+    </div>
+
+    <div class="pricing-toggle reveal reveal-delay-3">
+      <span class="toggle-label active" id="toggle-monthly">Monthly</span>
+      <div class="toggle-track" id="billing-toggle" onclick="toggleBilling()">
+        <div class="toggle-thumb"></div>
+      </div>
+      <span class="toggle-label" id="toggle-annual">Annual</span>
+      <span class="save-badge">Save 20%</span>
+    </div>
+
+    <div class="pricing-grid" id="pricing-grid"></div>
+
+    <p class="pricing-note reveal">
+      All plans include the full SAR engine, immutable ledger, and POLIS governance framework.<br>
+      No setup fees. No contracts. <a href="#">Read the full pricing policy →</a>
+    </p>
+
+    <div style="margin-top:48px;background:var(--ink2);border:1px solid var(--border-dark);border-radius:14px;padding:32px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px" class="reveal">
+      <div>
+        <div style="font-size:11px;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:8px">Per-Member Pricing</div>
+        <div style="font-size:14px;color:var(--muted);line-height:1.7">For large cooperatives and town governments, POLIS also offers per-member pricing starting at <strong style="color:var(--cream2)">$0.50/member/month</strong> for organizations over 500 members.</div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:8px">Civic & Nonprofit</div>
+        <div style="font-size:14px;color:var(--muted);line-height:1.7">Registered nonprofits, municipal governments, and educational institutions receive <strong style="color:var(--cream2)">50% off</strong> all plans. Contact us for verification.</div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:8px">Data Portability</div>
+        <div style="font-size:14px;color:var(--muted);line-height:1.7">Your constitution, ledger, and member data belong to you. Export everything in open JSON format at any time, on any plan. <strong style="color:var(--cream2)">No lock-in.</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE STRIP -->
+<div class="quote-strip">
+  <div class="quote-text">"The measure of a good governance system is not how it handles agreement — it's how it handles disagreement. POLIS makes disagreement democratic, transparent, and safe."</div>
+  <div class="quote-attr">— POLIS Design Principles, v1.0</div>
+</div>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 class="cta-h2 reveal">Your organization deserves<br><em>rules it can trust.</em></h2>
+  <p class="cta-sub reveal reveal-delay-1">Start with the free plan. Build your constitution. Invite your members. The AI does the hard work of enforcement — you do the governing.</p>
+  <div class="cta-actions reveal reveal-delay-2">
+    <button class="btn-hero-primary" style="font-size:16px;padding:16px 44px">Found Your Organization Free →</button>
+    <button class="btn-hero-secondary" style="font-size:16px;padding:16px 44px">Read the Docs</button>
+  </div>
+  <div class="cta-note reveal reveal-delay-3">No credit card required · Free plan is free forever · Export anytime</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <div class="nav-mark" style="width:32px;height:32px;font-size:17px">Π</div>
+      <div class="footer-brand-name">POLIS</div>
+    </div>
+    <div class="footer-brand-desc">AI-governed organization infrastructure for families, communities, and institutions. Transparent by design.</div>
+    <div style="margin-top:16px;font-size:11px;color:var(--muted2);font-family:'DM Mono',monospace">Open Source · MIT License · v1.0.0</div>
+  </div>
+  <div>
+    <div class="footer-col-title">Platform</div>
+    <div class="footer-links">
+      <a href="#">How It Works</a>
+      <a href="#">Use Cases</a>
+      <a href="#">Pricing</a>
+      <a href="#">Changelog</a>
+      <a href="#">Roadmap</a>
+    </div>
+  </div>
+  <div>
+    <div class="footer-col-title">Resources</div>
+    <div class="footer-links">
+      <a href="#">Documentation</a>
+      <a href="#">API Reference</a>
+      <a href="#">Constitution Templates</a>
+      <a href="#">Community Forum</a>
+    </div>
+  </div>
+  <div>
+    <div class="footer-col-title">Company</div>
+    <div class="footer-links">
+      <a href="#">About</a>
+      <a href="#">Blog</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <div class="footer-bottom-text">© 2025 POLIS Governance Engine. Built on the SAR Framework.</div>
+  <div class="footer-bottom-right"><div class="live-dot"></div>SAR ENGINE LIVE</div>
+</div>
+
+<script>
+// ── USE CASE DATA ─────────────────────────────────────────────────────────
+const UC_DATA = {
+  family: {
+    title: 'Your family,<br><em>governed fairly.</em>',
+    desc: 'Family trusts, fraternal circles, and friend networks finally have infrastructure worthy of the relationships that built them. Define contribution rules, rotating payouts, legacy funds — and let the AI enforce them so nobody has to be the bad guy.',
+    features: [
+      { icon: '🔄', title: 'Rotating Savings Pool', body: 'Automatic susu/tontine management. Every member contributes, every member receives — in a fair, transparent rotation.' },
+      { icon: '📜', title: 'Family Constitution', body: 'Write your values, membership rules, and financial obligations into a living document. Amendable by vote — never by one person.' },
+      { icon: '🛡', title: 'Hardship Provisions', body: 'Members can file documented hardship claims to adjust their position. The community votes. The AI enforces the outcome.' },
+      { icon: '💎', title: 'Legacy Fund', body: 'A percentage of every payout builds a generational wealth reserve. Governed by the same rules as everything else.' }
+    ],
+    stats: [
+      { val: '$300', sub: 'Per member / month', label: 'Contribution' },
+      { val: '$3,600', sub: '12-member pool', label: 'Cycle Pool' },
+      { val: '8%', sub: 'Of each payout', label: 'Legacy Reserve' }
+    ],
+    members: [
+      { av: 'MJ', color: '#1e3a5f', name: 'Marcus Johnson', role: 'Founder', tag: 'active' },
+      { av: 'DJ', color: '#15803d', name: 'Denise Johnson', role: 'Co-Founder', tag: 'active' },
+      { av: 'KM', color: '#7c2d12', name: 'Keisha Moore', role: 'Member · #4', tag: 'next' },
+      { av: 'DC', color: '#4c1d95', name: 'Darnell Cooper', role: 'Member · #5', tag: 'pending' }
+    ]
+  },
+  town: {
+    title: 'Town governance<br><em>that actually works.</em>',
+    desc: 'Municipal government built on radical transparency. Every ordinance, every vote, every dollar is tracked and publicly logged. Citizens can see exactly how their tax money moves and exactly why every decision was made.',
+    features: [
+      { icon: '🗳', title: 'Council Voting', body: 'Full roll-call votes on every ordinance. AI analyzes proposals against the Town Charter before votes open — flagging conflicts automatically.' },
+      { icon: '💰', title: 'Public Treasury', body: 'Every tax dollar tracked from collection to expenditure. Monthly reports published automatically. Reserve funds monitored and flagged when low.' },
+      { icon: '📢', title: 'Citizen Proposals', body: 'Any registered resident can file a proposal. 30-day comment periods, public record, AI analysis — the same process for everyone.' },
+      { icon: '⚡', title: 'Emergency Protocols', body: 'Charter Article 5 emergency powers, fast-track votes with 24-hour notice, capital reserve drawdown authorization — all handled by the engine.' }
+    ],
+    stats: [
+      { val: '3,847', sub: 'Registered voters', label: 'Citizens' },
+      { val: '$4.2M', sub: 'FY2025 budget', label: 'Treasury' },
+      { val: '127', sub: 'Standing ordinances', label: 'Laws' }
+    ],
+    members: [
+      { av: 'RC', color: '#c9a84c', name: 'Mayor Ruth Caldwell', role: 'Chief Executive', tag: 'active' },
+      { av: 'MT', color: '#1e3a5f', name: 'Maria Torres', role: 'Council President', tag: 'active' },
+      { av: 'AO', color: '#15803d', name: 'Adaeze Okafor', role: 'Council · Ward 3', tag: 'active' },
+      { av: 'PS', color: '#7c2d12', name: 'Priya Singh', role: 'Public Works Chair', tag: 'active' }
+    ]
+  },
+  susu: {
+    title: 'Save together.<br><em>Win together.</em>',
+    desc: 'The susu, tontine, paluwagan, hui — the world\'s oldest savings system, now with AI enforcement and full transparency. No more trusting one person to hold the money. The rules are written. The engine enforces them.',
+    features: [
+      { icon: '🎯', title: 'Fair Rotation', body: 'Lottery-based rotation order set at the start. No favoritism. Trade positions only by mutual consent. Hardship claims voted on by the group.' },
+      { icon: '⏰', title: 'Automated Cycles', body: '30, 60, or 90-day cycles. Late payment detection, grace periods, and penalty calculation handled automatically.' },
+      { icon: '🏦', title: 'Reserve Fund', body: 'Every payout contributes a set percentage to a reserve. Covers defaults, disputes, and unexpected needs without touching the main pool.' },
+      { icon: '📊', title: 'Scale to Hundreds', body: 'Built to handle 5 friends or 500 strangers. The same rules, the same transparency, regardless of group size.' }
+    ],
+    stats: [
+      { val: '$200', sub: 'Per member / cycle', label: 'Contribution' },
+      { val: '$2,400', sub: '12-member pool', label: 'Cycle Pool' },
+      { val: '5%', sub: 'Of each payout', label: 'Reserve' }
+    ],
+    members: [
+      { av: 'AO', color: '#1e3a5f', name: 'Adaeze Okonkwo', role: 'Position #1 · Received', tag: 'active' },
+      { av: 'KM', color: '#15803d', name: 'Kofi Mensah', role: 'Position #4 · Next Payout', tag: 'next' },
+      { av: 'PN', color: '#7c2d12', name: 'Priya Nair', role: 'Position #5', tag: 'pending' },
+      { av: 'YW', color: '#4c1d95', name: 'Yuki Watanabe', role: 'Position #12 · Late', tag: 'pending' }
+    ]
+  },
+  church: {
+    title: 'A congregation<br><em>that governs itself.</em>',
+    desc: 'Tithes, building funds, ministry budgets — all governed transparently by the people who give. Every deacon decision logged. Every expenditure visible to the whole congregation. Faith in your leadership, verified by the ledger.',
+    features: [
+      { icon: '🙏', title: 'Tithe Allocation Voting', body: 'Let the congregation vote on how tithes are allocated each quarter. Ministry, outreach, building fund, benevolence — the people decide.' },
+      { icon: '🏗', title: 'Building Fund Transparency', body: 'Capital campaign progress tracked in real time. Every donation logged, every expenditure visible, final disbursements require council approval.' },
+      { icon: '👥', title: 'Deacon Council Governance', body: 'Deacon elections, term limits, and voting records maintained by POLIS. Accountability built in, not bolted on.' },
+      { icon: '📖', title: 'Church Constitution', body: 'Bylaws, membership standards, pastoral authority, and doctrinal commitments written in a versioned, amendable document.' }
+    ],
+    stats: [
+      { val: '240', sub: 'Active members', label: 'Congregation' },
+      { val: '$88K', sub: 'Annual fund', label: 'Treasury' },
+      { val: '12', sub: 'Deacon council', label: 'Leadership' }
+    ],
+    members: [
+      { av: 'PR', color: '#1e3a5f', name: 'Pastor Rev. Williams', role: 'Senior Pastor', tag: 'active' },
+      { av: 'DG', color: '#15803d', name: 'Deacon Gloria Hayes', role: 'Finance Chair', tag: 'active' },
+      { av: 'EM', color: '#7c2d12', name: 'Elder Marcus Boyd', role: 'Board Chairman', tag: 'active' },
+      { av: 'TN', color: '#4c1d95', name: 'Trustee Nora Kim', role: 'Property Chair', tag: 'active' }
+    ]
+  },
+  business: {
+    title: 'Equity that<br><em>governs itself.</em>',
+    desc: 'A co-owned business, DAO, or cooperative where every stakeholder has a real voice and a real vote. Equity distribution, revenue sharing, hiring decisions, strategic pivots — all governed by the rules shareholders ratified.',
+    features: [
+      { icon: '📈', title: 'Revenue Distribution', body: 'Profit sharing formulas written into the constitution. Distributions calculated automatically. Every shareholder sees the same ledger.' },
+      { icon: '🗳', title: 'Shareholder Voting', body: 'Weighted or equal votes — your choice. Major decisions require supermajority. Minor ops decisions require simple majority. All defined upfront.' },
+      { icon: '📋', title: 'Operating Agreement', body: 'Your LLC or cooperative operating agreement lives in POLIS as a live, versioned document. Amendments require a vote. History is preserved.' },
+      { icon: '🔗', title: 'Multi-Sig Treasury', body: 'No single person controls the funds. Disbursements require threshold approvals defined in your charter. AI prepares, humans approve.' }
+    ],
+    stats: [
+      { val: '8', sub: 'Co-founders', label: 'Shareholders' },
+      { val: '$240K', sub: 'Annual revenue', label: 'Revenue' },
+      { val: '30%', sub: 'Quarterly distribution', label: 'Profit Share' }
+    ],
+    members: [
+      { av: 'CL', color: '#1e3a5f', name: 'CEO Linda Park', role: '30% equity · Founder', tag: 'active' },
+      { av: 'TB', color: '#15803d', name: 'CTO Ben Walsh', role: '25% equity · Founder', tag: 'active' },
+      { av: 'SA', color: '#7c2d12', name: 'CFO Sara Afolabi', role: '20% equity', tag: 'active' },
+      { av: 'IN', color: '#4c1d95', name: 'Investor Nadia V.', role: '15% equity', tag: 'active' }
+    ]
+  }
+};
+
+let isAnnual = false;
+
+const PRICING_DATA = [
+  {
+    tier: 'Community',
+    monthlyPrice: 0,
+    annualPrice: 0,
+    desc: 'For small organizations getting started. Full governance features, up to 20 members, one org.',
+    features: [
+      { text: 'Up to 20 members', ok: true },
+      { text: '1 organization', ok: true },
+      { text: 'Full SAR Engine + logs', ok: true },
+      { text: 'Constitution & laws', ok: true },
+      { text: 'Basic treasury ledger', ok: true },
+      { text: 'Community support', ok: true },
+      { text: 'Custom domain', ok: false },
+      { text: 'API access', ok: false },
+    ],
+    cta: 'Start Free',
+    ctaClass: 'secondary',
+    featured: false
+  },
+  {
+    tier: 'Collective',
+    monthlyPrice: 29,
+    annualPrice: 23,
+    desc: 'For active organizations that need unlimited members, multiple orgs, and full financial tooling.',
+    features: [
+      { text: 'Unlimited members', ok: true },
+      { text: 'Up to 5 organizations', ok: true },
+      { text: 'Full SAR Engine + audit export', ok: true },
+      { text: 'Advanced treasury + budgeting', ok: true },
+      { text: 'Custom domain', ok: true },
+      { text: 'Email & SMS notifications', ok: true },
+      { text: 'Priority support', ok: true },
+      { text: 'API access (1,000 calls/mo)', ok: true },
+    ],
+    cta: 'Start 14-Day Trial',
+    ctaClass: 'primary',
+    featured: true
+  },
+  {
+    tier: 'Institution',
+    monthlyPrice: 99,
+    annualPrice: 79,
+    desc: 'For governments, large cooperatives, and institutions with complex governance needs.',
+    features: [
+      { text: 'Unlimited members', ok: true },
+      { text: 'Unlimited organizations', ok: true },
+      { text: 'Full SAR Engine + compliance reports', ok: true },
+      { text: 'Multi-org treasury management', ok: true },
+      { text: 'White-label / custom branding', ok: true },
+      { text: 'Dedicated governance advisor', ok: true },
+      { text: 'SLA + priority support', ok: true },
+      { text: 'Unlimited API access', ok: true },
+    ],
+    cta: 'Contact Sales',
+    ctaClass: 'secondary',
+    featured: false
+  }
+];
+
+// ── RENDER FUNCTIONS ──────────────────────────────────────────────────────
+function setUCTab(key, btn) {
+  document.querySelectorAll('.uc-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderUCContent(key);
+}
+
+function renderUCContent(key) {
+  const d = UC_DATA[key];
+  const content = document.getElementById('uc-content');
+  content.style.opacity = '0';
+  content.style.transform = 'translateY(12px)';
+
+  setTimeout(() => {
+    content.innerHTML = `
+      <div class="uc-left">
+        <h3 class="uc-title">${d.title}</h3>
+        <p class="uc-desc">${d.desc}</p>
+        <div class="uc-features">
+          ${d.features.map(f => `
+            <div class="uc-feature">
+              <div class="uc-feature-icon">${f.icon}</div>
+              <div>
+                <div class="uc-feature-title">${f.title}</div>
+                <div class="uc-feature-body">${f.body}</div>
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>
+      <div class="uc-right">
+        <div class="uc-mockup">
+          <div class="uc-mockup-bar">
+            <div class="uc-mockup-dot" style="background:#ff5f57"></div>
+            <div class="uc-mockup-dot" style="background:#febc2e"></div>
+            <div class="uc-mockup-dot" style="background:#28c840"></div>
+            <div style="flex:1;height:16px;background:rgba(255,255,255,.04);border-radius:4px;margin-left:8px"></div>
+          </div>
+          <div class="uc-mockup-body">
+            <div class="uc-stat-row">
+              ${d.stats.map(s => `
+                <div class="uc-mini-stat">
+                  <div class="uc-ms-label">${s.label}</div>
+                  <div class="uc-ms-val">${s.val}</div>
+                  <div class="uc-ms-sub">${s.sub}</div>
+                </div>`).join('')}
+            </div>
+            <div style="font-size:9px;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;font-family:'DM Mono',monospace">Members</div>
+            ${d.members.map(m => `
+              <div class="uc-member-row">
+                <div class="uc-av" style="background:${m.color};color:#e8edf5">${m.av}</div>
+                <div style="flex:1">
+                  <div class="uc-mname">${m.name}</div>
+                  <div class="uc-mrole">${m.role}</div>
+                </div>
+                <span class="uc-tag ${m.tag}">${m.tag}</span>
+              </div>`).join('')}
+          </div>
+        </div>
+      </div>`;
+
+    content.style.transition = 'opacity .4s ease, transform .4s ease';
+    content.style.opacity = '1';
+    content.style.transform = 'translateY(0)';
+  }, 150);
+}
+
+function toggleBilling() {
+  isAnnual = !isAnnual;
+  const track = document.getElementById('billing-toggle');
+  const ml = document.getElementById('toggle-monthly');
+  const al = document.getElementById('toggle-annual');
+  track.classList.toggle('on', isAnnual);
+  ml.classList.toggle('active', !isAnnual);
+  al.classList.toggle('active', isAnnual);
+  renderPricing();
+}
+
+function renderPricing() {
+  document.getElementById('pricing-grid').innerHTML = PRICING_DATA.map(p => {
+    const price = isAnnual ? p.annualPrice : p.monthlyPrice;
+    const period = isAnnual ? '/mo · billed annually' : '/month';
+    return `
+      <div class="price-card ${p.featured ? 'featured' : ''}">
+        <div class="price-tier">${p.tier}</div>
+        <div class="price-val">
+          ${price === 0 ? '<span style="font-family:Playfair Display,serif;font-size:52px;color:var(--cream)">Free</span>' : `<span class="price-val-sym">$</span>${price}`}
+        </div>
+        ${price > 0 ? `<div class="price-period">${period}</div>` : '<div class="price-period">Forever free</div>'}
+        <div class="price-desc">${p.desc}</div>
+        <div class="price-features">
+          ${p.features.map(f => `
+            <div class="price-feature ${!f.ok ? 'muted' : ''}">
+              <span class="price-feature-icon">${f.ok ? '✓' : '–'}</span>
+              ${f.text}
+            </div>`).join('')}
+        </div>
+        <button class="btn-price ${p.ctaClass}" onclick="showToast('${p.tier} plan selected — let\\'s get started!')">${p.cta}</button>
+      </div>`;
+  }).join('');
+}
+
+// ── SCROLL REVEAL ─────────────────────────────────────────────────────────
+function initScrollReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────
+let toastEl, toastTimer;
+function showToast(msg) {
+  if (!toastEl) {
+    toastEl = document.createElement('div');
+    toastEl.style.cssText = 'position:fixed;bottom:28px;right:28px;z-index:1000;background:var(--cream);color:var(--ink);padding:12px 20px;border-radius:8px;font-size:13px;font-family:Outfit,sans-serif;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.3);animation:fadeUp .2s ease;pointer-events:none;max-width:320px';
+    document.body.appendChild(toastEl);
+  }
+  toastEl.textContent = msg;
+  toastEl.style.opacity = '1';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { if(toastEl) toastEl.style.opacity = '0'; }, 3000);
+}
+
+// ── NAV SCROLL ────────────────────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  nav.style.background = window.scrollY > 60
+    ? 'rgba(13,13,15,.95)'
+    : 'rgba(13,13,15,.85)';
+});
+
+function scrollTo(id) {
+  document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+renderUCContent('family');
+renderPricing();
+initScrollReveal();
+</script>
+</body>
+</html>
